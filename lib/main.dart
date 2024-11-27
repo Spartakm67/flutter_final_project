@@ -20,8 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // Передаємо створений store на головний екран.
-      home: HomeScreen(store: homeScreenStore),
+        home: HomeScreen(store: homeScreenStore),
     );
   }
 }

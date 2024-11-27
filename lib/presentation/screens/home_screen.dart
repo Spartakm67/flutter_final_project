@@ -51,21 +51,6 @@ class HomeScreenState extends State<HomeScreen>
       body: Observer(
         builder: (_) => Stack(
           children: [
-            FadeTransition(
-              opacity: _animationController,
-              child: Center(
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [Colors.orange, Colors.pink, Colors.purple],
-                    ),
-                  ),
-                ),
-              ),
-            ),
             Positioned.fill(
               child: Image.asset(
                 'assets/images/pancake_blackout.jpg',
@@ -173,32 +158,35 @@ class HomeScreenState extends State<HomeScreen>
                                 elevation: 4,
                                 child: InkWell(
                                   onTap: auth['onPressed'] as VoidCallback,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(30),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 16,),
+                                      vertical: 12,
+                                      horizontal: 16,
+                                    ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .center, // Центруємо всі елементи
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        const Spacer(), // Залишаємо простір перед іконкою
-                                        Icon(auth['icon'] as IconData,
-                                            size: 28,),
+                                        const Spacer(),
+                                        Icon(
+                                          auth['icon'] as IconData,
+                                          size: 28,
+                                        ),
                                         const SizedBox(
-                                            width:
-                                                16,), // Відступ між іконкою та текстом
+                                          width: 16,
+                                        ),
                                         Expanded(
                                           child: Text(
                                             auth['label'] as String,
-                                            textAlign: TextAlign
-                                                .center, // Центруємо текст по Card
+                                            textAlign: TextAlign.center,
                                             style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ),
-                                        const Spacer(), // Залишаємо простір після тексту
+                                        const Spacer(),
                                       ],
                                     ),
                                   ),
