@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
+import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class HomeScreenState extends State<HomeScreen>
     );
 
     _alignAnimation = Tween<Alignment>(
-      begin: const Alignment(0.0, 5.0),
+      begin: const Alignment(0.0, 3.0),
       end: Alignment.bottomCenter,
     ).animate(
       CurvedAnimation(
@@ -79,11 +80,22 @@ class HomeScreenState extends State<HomeScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const Text(
-                              'Майстерня Млинців \n  Ласкаво просимо!',
+                              'Майстерня Млинців \nЛаскаво просимо!',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrange,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Для оформлення замовлення введіть:',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -96,8 +108,10 @@ class HomeScreenState extends State<HomeScreen>
                                       horizontal: 12,
                                     ),
                                     decoration: BoxDecoration(
-
-                                      border: Border.all(color: Colors.deepPurple, width: 2),
+                                      border: Border.all(
+                                        color: Colors.deepPurple,
+                                        width: 2,
+                                      ),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Row(
@@ -111,7 +125,14 @@ class HomeScreenState extends State<HomeScreen>
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        const Text('+380'),
+                                        const Text(
+                                          '+380',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -123,8 +144,14 @@ class HomeScreenState extends State<HomeScreen>
                                       autofocus: true,
                                       decoration: InputDecoration(
                                         hintText: 'Мобільний номер',
+                                        hintStyle: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 16,
+                                          // fontStyle: FontStyle.italic,
+                                        ),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(16),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
                                         ),
                                       ),
                                     ),
@@ -132,13 +159,25 @@ class HomeScreenState extends State<HomeScreen>
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'або за допомогою:',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
                             ...[
                               {
                                 'icon': FontAwesomeIcons.google,
                                 'label': 'Google',
                                 'iconStyle': const TextStyle(
-                                    color: Colors.red, fontSize: 22,),
+                                  color: Colors.red,
+                                  fontSize: 22,
+                                ),
                                 'onPressed': () {
                                   print('Авторизація через Google');
                                 },
@@ -147,7 +186,9 @@ class HomeScreenState extends State<HomeScreen>
                                 'icon': FontAwesomeIcons.apple,
                                 'label': 'Apple',
                                 'iconStyle': const TextStyle(
-                                    color: Colors.black, fontSize: 28,),
+                                  color: Colors.black,
+                                  fontSize: 28,
+                                ),
                                 'onPressed': () {
                                   print('Авторизація через Apple');
                                 },
@@ -156,7 +197,9 @@ class HomeScreenState extends State<HomeScreen>
                                 'icon': FontAwesomeIcons.facebook,
                                 'label': 'Facebook',
                                 'iconStyle': const TextStyle(
-                                    color: Colors.blue, fontSize: 28,),
+                                  color: Colors.blue,
+                                  fontSize: 28,
+                                ),
                                 'onPressed': () {
                                   print('Авторизація через Facebook');
                                 },
@@ -165,7 +208,9 @@ class HomeScreenState extends State<HomeScreen>
                                 'icon': Icons.email,
                                 'label': 'Електронна пошта',
                                 'iconStyle': const TextStyle(
-                                    color: Colors.orange, fontSize: 28,),
+                                  color: Colors.orange,
+                                  fontSize: 28,
+                                ),
                                 'onPressed': () {
                                   print('Авторизація через електронну пошту');
                                 },
@@ -188,8 +233,7 @@ class HomeScreenState extends State<HomeScreen>
                                         horizontal: 16,
                                       ),
                                       child: Stack(
-                                        alignment: Alignment
-                                            .center, // Центруємо елементи
+                                        alignment: Alignment.center,
                                         children: [
                                           Row(
                                             children: [
@@ -210,7 +254,8 @@ class HomeScreenState extends State<HomeScreen>
                                               auth['label'] as String,
                                               textAlign: TextAlign.center,
                                               style: const TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 18,
+                                                color: Colors.black87,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -222,6 +267,15 @@ class HomeScreenState extends State<HomeScreen>
                                 );
                               },
                             ),
+                            const SizedBox(height: 16),
+                            FittedBox(
+                              child: HomeButton(
+                                onPressed: () {
+                                  print('Натиснута кнопка CustomButton');
+                                },
+                                text: 'Пропустити та перейти до меню',
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -229,6 +283,16 @@ class HomeScreenState extends State<HomeScreen>
                   ),
                 );
               },
+            ),
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 8,
+              right: 8,
+              child: HomeButton(
+                onPressed: () {
+                  print('Кнопка "перейти" натиснута');
+                },
+                text: 'Меню',
+              ),
             ),
           ],
         ),

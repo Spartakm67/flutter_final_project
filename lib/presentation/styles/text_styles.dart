@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TextStyles {
-
   static const TextStyle appBarText = TextStyle(
     fontSize: 22,
     fontWeight: FontWeight.bold,
@@ -43,6 +42,12 @@ class TextStyles {
     fontSize: 12,
     color: Colors.blue,
     decoration: TextDecoration.underline,
+  );
+
+  static const TextStyle homeButtonText = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 18,
+    color: Colors.deepOrange,
   );
 
   static const TextStyle buttonText = TextStyle(
@@ -98,5 +103,3 @@ class TextStyles {
     );
   }
 }
-
-
