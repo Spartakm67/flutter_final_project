@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   final HomeScreenStore store;
@@ -63,7 +64,7 @@ class HomeScreenState extends State<HomeScreen>
                 return Align(
                   alignment: _alignAnimation.value,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.75,
+                    height: MediaQuery.of(context).size.height * 0.70,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.8),
                       borderRadius: const BorderRadius.only(
@@ -71,130 +72,158 @@ class HomeScreenState extends State<HomeScreen>
                         topRight: Radius.circular(20),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Ласкаво просимо',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Майстерня Млинців \n  Ласкаво просимо!',
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepOrange,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Row(
-                                  children: [
-                                    Icon(Icons.flag, size: 24),
-                                    SizedBox(width: 8),
-                                    Text('+380'),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: TextField(
-                                  onChanged: store.setPhoneNumber,
-                                  keyboardType: TextInputType.phone,
-                                  decoration: InputDecoration(
-                                    hintText: 'Мобільний номер',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          ...[
-                            {
-                              'icon': Icons.g_mobiledata,
-                              'label': 'Google',
-                              'onPressed': () {
-                                print('Авторизація через Google');
-                              },
-                            },
-                            {
-                              'icon': Icons.apple,
-                              'label': 'Apple',
-                              'onPressed': () {
-                                print('Авторизація через Apple');
-                              },
-                            },
-                            {
-                              'icon': Icons.facebook,
-                              'label': 'Facebook',
-                              'onPressed': () {
-                                print('Авторизація через Facebook');
-                              },
-                            },
-                            {
-                              'icon': Icons.email,
-                              'label': 'Електронна пошта',
-                              'onPressed': () {
-                                print('Авторизація через електронну пошту');
-                              },
-                            },
-                          ].map(
-                            (auth) {
-                              return Card(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                elevation: 4,
-                                child: InkWell(
-                                  onTap: auth['onPressed'] as VoidCallback,
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: Padding(
+                            const SizedBox(height: 16),
+                            IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Container(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 12,
-                                      horizontal: 16,
+                                      horizontal: 12,
+                                    ),
+                                    decoration: BoxDecoration(
+
+                                      border: Border.all(color: Colors.deepPurple, width: 2),
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
                                       children: [
-                                        const Spacer(),
-                                        Icon(
-                                          auth['icon'] as IconData,
-                                          size: 28,
+                                        Image.asset(
+                                          'icons/flags/png100px/ua.png',
+                                          package: 'country_icons',
+                                          width: 24,
+                                          height: 24,
                                         ),
                                         const SizedBox(
-                                          width: 16,
+                                          width: 10,
                                         ),
-                                        Expanded(
-                                          child: Text(
-                                            auth['label'] as String,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        const Spacer(),
+                                        const Text('+380'),
                                       ],
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: TextField(
+                                      onChanged: store.setPhoneNumber,
+                                      keyboardType: TextInputType.phone,
+                                      autofocus: true,
+                                      decoration: InputDecoration(
+                                        hintText: 'Мобільний номер',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            ...[
+                              {
+                                'icon': FontAwesomeIcons.google,
+                                'label': 'Google',
+                                'iconStyle': const TextStyle(
+                                    color: Colors.red, fontSize: 22,),
+                                'onPressed': () {
+                                  print('Авторизація через Google');
+                                },
+                              },
+                              {
+                                'icon': FontAwesomeIcons.apple,
+                                'label': 'Apple',
+                                'iconStyle': const TextStyle(
+                                    color: Colors.black, fontSize: 28,),
+                                'onPressed': () {
+                                  print('Авторизація через Apple');
+                                },
+                              },
+                              {
+                                'icon': FontAwesomeIcons.facebook,
+                                'label': 'Facebook',
+                                'iconStyle': const TextStyle(
+                                    color: Colors.blue, fontSize: 28,),
+                                'onPressed': () {
+                                  print('Авторизація через Facebook');
+                                },
+                              },
+                              {
+                                'icon': Icons.email,
+                                'label': 'Електронна пошта',
+                                'iconStyle': const TextStyle(
+                                    color: Colors.orange, fontSize: 28,),
+                                'onPressed': () {
+                                  print('Авторизація через електронну пошту');
+                                },
+                              },
+                            ].map(
+                              (auth) {
+                                return Card(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  elevation: 4,
+                                  child: InkWell(
+                                    onTap: auth['onPressed'] as VoidCallback,
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12,
+                                        horizontal: 16,
+                                      ),
+                                      child: Stack(
+                                        alignment: Alignment
+                                            .center, // Центруємо елементи
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                auth['icon'] as IconData,
+                                                size: (auth['iconStyle']
+                                                            as TextStyle)
+                                                        .fontSize ??
+                                                    24,
+                                                color: (auth['iconStyle']
+                                                        as TextStyle)
+                                                    .color,
+                                              ),
+                                            ],
+                                          ),
+                                          Center(
+                                            child: Text(
+                                              auth['label'] as String,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
