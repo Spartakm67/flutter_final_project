@@ -226,7 +226,7 @@ class HomeScreenState extends State<HomeScreen>
                                             child: Text(
                                               auth['label'] as String,
                                               textAlign: TextAlign.center,
-                                              style: TextStyles.authText
+                                              style: TextStyles.authText,
                                             ),
                                           ),
                                         ],
