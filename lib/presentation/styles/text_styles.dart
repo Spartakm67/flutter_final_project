@@ -8,6 +8,30 @@ class TextStyles {
     color: Colors.white,
   );
 
+  static const TextStyle greetingsText = TextStyle(
+    fontSize: 26,
+    color: Colors.deepOrange,
+    // fontStyle: FontStyle.italic,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle authWelcomeText = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: Colors.grey,
+  );
+
+  static const TextStyle authText = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+  );
+
+  static const TextStyle hintText = TextStyle(
+    color: Colors.grey,
+    fontSize: 16,
+  );
+
   static const TextStyle spanKeyText = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16,
@@ -47,7 +71,7 @@ class TextStyles {
   static const TextStyle homeButtonText = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 18,
-    color: Colors.deepOrange,
+    color: Colors.black87,
   );
 
   static const TextStyle buttonText = TextStyle(
@@ -80,13 +104,6 @@ class TextStyles {
     fontStyle: FontStyle.italic,
   );
 
-  static const TextStyle greetingsText = TextStyle(
-    fontSize: 30,
-    color: Colors.redAccent,
-    fontStyle: FontStyle.italic,
-    fontWeight: FontWeight.bold,
-  );
-
   static const TextStyle userText = TextStyle(
     fontSize: 14,
     color: Colors.blueAccent,
@@ -100,6 +117,14 @@ class TextStyles {
       style: style,
       softWrap: true,
       overflow: TextOverflow.visible,
+    );
+  }
+
+  static TextStyle authIconStyle(Color color) {
+    return TextStyle(
+      fontSize: 28,
+      fontWeight: FontWeight.normal,
+      color: color,
     );
   }
 }

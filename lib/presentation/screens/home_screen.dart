@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class HomeScreen extends StatefulWidget {
   final HomeScreenStore store;
@@ -27,7 +28,7 @@ class HomeScreenState extends State<HomeScreen>
     );
 
     _alignAnimation = Tween<Alignment>(
-      begin: const Alignment(0.0, 3.0),
+      begin: const Alignment(0.0, 7.0),
       end: Alignment.bottomCenter,
     ).animate(
       CurvedAnimation(
@@ -50,6 +51,7 @@ class HomeScreenState extends State<HomeScreen>
     final store = widget.store;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Observer(
         builder: (_) => Stack(
           children: [
@@ -65,7 +67,7 @@ class HomeScreenState extends State<HomeScreen>
                 return Align(
                   alignment: _alignAnimation.value,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.70,
+                    height: MediaQuery.of(context).size.height * 0.75,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.8),
                       borderRadius: const BorderRadius.only(
@@ -74,29 +76,22 @@ class HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                     child: SingleChildScrollView(
+                      reverse: false,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const Text(
-                              'Майстерня Млинців \nЛаскаво просимо!',
+                              'Майстерня Млинців \n Ласкаво просимо!',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepOrange,
-                              ),
+                              style: TextStyles.greetingsText,
                             ),
                             const SizedBox(height: 8),
                             const Text(
                               'Для оформлення замовлення введіть:',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
+                              style: TextStyles.authWelcomeText,
                             ),
                             const SizedBox(height: 16),
                             IntrinsicHeight(
@@ -127,11 +122,7 @@ class HomeScreenState extends State<HomeScreen>
                                         ),
                                         const Text(
                                           '+380',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          style: TextStyles.authText,
                                         ),
                                       ],
                                     ),
@@ -144,11 +135,7 @@ class HomeScreenState extends State<HomeScreen>
                                       autofocus: true,
                                       decoration: InputDecoration(
                                         hintText: 'Мобільний номер',
-                                        hintStyle: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 16,
-                                          // fontStyle: FontStyle.italic,
-                                        ),
+                                        hintStyle:  TextStyles.hintText,
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(16),
@@ -161,23 +148,17 @@ class HomeScreenState extends State<HomeScreen>
                             ),
                             const SizedBox(height: 8),
                             const Text(
-                              'або за допомогою:',
+                              'або авторизуйтеся за допомогою:',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
+                              style: TextStyles.authWelcomeText,
                             ),
                             const SizedBox(height: 8),
                             ...[
                               {
                                 'icon': FontAwesomeIcons.google,
+                                'imagePath': 'assets/images/google_logo.webp',
                                 'label': 'Google',
-                                'iconStyle': const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 22,
-                                ),
+                                'iconStyle': TextStyles.hintText,
                                 'onPressed': () {
                                   print('Авторизація через Google');
                                 },
@@ -185,10 +166,7 @@ class HomeScreenState extends State<HomeScreen>
                               {
                                 'icon': FontAwesomeIcons.apple,
                                 'label': 'Apple',
-                                'iconStyle': const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 28,
-                                ),
+                                'iconStyle': TextStyles.authIconStyle(Colors.black),
                                 'onPressed': () {
                                   print('Авторизація через Apple');
                                 },
@@ -196,10 +174,7 @@ class HomeScreenState extends State<HomeScreen>
                               {
                                 'icon': FontAwesomeIcons.facebook,
                                 'label': 'Facebook',
-                                'iconStyle': const TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 28,
-                                ),
+                                'iconStyle': TextStyles.authIconStyle(Colors.blue),
                                 'onPressed': () {
                                   print('Авторизація через Facebook');
                                 },
@@ -207,10 +182,7 @@ class HomeScreenState extends State<HomeScreen>
                               {
                                 'icon': Icons.email,
                                 'label': 'Електронна пошта',
-                                'iconStyle': const TextStyle(
-                                  color: Colors.orange,
-                                  fontSize: 28,
-                                ),
+                                'iconStyle': TextStyles.authIconStyle(Colors.orange),
                                 'onPressed': () {
                                   print('Авторизація через електронну пошту');
                                 },
@@ -237,15 +209,16 @@ class HomeScreenState extends State<HomeScreen>
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(
+                                              auth['imagePath'] != null
+                                                  ? Image.asset(
+                                                auth['imagePath'] as String,
+                                                width: 24,
+                                                height: 24,
+                                              )
+                                                  : Icon(
                                                 auth['icon'] as IconData,
-                                                size: (auth['iconStyle']
-                                                            as TextStyle)
-                                                        .fontSize ??
-                                                    24,
-                                                color: (auth['iconStyle']
-                                                        as TextStyle)
-                                                    .color,
+                                                size: (auth['iconStyle'] as TextStyle).fontSize ?? 24,
+                                                color: (auth['iconStyle'] as TextStyle).color,
                                               ),
                                             ],
                                           ),
@@ -253,11 +226,7 @@ class HomeScreenState extends State<HomeScreen>
                                             child: Text(
                                               auth['label'] as String,
                                               textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              style: TextStyles.authText
                                             ),
                                           ),
                                         ],
