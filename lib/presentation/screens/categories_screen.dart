@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
+import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/presentation/screens/category_detail_screen.dart';
+import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:shimmer/shimmer.dart';
@@ -15,6 +17,7 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class CategoriesScreenState extends State<CategoriesScreen> {
+  final ProductStore productStore = ProductStore();
   final CategoriesStore _categoriesStore = CategoriesStore();
   final ScrollStore _scrollStore = ScrollStore();
   final ScrollController _scrollController = ScrollController();
@@ -74,7 +77,8 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CategoryDetailScreen(
+                        builder: (_) => ProductListScreen(
+                          productStore: productStore,
                           categoryId: int.parse(category.categoryId),
                         ),
                       ),
@@ -118,10 +122,19 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                         ),
                         const SizedBox(width: 30.0),
                         Expanded(
-                          child: Text(
-                              category.categoryName,
-                              style: TextStyles.categoriesText,
-                            // textAlign: TextAlign.center,
+                          child: Column(
+                            children: [
+                              Text(
+                                category.categoryName,
+                                style: TextStyles.categoriesText,
+                                // textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                category.categoryId,
+                                style: TextStyles.categoriesText,
+                                // textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
                         const Icon(Icons.chevron_right),
