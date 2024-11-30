@@ -4,6 +4,8 @@ import 'package:flutter_final_project/domain/store/categories_store/categories_s
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/presentation/screens/category_detail_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
+import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -62,7 +64,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
             itemBuilder: (context, index) {
               final category = _categoriesStore.categories[index];
               return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 4.0),
                 elevation: 4.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -79,40 +81,47 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: category.categoryPhoto != null
                               ? Image.network(
                                   'https://joinposter.com${category.categoryPhoto}',
-                                  width: 70,
-                                  height: 70,
+                                  width: 75,
+                                  height: 75,
                                   fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      child: Container(
+                                        width: 75,
+                                        height: 75,
+                                        color: Colors.grey,
+                                      ),
+                                    );
+                                  },
                                   errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(Icons.broken_image, size: 70),
+                                      const Icon(Icons.broken_image, size: 75),
                                 )
                               : Image.asset(
                                   'assets/images/default_image.png',
-                                  width: 70,
-                                  height: 70,
+                                  width: 75,
+                                  height: 75,
                                   fit: BoxFit.cover,
                                 ),
                         ),
-                        const SizedBox(width: 12.0),
+                        const SizedBox(width: 30.0),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                category.categoryName,
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                              category.categoryName,
+                              style: TextStyles.categoriesText,
+                            // textAlign: TextAlign.center,
                           ),
                         ),
                         const Icon(Icons.chevron_right),
@@ -129,7 +138,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
         scrollStore: _scrollStore,
         scrollController: _scrollController,
       ),
-         // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

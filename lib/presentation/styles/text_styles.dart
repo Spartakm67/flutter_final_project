@@ -74,6 +74,12 @@ class TextStyles {
     color: Colors.black87,
   );
 
+  static const TextStyle categoriesText = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 22,
+    color: Color(0xFF52545C),
+  );
+
   static const TextStyle buttonText = TextStyle(
     fontSize: 18,
     color: Colors.indigo,
