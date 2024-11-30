@@ -13,10 +13,18 @@ class Category {
   @JsonKey(name: 'category_photo')
   final String? categoryPhoto;
 
+  @JsonKey(name: 'category_tag')
+  final String? categoryTag;
+
+  @JsonKey(name: 'category_color')
+  final String? categoryColor;
+
     Category({
     required this.categoryId,
     required this.categoryName,
     required this.categoryPhoto,
+      this.categoryTag,
+      this.categoryColor,
     });
 
   factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);

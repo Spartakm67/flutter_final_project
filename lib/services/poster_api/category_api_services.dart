@@ -7,7 +7,7 @@ class CategoryApiServices {
   static const String baseUrl = 'https://joinposter.com/api/menu.getCategories';
   static final String token = dotenv.env['TOKEN'] ?? '';
 
-  Future<List<Category>> fetchCategories() async {
+  static Future<List<Category>> fetchCategories() async {
     final url = Uri.parse('$baseUrl?token=$token&fiscal=1');
     final response = await http.get(url);
 
@@ -15,13 +15,14 @@ class CategoryApiServices {
     // print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      // print('Parsed data: $data');
-
-      final List<dynamic> categoriesJson = data['response'];
-      return categoriesJson.map((json) => Category.fromJson(json)).toList();
+      final List<dynamic> data = json.decode(response.body)['response'];
+      final filteredCategories = data
+          .map((json) => Category.fromJson(json as Map<String, dynamic>))
+          .where((category) => !category.categoryName.contains('Glovo'))
+          .toList();
+      return filteredCategories;
     } else {
-      throw Exception('Failed to load categories');
+      throw Exception('Failed to fetch categories');
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_final_project/domain/store/home_store/home_screen_store.
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final HomeScreenStore store;
@@ -240,7 +241,14 @@ class HomeScreenState extends State<HomeScreen>
                             FittedBox(
                               child: HomeButton(
                                 onPressed: () {
-                                  print('Натиснута кнопка CustomButton');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const CategoriesScreen();
+                                      },
+                                    ),
+                                  );
                                 },
                                 text: 'Пропустити та перейти до меню',
                               ),
@@ -258,7 +266,14 @@ class HomeScreenState extends State<HomeScreen>
               right: 8,
               child: HomeButton(
                 onPressed: () {
-                  print('Кнопка "перейти" натиснута');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const CategoriesScreen();
+                      },
+                    ),
+                  );
                 },
                 text: 'Меню',
               ),

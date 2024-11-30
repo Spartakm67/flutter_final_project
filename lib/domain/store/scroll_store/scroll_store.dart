@@ -5,7 +5,6 @@ part 'scroll_store.g.dart';
 class ScrollStore = ScrollStoreBase with _$ScrollStore;
 
 abstract class ScrollStoreBase with Store {
-
   @observable
   bool showScrollToTopButton = false;
 
@@ -13,5 +12,4 @@ abstract class ScrollStoreBase with Store {
   void updateScrollPosition(double offset) {
     showScrollToTopButton = offset > 200;
   }
-
 }
