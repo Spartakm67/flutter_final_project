@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
-import 'package:flutter_final_project/presentation/screens/category_detail_screen.dart';
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';

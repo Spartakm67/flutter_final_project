@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/data/models/poster/product.dart';
+import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
-import 'package:flutter_final_project/presentation/screens/category_detail_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
@@ -33,7 +31,7 @@ class ProductDetailScreen extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        getFullImageUrl(product.photo),
+                        UrlHelper.getFullImageUrl(product.photo),
                         width: 200,
                         height: 200,
                         fit: BoxFit.cover,
@@ -93,9 +91,5 @@ class ProductDetailScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-  String getFullImageUrl(String path) {
-    const String baseUrl = 'https://joinposter.com';
-    return Uri.parse(baseUrl).resolve(path.replaceAll('\\', '')).toString();
   }
 }

@@ -4,8 +4,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
+import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ProductListScreen extends StatefulWidget {
   final ProductStore productStore;
@@ -114,7 +114,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
-                                getFullImageUrl(product.photo),
+                                UrlHelper.getFullImageUrl(product.photo),
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -195,10 +195,5 @@ class _ProductListScreenState extends State<ProductListScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  String getFullImageUrl(String path) {
-    const String baseUrl = 'https://joinposter.com';
-    return Uri.parse(baseUrl).resolve(path.replaceAll('\\', '')).toString();
   }
 }
