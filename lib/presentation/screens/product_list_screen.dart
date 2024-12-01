@@ -3,6 +3,7 @@ import 'package:flutter_final_project/presentation/screens/product_detail_screen
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
+import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
@@ -121,34 +122,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 loadingBuilder:
                                     (context, child, loadingProgress) {
                                   if (loadingProgress == null) return child;
-                                  return Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      SizedBox(
-                                        width: 75,
-                                        height: 75,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2.0,
-                                          valueColor:
-                                              const AlwaysStoppedAnimation<
-                                                  Color>(Colors.blueAccent),
-                                          value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                        ),
-                                      ),
-                                      const Icon(
-                                        Icons.image,
-                                        size: 50,
-                                        color: Colors.lightGreenAccent,
-                                      ),
-                                    ],
-                                  );
+                                  return LoadingImageIndicator(
+                                      loadingProgress: loadingProgress,);
                                 },
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(
