@@ -79,6 +79,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                         builder: (_) => ProductListScreen(
                           productStore: productStore,
                           categoryId: int.parse(category.categoryId),
+                          categoryName: category.categoryName,
                         ),
                       ),
                     );

@@ -11,11 +11,13 @@ import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 class ProductListScreen extends StatefulWidget {
   final ProductStore productStore;
   final int categoryId;
+  final String categoryName;
 
   ProductListScreen({
     super.key,
     required this.productStore,
     required this.categoryId,
+    required this.categoryName,
   }) {
     productStore.fetchProducts(categoryId.toString());
   }
@@ -45,13 +47,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Продукти')),
+      appBar: AppBar(
+        title: Text(
+          widget.categoryName,
+          style: TextStyles.greetingsText,
+        ),
+      ),
       body: Observer(
         builder: (_) {
           if (widget.productStore.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-
           if (widget.productStore.error != null) {
             return Center(
               child: Text(widget.productStore.error!),
@@ -67,7 +73,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
           if (filteredProducts.isEmpty) {
             return const Center(child: Text('No products found'));
           }
-
           return ListView.builder(
             controller: _scrollController,
             padding: const EdgeInsets.all(8.0),
@@ -94,14 +99,41 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           children: [
                             Text(
                               product.productName,
-                              // style: Theme.of(context).textTheme.headline6,
+                              style: TextStyles.categoriesText,
+                              // style: Theme.of(context).textTheme.headline2,
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                              'Ціна: ${(product.price / 100).toStringAsFixed(2)} грн\n'
-                              // 'Cooking Time: ${product.cookingTime}s\n'
-                              'Інгредієнти: ${product.ingredients.map((i) => i.name).join(", ")}',
-                              // style: Theme.of(context).textTheme.bodyText2,
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Ціна: ',
+                                    style: TextStyles.habitKeyText,
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '${(product.price / 100).toStringAsFixed(2)} грн',
+                                    style: TextStyles.authText,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Інгредієнти: ',
+                                    style: TextStyles.habitKeyText,
+                                  ),
+                                  TextSpan(
+                                    text: product.ingredients
+                                        .map((i) => i.name)
+                                        .join(", "),
+                                    style: TextStyles.spanKeyText,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -123,7 +155,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     (context, child, loadingProgress) {
                                   if (loadingProgress == null) return child;
                                   return LoadingImageIndicator(
-                                      loadingProgress: loadingProgress,);
+                                    loadingProgress: loadingProgress,
+                                  );
                                 },
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(

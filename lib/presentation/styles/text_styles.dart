@@ -35,13 +35,13 @@ class TextStyles {
   static const TextStyle spanKeyText = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16,
-    color: Colors.black,
+    color: Colors.grey,
   );
 
   static final TextStyle habitKeyText = GoogleFonts.roboto(
     fontSize: 18,
     fontWeight: FontWeight.bold,
-    color: Colors.blue,
+    color: Colors.blueGrey,
   );
 
   static const TextStyle spanPostText = TextStyle(
