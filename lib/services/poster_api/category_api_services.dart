@@ -18,7 +18,10 @@ class CategoryApiServices {
       final List<dynamic> data = json.decode(response.body)['response'];
       final filteredCategories = data
           .map((json) => Category.fromJson(json as Map<String, dynamic>))
-          .where((category) => !category.categoryName.contains('Glovo'))
+          .where((category) {
+        const excludedWords = ['Glovo', 'Сборки', 'Морозиво', 'Горячи напої',];
+        return !excludedWords.any((word) => category.categoryName.contains(word));
+      })
           .toList();
       return filteredCategories;
     } else {

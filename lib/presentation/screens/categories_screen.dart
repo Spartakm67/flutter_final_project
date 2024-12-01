@@ -122,19 +122,10 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                         ),
                         const SizedBox(width: 30.0),
                         Expanded(
-                          child: Column(
-                            children: [
-                              Text(
-                                category.categoryName,
-                                style: TextStyles.categoriesText,
-                                // textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                category.categoryId,
-                                style: TextStyles.categoriesText,
-                                // textAlign: TextAlign.center,
-                              ),
-                            ],
+                          child: Text(
+                            category.categoryName,
+                            style: TextStyles.categoriesText,
+                            // textAlign: TextAlign.center,
                           ),
                         ),
                         const Icon(Icons.chevron_right),

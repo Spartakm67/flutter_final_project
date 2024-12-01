@@ -17,17 +17,85 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(product.productName)),
-      body: Column(
-        children: [
-          Hero(
-            tag: product.productId,
-            child: Image.network(product.photoOrigin),
-          ),
-          Text(product.productName),
-          Text('Price: ${product.price.toStringAsFixed(2)}'),
-          Text('Ingredients: ${product.ingredients.map((i) => i.name).join(", ")}'),
-        ],
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                width: double.infinity,
+                child: AspectRatio(
+                  aspectRatio: 4 / 3.5,
+                  child: Hero(
+                    tag: 'product-${product.productId}',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        getFullImageUrl(product.photo),
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        loadingBuilder:
+                            (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                width: 75,
+                                height: 75,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.0,
+                                  valueColor:
+                                  const AlwaysStoppedAnimation<
+                                      Color>(Colors.blueAccent),
+                                  value: loadingProgress
+                                      .expectedTotalBytes !=
+                                      null
+                                      ? loadingProgress
+                                      .cumulativeBytesLoaded /
+                                      loadingProgress
+                                          .expectedTotalBytes!
+                                      : null,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.image,
+                                size: 50,
+                                color: Colors.lightGreenAccent,
+                              ),
+                            ],
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/default_image.png',
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(product.productName),
+            const SizedBox(height: 16),
+            Text('Ціна: ${(product.price / 100).toStringAsFixed(2)} грн\n'),
+            const SizedBox(height: 16),
+            Text('Інгредієнти: ${product.ingredients.map((i) => i.name).join(", ")}',),
+          ],
+        ),
       ),
     );
+  }
+  String getFullImageUrl(String path) {
+    const String baseUrl = 'https://joinposter.com';
+    return Uri.parse(baseUrl).resolve(path.replaceAll('\\', '')).toString();
   }
 }
