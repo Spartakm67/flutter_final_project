@@ -173,34 +173,38 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           const SizedBox(
                             height: 8,
                           ),
-                          Observer(
-                            builder: (_) {
-                              final counter = widget.productStore
-                                      .counters[product.productId] ??
-                                  0;
-                              return Row(
-                                children: [
-                                  if (counter > 0) ...[
-                                    IconButton(
-                                      icon: const Icon(Icons.remove),
+                          SizedBox(
+                            height: 50,
+                            child: Observer(
+                              builder: (_) {
+                                final counter = widget.productStore
+                                        .counters[product.productId] ??
+                                    0;
+                                return Row(
+                                  children: [
+                                    if (counter > 0) ...[
+                                      IconButton(
+                                        icon: const Icon(Icons.remove),
+                                        onPressed: () {
+                                          widget.productStore.decrementCounter(
+                                            product.productId,
+                                          );
+                                        },
+                                      ),
+                                      Text('$counter'),
+                                    ],
+                                    const SizedBox(width: 4,),
+                                    CustomIconButton(
+                                      icon: Icons.add,
                                       onPressed: () {
-                                        widget.productStore.decrementCounter(
-                                          product.productId,
-                                        );
+                                        widget.productStore
+                                            .incrementCounter(product.productId);
                                       },
                                     ),
-                                    Text('$counter'),
                                   ],
-                                  CustomIconButton(
-                                    icon: Icons.add,
-                                    onPressed: () {
-                                      widget.productStore
-                                          .incrementCounter(product.productId);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
