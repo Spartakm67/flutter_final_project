@@ -28,7 +28,7 @@ class LoadingImageIndicator extends StatelessWidget {
         const Icon(
           Icons.image,
           size: 50,
-          color: Colors.lightGreenAccent,
+          color: Colors.yellowAccent,
         ),
       ],
     );

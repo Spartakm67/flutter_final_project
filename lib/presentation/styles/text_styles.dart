@@ -33,7 +33,7 @@ class TextStyles {
   );
 
   static const TextStyle spanKeyText = TextStyle(
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
     fontSize: 16,
     color: Colors.grey,
   );

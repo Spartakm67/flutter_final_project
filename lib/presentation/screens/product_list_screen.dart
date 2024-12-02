@@ -5,6 +5,7 @@ import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dar
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
@@ -169,12 +170,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               ),
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              // TODO: Implement adding product logic
-                            },
-                          ),
+                          const SizedBox(height: 4,),
+                          CustomIconButton(icon: Icons.add, onPressed: () {
+                            // TODO: Implement adding product logic
+                          },),
+
                         ],
                       ),
                     ],
