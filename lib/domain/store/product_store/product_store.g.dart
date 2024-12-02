@@ -89,6 +89,22 @@ mixin _$ProductStore on ProductStoreBase, Store {
     });
   }
 
+  late final _$countersAtom =
+      Atom(name: 'ProductStoreBase.counters', context: context);
+
+  @override
+  ObservableMap<String, int> get counters {
+    _$countersAtom.reportRead();
+    return super.counters;
+  }
+
+  @override
+  set counters(ObservableMap<String, int> value) {
+    _$countersAtom.reportWrite(value, super.counters, () {
+      super.counters = value;
+    });
+  }
+
   late final _$fetchProductsAsyncAction =
       AsyncAction('ProductStoreBase.fetchProducts', context: context);
 
@@ -98,6 +114,31 @@ mixin _$ProductStore on ProductStoreBase, Store {
         .run(() => super.fetchProducts(categoryProductId));
   }
 
+  late final _$ProductStoreBaseActionController =
+      ActionController(name: 'ProductStoreBase', context: context);
+
+  @override
+  void incrementCounter(String productId) {
+    final _$actionInfo = _$ProductStoreBaseActionController.startAction(
+        name: 'ProductStoreBase.incrementCounter');
+    try {
+      return super.incrementCounter(productId);
+    } finally {
+      _$ProductStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void decrementCounter(String productId) {
+    final _$actionInfo = _$ProductStoreBaseActionController.startAction(
+        name: 'ProductStoreBase.decrementCounter');
+    try {
+      return super.decrementCounter(productId);
+    } finally {
+      _$ProductStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
@@ -105,7 +146,8 @@ products: ${products},
 isLoading: ${isLoading},
 selectedCategoryId: ${selectedCategoryId},
 error: ${error},
-isFetching: ${isFetching}
+isFetching: ${isFetching},
+counters: ${counters}
     ''';
   }
 }

@@ -24,6 +24,9 @@ abstract class ProductStoreBase with Store {
   @observable
   bool isFetching = false;
 
+  @observable
+  ObservableMap<String, int> counters = ObservableMap<String, int>();
+
   @action
   Future<void> fetchProducts(String categoryProductId) async {
     if (isFetching) return;
@@ -35,11 +38,27 @@ abstract class ProductStoreBase with Store {
       final fetchedProducts =
           await _apiService.getProductsByCategory(categoryProductId);
       products = ObservableList.of(fetchedProducts);
+
+      for (final product in products) {
+        counters[product.productId] = 0;
+      }
     } catch (e) {
       error = 'Помилка завантаження продуктів: $e';
     } finally {
       isLoading = false;
       isFetching = false;
+    }
+  }
+
+  @action
+  void incrementCounter(String productId) {
+    counters[productId] = (counters[productId] ?? 0) + 1;
+  }
+
+  @action
+  void decrementCounter(String productId) {
+    if ((counters[productId] ?? 0) > 0) {
+      counters[productId] = counters[productId]! - 1;
     }
   }
 }
