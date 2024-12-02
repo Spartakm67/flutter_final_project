@@ -108,22 +108,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Ціна: ',
-                                    style: TextStyles.habitKeyText,
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        '${(product.price / 100).toStringAsFixed(2)} грн',
-                                    style: TextStyles.authText,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
                                     text: 'Інгредієнти: ',
                                     style: TextStyles.habitKeyText,
                                   ),
@@ -136,77 +120,103 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 8),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Ціна: ',
+                                    style: TextStyles.habitKeyText,
+                                  ),
+                                  TextSpan(
+                                    text:
+                                    '${(product.price / 100).toStringAsFixed(2)} грн',
+                                    style: TextStyles.authText,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Hero(
-                            tag: 'product-${product.productId}',
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                UrlHelper.getFullImageUrl(product.photo),
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return LoadingImageIndicator(
-                                    loadingProgress: loadingProgress,
-                                  );
-                                },
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/default_image.png',
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
+                      const SizedBox(width: 20),
+                      SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Hero(
+                              tag: 'product-${product.productId}',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  UrlHelper.getFullImageUrl(product.photo),
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return LoadingImageIndicator(
+                                      loadingProgress: loadingProgress,
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/default_image.png',
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: Observer(
+                                builder: (_) {
+                                  final counter = widget.productStore
+                                          .counters[product.productId] ??
+                                      0;
+                                  return Row(
+                                    children: [
+                                      if (counter > 0) ...[
+                                        IconButton(
+                                          icon: const Icon(Icons.remove),
+                                          onPressed: () {
+                                            widget.productStore.decrementCounter(
+                                              product.productId,
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                          child: Text('$counter',
+                                            textAlign: TextAlign.end,
+                                            style: const TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      ],
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      CustomIconButton(
+                                        icon: Icons.add,
+                                        onPressed: () {
+                                          widget.productStore.incrementCounter(
+                                              product.productId,);
+                                        },
+                                      ),
+                                    ],
                                   );
                                 },
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          SizedBox(
-                            height: 50,
-                            child: Observer(
-                              builder: (_) {
-                                final counter = widget.productStore
-                                        .counters[product.productId] ??
-                                    0;
-                                return Row(
-                                  children: [
-                                    if (counter > 0) ...[
-                                      IconButton(
-                                        icon: const Icon(Icons.remove),
-                                        onPressed: () {
-                                          widget.productStore.decrementCounter(
-                                            product.productId,
-                                          );
-                                        },
-                                      ),
-                                      Text('$counter'),
-                                    ],
-                                    const SizedBox(width: 4,),
-                                    CustomIconButton(
-                                      icon: Icons.add,
-                                      onPressed: () {
-                                        widget.productStore
-                                            .incrementCounter(product.productId);
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
