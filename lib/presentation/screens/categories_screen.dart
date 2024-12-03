@@ -142,7 +142,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
         scrollStore: _scrollStore,
         scrollController: _scrollController,
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

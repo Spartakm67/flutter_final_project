@@ -130,7 +130,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   ),
                                   TextSpan(
                                     text:
-                                    '${(product.price / 100).toStringAsFixed(2)} грн',
+                                        '${(product.price / 100).toStringAsFixed(2)} грн',
                                     style: TextStyles.authText,
                                   ),
                                 ],
@@ -182,24 +182,36 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           .counters[product.productId] ??
                                       0;
                                   return Row(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      if (counter > 0) ...[
-                                        IconButton(
-                                          icon: const Icon(Icons.remove),
-                                          onPressed: () {
-                                            widget.productStore.decrementCounter(
-                                              product.productId,
-                                            );
-                                          },
+                                      Opacity(
+                                        opacity: counter > 0 ? 1.0 : 0.0,
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.remove),
+                                              onPressed: counter > 0
+                                                  ? () {
+                                                      widget.productStore
+                                                          .decrementCounter(
+                                                        product.productId,
+                                                      );
+                                                    }
+                                                  : null,
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                              child: Text(
+                                                '$counter',
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          width: 20,
-                                          child: Text('$counter',
-                                            textAlign: TextAlign.end,
-                                            style: const TextStyle(fontSize: 16),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                       const SizedBox(
                                         width: 4,
                                       ),
@@ -207,7 +219,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                         icon: Icons.add,
                                         onPressed: () {
                                           widget.productStore.incrementCounter(
-                                              product.productId,);
+                                            product.productId,
+                                          );
                                         },
                                       ),
                                     ],
