@@ -6,6 +6,7 @@ import 'package:flutter_final_project/domain/store/product_store/product_store.d
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/bottom_cart_bar.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
