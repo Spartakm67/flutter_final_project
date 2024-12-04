@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class BottomCartBar extends StatelessWidget {
-  final int totalItems; // Загальна кількість товарів
-  final double totalPrice; // Загальна сума
-  final VoidCallback onOrder; // Callback для кнопки "замовити"
+  final int totalItems;
+  final double totalPrice;
+  final VoidCallback onOrder;
 
   const BottomCartBar({
     super.key,
@@ -22,7 +22,7 @@ class BottomCartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: totalItems > 0 ? null : 0.0, // Висота віджета залежить від наявності товарів
+      height: totalItems > 0 ? null : 0.0,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       color: Colors.white,
       child: totalItems > 0
@@ -60,7 +60,7 @@ class BottomCartBar extends StatelessWidget {
           ),
         ],
       )
-          : const SizedBox.shrink(), // Пустий віджет, якщо товарів немає
+          : const SizedBox.shrink(),
     );
   }
 }

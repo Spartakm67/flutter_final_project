@@ -75,176 +75,211 @@ class _ProductListScreenState extends State<ProductListScreen> {
           if (filteredProducts.isEmpty) {
             return const Center(child: Text('No products found'));
           }
-          return ListView.builder(
-            controller: _scrollController,
-            padding: const EdgeInsets.all(8.0),
-            itemCount: filteredProducts.length,
-            itemBuilder: (_, index) {
-              final product = filteredProducts[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 2.0),
-                elevation: 4.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 2.0,
-                    horizontal: 12.0,
-                  ),
-                  title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              product.productName,
-                              style: TextStyles.categoriesText,
-                              // style: Theme.of(context).textTheme.headline2,
-                            ),
-                            const SizedBox(height: 4),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Інгредієнти: ',
-                                    style: TextStyles.habitKeyText,
-                                  ),
-                                  TextSpan(
-                                    text: product.ingredients
-                                        .map((i) => i.name)
-                                        .join(", "),
-                                    style: TextStyles.spanKeyText,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Ціна: ',
-                                    style: TextStyles.habitKeyText,
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        '${(product.price / 100).toStringAsFixed(2)} грн',
-                                    style: TextStyles.authText,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+          return Stack(
+            children: [
+              ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.all(8.0),
+                itemCount: filteredProducts.length,
+                itemBuilder: (_, index) {
+                  final product = filteredProducts[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 2.0),
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 2.0,
+                        horizontal: 12.0,
                       ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Hero(
-                              tag: 'product-${product.productId}',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  UrlHelper.getFullImageUrl(product.photo),
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return LoadingImageIndicator(
-                                      loadingProgress: loadingProgress,
-                                    );
-                                  },
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'assets/images/default_image.png',
+                      title: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product.productName,
+                                  style: TextStyles.categoriesText,
+                                  // style: Theme.of(context).textTheme.headline2,
+                                ),
+                                const SizedBox(height: 4),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Інгредієнти: ',
+                                        style: TextStyles.habitKeyText,
+                                      ),
+                                      TextSpan(
+                                        text: product.ingredients
+                                            .map((i) => i.name)
+                                            .join(", "),
+                                        style: TextStyles.spanKeyText,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Ціна: ',
+                                        style: TextStyles.habitKeyText,
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '${(product.price / 100).toStringAsFixed(2)} грн',
+                                        style: TextStyles.authText,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          SizedBox(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Hero(
+                                  tag: 'product-${product.productId}',
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      UrlHelper.getFullImageUrl(product.photo),
                                       width: 100,
                                       height: 100,
                                       fit: BoxFit.cover,
-                                    );
-                                  },
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return LoadingImageIndicator(
+                                          loadingProgress: loadingProgress,
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/default_image.png',
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            SizedBox(
-                              height: 50,
-                              child: Observer(
-                                builder: (_) {
-                                  final counter = widget.productStore
-                                          .counters[product.productId] ??
-                                      0;
-                                  return Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Opacity(
-                                        opacity: counter > 0 ? 1.0 : 0.0,
-                                        child: Row(
-                                          children: [
-                                            IconButton(
-                                              icon: const Icon(Icons.remove),
-                                              onPressed: counter > 0
-                                                  ? () {
-                                                      widget.productStore
-                                                          .decrementCounter(
-                                                        product.productId,
-                                                      );
-                                                    }
-                                                  : null,
-                                            ),
-                                            SizedBox(
-                                              width: 20,
-                                              child: Text(
-                                                '$counter',
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                  child: Observer(
+                                    builder: (_) {
+                                      final counter = widget.productStore
+                                              .counters[product.productId] ??
+                                          0;
+                                      return Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Opacity(
+                                            opacity: counter > 0 ? 1.0 : 0.0,
+                                            child: Row(
+                                              children: [
+                                                IconButton(
+                                                  icon:
+                                                      const Icon(Icons.remove),
+                                                  onPressed: counter > 0
+                                                      ? () {
+                                                          widget.productStore
+                                                              .decrementCounter(
+                                                            product.productId,
+                                                          );
+                                                        }
+                                                      : null,
                                                 ),
-                                              ),
+                                                SizedBox(
+                                                  width: 20,
+                                                  child: Text(
+                                                    '$counter',
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      CustomIconButton(
-                                        icon: Icons.add,
-                                        onPressed: () {
-                                          widget.productStore.incrementCounter(
-                                            product.productId,
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
+                                          ),
+                                          const SizedBox(
+                                            width: 4,
+                                          ),
+                                          CustomIconButton(
+                                            icon: Icons.add,
+                                            onPressed: () {
+                                              widget.productStore
+                                                  .incrementCounter(
+                                                product.productId,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProductDetailScreen(product: product),
-                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                ProductDetailScreen(product: product),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Observer(
+                  builder: (_) {
+                    final totalItems = widget.productStore.totalItems;
+                    final totalPrice = widget.productStore.totalPrice;
+                    return BottomCartBar(
+                      totalItems: totalItems,
+                      totalPrice: totalPrice,
+                      onOrder: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (_) =>
+                        //
+                        //         CheckoutScreen(),
+                        //   ),
+                        // );
+                      },
                     );
                   },
                 ),
-              );
-            },
+              ),
+            ],
           );
         },
       ),

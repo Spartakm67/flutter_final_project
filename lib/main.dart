@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('counters');
+
   await dotenv.load(fileName: '.env');
   runApp(MyApp());
 }

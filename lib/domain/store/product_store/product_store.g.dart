@@ -9,6 +9,21 @@ part of 'product_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ProductStore on ProductStoreBase, Store {
+  Computed<int>? _$totalItemsComputed;
+
+  @override
+  int get totalItems =>
+      (_$totalItemsComputed ??= Computed<int>(() => super.totalItems,
+              name: 'ProductStoreBase.totalItems'))
+          .value;
+  Computed<double>? _$totalPriceComputed;
+
+  @override
+  double get totalPrice =>
+      (_$totalPriceComputed ??= Computed<double>(() => super.totalPrice,
+              name: 'ProductStoreBase.totalPrice'))
+          .value;
+
   late final _$productsAtom =
       Atom(name: 'ProductStoreBase.products', context: context);
 
@@ -105,6 +120,23 @@ mixin _$ProductStore on ProductStoreBase, Store {
     });
   }
 
+  late final _$initHiveAsyncAction =
+      AsyncAction('ProductStoreBase.initHive', context: context);
+
+  @override
+  Future<void> initHive() {
+    return _$initHiveAsyncAction.run(() => super.initHive());
+  }
+
+  late final _$saveCountersToHiveAsyncAction =
+      AsyncAction('ProductStoreBase.saveCountersToHive', context: context);
+
+  @override
+  Future<void> saveCountersToHive() {
+    return _$saveCountersToHiveAsyncAction
+        .run(() => super.saveCountersToHive());
+  }
+
   late final _$fetchProductsAsyncAction =
       AsyncAction('ProductStoreBase.fetchProducts', context: context);
 
@@ -114,8 +146,27 @@ mixin _$ProductStore on ProductStoreBase, Store {
         .run(() => super.fetchProducts(categoryProductId));
   }
 
+  late final _$clearCountersAsyncAction =
+      AsyncAction('ProductStoreBase.clearCounters', context: context);
+
+  @override
+  Future<void> clearCounters() {
+    return _$clearCountersAsyncAction.run(() => super.clearCounters());
+  }
+
   late final _$ProductStoreBaseActionController =
       ActionController(name: 'ProductStoreBase', context: context);
+
+  @override
+  void loadCountersFromHive() {
+    final _$actionInfo = _$ProductStoreBaseActionController.startAction(
+        name: 'ProductStoreBase.loadCountersFromHive');
+    try {
+      return super.loadCountersFromHive();
+    } finally {
+      _$ProductStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void incrementCounter(String productId) {
@@ -147,7 +198,9 @@ isLoading: ${isLoading},
 selectedCategoryId: ${selectedCategoryId},
 error: ${error},
 isFetching: ${isFetching},
-counters: ${counters}
+counters: ${counters},
+totalItems: ${totalItems},
+totalPrice: ${totalPrice}
     ''';
   }
 }
