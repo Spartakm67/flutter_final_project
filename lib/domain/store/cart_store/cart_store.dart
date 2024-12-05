@@ -18,6 +18,9 @@ abstract class CartStoreBase with Store {
   ObservableList<Product> get products => productStore.products;
 
   @observable
+  double totalCombinedOrderPrice = 0.0;
+
+  @observable
   late Box<Map> hiveBox;
 
   @computed
@@ -25,19 +28,28 @@ abstract class CartStoreBase with Store {
 
   @computed
   double get totalPrice {
-    return counters.entries.fold(
+    final total = counters.entries.fold(
       0.0,
       (sum, entry) {
         final productPrice = _getProductPrice(entry.key);
-        print('ProductPrice: $productPrice');
-        print('Entry.value: ${entry.value}');
-        final totalOrderPrice = sum + (productPrice * entry.value) / 100;
-        return totalOrderPrice;
+        final subtotal = (productPrice * entry.value);
+        print(
+            'Product ID: ${entry.key}, Quantity: ${entry.value}, Price: $productPrice, Subtotal: ${productPrice * entry.value}');
+        return sum + subtotal;
       },
     );
+
+    print('Загальна сума всіх замовлень: $total');
+    return total;
   }
 
-    double _getProductPrice(String productId) {
+  @action
+  void updateTotalCombinedOrderPrice(double categoryTotal) {
+    totalCombinedOrderPrice += categoryTotal;
+    print('Загальна сума всіх категорій: $totalCombinedOrderPrice');
+  }
+
+  double _getProductPrice(String productId) {
     final product = productStore.products.firstWhere(
       (p) => p.productId == productId,
       orElse: () => Product(
@@ -53,7 +65,7 @@ abstract class CartStoreBase with Store {
         ingredients: [],
       ),
     );
-    return product.price;
+    return product.price/100;
   }
 
   @action
@@ -68,6 +80,14 @@ abstract class CartStoreBase with Store {
     counters = ObservableMap.of(
       storedItems.map((key, value) => MapEntry(key, value as int)),
     );
+
+    totalCombinedOrderPrice = counters.entries.fold(
+      0.0,
+      (sum, entry) {
+        final productPrice = _getProductPrice(entry.key);
+        return sum + (productPrice * entry.value);
+      },
+    );
   }
 
   @action
@@ -81,7 +101,7 @@ abstract class CartStoreBase with Store {
   @action
   void incrementCounter(String productId) {
     counters[productId] = (counters[productId] ?? 0) + 1;
-
+    totalCombinedOrderPrice += _getProductPrice(productId);
     saveCartToHive();
   }
 
@@ -89,6 +109,7 @@ abstract class CartStoreBase with Store {
   void decrementCounter(String productId) {
     if ((counters[productId] ?? 0) > 0) {
       counters[productId] = counters[productId]! - 1;
+      totalCombinedOrderPrice -= _getProductPrice(productId);
       saveCartToHive();
     }
   }
@@ -115,5 +136,10 @@ abstract class CartStoreBase with Store {
   Future<void> resetCart() async {
     counters.clear();
     await hiveBox.clear();
+  }
+
+  @action
+  void resetTotalCombinedOrderPrice() {
+    totalCombinedOrderPrice = 0.0;
   }
 }

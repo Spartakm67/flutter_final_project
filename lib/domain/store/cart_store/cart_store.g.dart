@@ -47,6 +47,23 @@ mixin _$CartStore on CartStoreBase, Store {
     });
   }
 
+  late final _$totalCombinedOrderPriceAtom =
+      Atom(name: 'CartStoreBase.totalCombinedOrderPrice', context: context);
+
+  @override
+  double get totalCombinedOrderPrice {
+    _$totalCombinedOrderPriceAtom.reportRead();
+    return super.totalCombinedOrderPrice;
+  }
+
+  @override
+  set totalCombinedOrderPrice(double value) {
+    _$totalCombinedOrderPriceAtom
+        .reportWrite(value, super.totalCombinedOrderPrice, () {
+      super.totalCombinedOrderPrice = value;
+    });
+  }
+
   late final _$hiveBoxAtom =
       Atom(name: 'CartStoreBase.hiveBox', context: context);
 
@@ -103,6 +120,17 @@ mixin _$CartStore on CartStoreBase, Store {
       ActionController(name: 'CartStoreBase', context: context);
 
   @override
+  void updateTotalCombinedOrderPrice(double categoryTotal) {
+    final _$actionInfo = _$CartStoreBaseActionController.startAction(
+        name: 'CartStoreBase.updateTotalCombinedOrderPrice');
+    try {
+      return super.updateTotalCombinedOrderPrice(categoryTotal);
+    } finally {
+      _$CartStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void loadCartFromHive() {
     final _$actionInfo = _$CartStoreBaseActionController.startAction(
         name: 'CartStoreBase.loadCartFromHive');
@@ -136,9 +164,21 @@ mixin _$CartStore on CartStoreBase, Store {
   }
 
   @override
+  void resetTotalCombinedOrderPrice() {
+    final _$actionInfo = _$CartStoreBaseActionController.startAction(
+        name: 'CartStoreBase.resetTotalCombinedOrderPrice');
+    try {
+      return super.resetTotalCombinedOrderPrice();
+    } finally {
+      _$CartStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 counters: ${counters},
+totalCombinedOrderPrice: ${totalCombinedOrderPrice},
 hiveBox: ${hiveBox},
 products: ${products},
 totalItems: ${totalItems},

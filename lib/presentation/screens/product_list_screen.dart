@@ -266,7 +266,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 child: Observer(
                   builder: (_) {
                     final totalItems = cartStore.totalItems;
-                    final totalPrice = cartStore.totalPrice;
+                    final totalPrice = cartStore.totalCombinedOrderPrice;
                     return BottomCartBar(
                       totalItems: totalItems,
                       totalPrice: totalPrice,
