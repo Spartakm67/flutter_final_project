@@ -16,16 +16,18 @@ class ScrollToTopButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        return AnimatedOpacity(
-          opacity: scrollStore.showScrollToTopButton ? 1.0 : 0.0,
+       return AnimatedOpacity(
+          opacity: scrollStore.isButtonVisible ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 300),
           child: FloatingActionButton(
-            onPressed: () {
-              scrollController.animateTo(
+            onPressed: () async {
+              await scrollController.animateTo(
                 0.0,
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
               );
+
+              scrollStore.resetScroll();
             },
             backgroundColor: Colors.black.withOpacity(0.5),
             child: const Icon(Icons.arrow_upward, color: Colors.white),

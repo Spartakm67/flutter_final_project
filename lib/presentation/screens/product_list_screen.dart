@@ -3,12 +3,14 @@ import 'package:flutter_final_project/presentation/screens/product_detail_screen
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
+import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/bottom_cart_bar.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatefulWidget {
   final ProductStore productStore;
@@ -29,12 +31,14 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  final ScrollStore _scrollStore = ScrollStore();
-  final ScrollController _scrollController = ScrollController();
+  late ScrollController _scrollController;
+  late ScrollStore _scrollStore;
 
   @override
   void initState() {
     super.initState();
+    _scrollStore = ScrollStore();
+    _scrollController = ScrollController();
     _scrollController.addListener(() {
       _scrollStore.updateScrollPosition(_scrollController.offset);
     });
@@ -48,6 +52,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cartStore = Provider.of<CartStore>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -184,7 +189,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   height: 50,
                                   child: Observer(
                                     builder: (_) {
-                                      final counter = widget.productStore
+                                      final counter = cartStore
                                               .counters[product.productId] ??
                                           0;
                                       return Row(
@@ -199,7 +204,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                       const Icon(Icons.remove),
                                                   onPressed: counter > 0
                                                       ? () {
-                                                          widget.productStore
+                                                          cartStore
                                                               .decrementCounter(
                                                             product.productId,
                                                           );
@@ -225,7 +230,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           CustomIconButton(
                                             icon: Icons.add,
                                             onPressed: () {
-                                              widget.productStore
+                                              cartStore
                                                   .incrementCounter(
                                                 product.productId,
                                               );
@@ -260,8 +265,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 right: 0,
                 child: Observer(
                   builder: (_) {
-                    final totalItems = widget.productStore.totalItems;
-                    final totalPrice = widget.productStore.totalPrice;
+                    final totalItems = cartStore.totalItems;
+                    final totalPrice = cartStore.totalPrice;
                     return BottomCartBar(
                       totalItems: totalItems,
                       totalPrice: totalPrice,
@@ -283,13 +288,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
           );
         },
       ),
-      floatingActionButton: Observer(
-        builder: (_) {
-          return ScrollToTopButton(
-            scrollStore: _scrollStore,
-            scrollController: _scrollController,
-          );
-        },
+      floatingActionButton: ScrollToTopButton(
+        scrollStore: _scrollStore,
+        scrollController: _scrollController,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

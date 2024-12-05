@@ -4,8 +4,8 @@ import 'package:flutter_final_project/domain/store/categories_store/categories_s
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
-import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -16,18 +16,23 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class CategoriesScreenState extends State<CategoriesScreen> {
-  final ProductStore productStore = ProductStore();
+  late ProductStore productStore;
+  // final ProductStore productStore = ProductStore();
   final CategoriesStore _categoriesStore = CategoriesStore();
-  final ScrollStore _scrollStore = ScrollStore();
-  final ScrollController _scrollController = ScrollController();
+  late ScrollController _scrollController;
+  late ScrollStore _scrollStore;
 
   @override
   void initState() {
     super.initState();
     _categoriesStore.fetchCategories();
-
+    _scrollStore = ScrollStore();
+    _scrollController = ScrollController();
     _scrollController.addListener(() {
       _scrollStore.updateScrollPosition(_scrollController.offset);
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      productStore = Provider.of<ProductStore>(context, listen: false);
     });
   }
 
@@ -138,11 +143,6 @@ class CategoriesScreenState extends State<CategoriesScreen> {
           );
         },
       ),
-      floatingActionButton: ScrollToTopButton(
-        scrollStore: _scrollStore,
-        scrollController: _scrollController,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
