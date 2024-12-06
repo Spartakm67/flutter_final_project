@@ -113,6 +113,15 @@ mixin _$ProductStore on ProductStoreBase, Store {
         .run(() => super.fetchProducts(categoryProductId));
   }
 
+  late final _$loadProductsAsyncAction =
+      AsyncAction('ProductStoreBase.loadProducts', context: context);
+
+  @override
+  Future<void> loadProducts({String? categoryProductId}) {
+    return _$loadProductsAsyncAction
+        .run(() => super.loadProducts(categoryProductId: categoryProductId));
+  }
+
   @override
   String toString() {
     return '''

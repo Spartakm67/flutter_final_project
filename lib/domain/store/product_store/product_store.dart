@@ -35,13 +35,31 @@ abstract class ProductStoreBase with Store {
       final fetchedProducts =
           await _apiService.getProductsByCategory(categoryProductId);
       products = ObservableList.of(fetchedProducts);
-      print(products);
-      } catch (e) {
+    } catch (e) {
       error = 'Помилка завантаження продуктів: $e';
     } finally {
       isLoading = false;
       isFetching = false;
     }
+  }
+
+  @action
+  Future<void> loadProducts({String? categoryProductId}) async {
+    isLoading = true;
+    error = null;
+
+    if (categoryProductId != null) {
+      await fetchProducts(categoryProductId);
+    } else {
+      try {
+        final allProducts = await _apiService.getProductsByCategory('');
+        products = ObservableList.of(allProducts);
+        print('LoadProducts ............$products');
+      } catch (e) {
+        error = 'Помилка завантаження всіх продуктів: $e';
+      }
+    }
+    isLoading = false;
   }
 
   @computed

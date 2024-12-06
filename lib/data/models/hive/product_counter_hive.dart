@@ -16,6 +16,7 @@ class ProductCounterHive extends HiveObject {
   @HiveField(3)
   String? photo;
 
+
   ProductCounterHive({
     required this.productId,
     required this.productName,

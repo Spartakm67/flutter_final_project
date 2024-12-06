@@ -9,13 +9,16 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await dotenv.load(fileName: '.env');
   await Hive.initFlutter();
+
+  // final cartBox = await Hive.openBox<Map>('cart');
+  // print('Дані перед завантаженням: ${cartBox.get('items')}');
+
   final productStore = ProductStore();
   final cartStore = CartStore(productStore);
   await cartStore.initHive();
-
-  await dotenv.load(fileName: '.env');
+  print('Кошик ініціалізовано. Загальна сума: ${cartStore.totalCombinedOrderPrice}');
 
   runApp(
     MultiProvider(

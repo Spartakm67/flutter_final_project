@@ -92,6 +92,14 @@ mixin _$CartStore on CartStoreBase, Store {
     return _$initHiveAsyncAction.run(() => super.initHive());
   }
 
+  late final _$loadCartFromHiveAsyncAction =
+      AsyncAction('CartStoreBase.loadCartFromHive', context: context);
+
+  @override
+  Future<void> loadCartFromHive() {
+    return _$loadCartFromHiveAsyncAction.run(() => super.loadCartFromHive());
+  }
+
   late final _$saveCartToHiveAsyncAction =
       AsyncAction('CartStoreBase.saveCartToHive', context: context);
 
@@ -120,28 +128,6 @@ mixin _$CartStore on CartStoreBase, Store {
       ActionController(name: 'CartStoreBase', context: context);
 
   @override
-  void updateTotalCombinedOrderPrice(double categoryTotal) {
-    final _$actionInfo = _$CartStoreBaseActionController.startAction(
-        name: 'CartStoreBase.updateTotalCombinedOrderPrice');
-    try {
-      return super.updateTotalCombinedOrderPrice(categoryTotal);
-    } finally {
-      _$CartStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void loadCartFromHive() {
-    final _$actionInfo = _$CartStoreBaseActionController.startAction(
-        name: 'CartStoreBase.loadCartFromHive');
-    try {
-      return super.loadCartFromHive();
-    } finally {
-      _$CartStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void incrementCounter(String productId) {
     final _$actionInfo = _$CartStoreBaseActionController.startAction(
         name: 'CartStoreBase.incrementCounter');
@@ -158,6 +144,17 @@ mixin _$CartStore on CartStoreBase, Store {
         name: 'CartStoreBase.decrementCounter');
     try {
       return super.decrementCounter(productId);
+    } finally {
+      _$CartStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updateTotalCombinedOrderPrice(double categoryTotal) {
+    final _$actionInfo = _$CartStoreBaseActionController.startAction(
+        name: 'CartStoreBase.updateTotalCombinedOrderPrice');
+    try {
+      return super.updateTotalCombinedOrderPrice(categoryTotal);
     } finally {
       _$CartStoreBaseActionController.endAction(_$actionInfo);
     }

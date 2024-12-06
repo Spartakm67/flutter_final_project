@@ -26,48 +26,6 @@ abstract class CartStoreBase with Store {
   @computed
   int get totalItems => counters.values.fold(0, (prev, next) => prev + next);
 
-  @computed
-  double get totalPrice {
-    final total = counters.entries.fold(
-      0.0,
-      (sum, entry) {
-        final productPrice = _getProductPrice(entry.key);
-        final subtotal = (productPrice * entry.value);
-        print(
-            'Product ID: ${entry.key}, Quantity: ${entry.value}, Price: $productPrice, Subtotal: ${productPrice * entry.value}');
-        return sum + subtotal;
-      },
-    );
-
-    print('Загальна сума всіх замовлень: $total');
-    return total;
-  }
-
-  @action
-  void updateTotalCombinedOrderPrice(double categoryTotal) {
-    totalCombinedOrderPrice += categoryTotal;
-    print('Загальна сума всіх категорій: $totalCombinedOrderPrice');
-  }
-
-  double _getProductPrice(String productId) {
-    final product = productStore.products.firstWhere(
-      (p) => p.productId == productId,
-      orElse: () => Product(
-        categoryProductId: '',
-        categoryName: '',
-        productId: productId,
-        productName: '',
-        price: 0.0,
-        cookingTime: 0,
-        photo: '',
-        photoOrigin: '',
-        description: '',
-        ingredients: [],
-      ),
-    );
-    return product.price/100;
-  }
-
   @action
   Future<void> initHive() async {
     hiveBox = await Hive.openBox<Map>('cart');
@@ -75,19 +33,17 @@ abstract class CartStoreBase with Store {
   }
 
   @action
-  void loadCartFromHive() {
+  Future<void> loadCartFromHive() async {
     final storedItems = hiveBox.get('items') ?? {};
+    print('Завантажені з Hive дані: $storedItems');
+
     counters = ObservableMap.of(
       storedItems.map((key, value) => MapEntry(key, value as int)),
     );
 
-    totalCombinedOrderPrice = counters.entries.fold(
-      0.0,
-      (sum, entry) {
-        final productPrice = _getProductPrice(entry.key);
-        return sum + (productPrice * entry.value);
-      },
-    );
+    final totalPriceMap = hiveBox.get('totalPrice');
+    totalCombinedOrderPrice = totalPriceMap?['value'] as double? ?? 0.0;
+    print('Загальна сума після завантаження: $totalCombinedOrderPrice');
   }
 
   @action
@@ -96,6 +52,7 @@ abstract class CartStoreBase with Store {
       'items',
       counters.map((key, value) => MapEntry(key, value)),
     );
+    await hiveBox.put('totalPrice', {'value': totalCombinedOrderPrice});
   }
 
   @action
@@ -118,6 +75,43 @@ abstract class CartStoreBase with Store {
   Future<void> clearCart() async {
     counters.clear();
     await hiveBox.delete('items');
+    await hiveBox.delete('totalPrice');
+  }
+
+  double _getProductPrice(String productId) {
+    final product = productStore.products.firstWhere(
+      (p) => p.productId == productId,
+      orElse: () => Product(
+        categoryProductId: '',
+        categoryName: '',
+        productId: productId,
+        productName: '',
+        price: 0.0,
+        cookingTime: 0,
+        photo: '',
+        photoOrigin: '',
+        description: '',
+        ingredients: [],
+      ),
+    );
+    return product.price / 100;
+  }
+
+  @computed
+  double get totalPrice {
+    final total = counters.entries.fold(
+      0.0,
+          (sum, entry) {
+        final productPrice = _getProductPrice(entry.key);
+        return sum + (productPrice * entry.value);
+      },
+    );
+    return total;
+  }
+
+  @action
+  void updateTotalCombinedOrderPrice(double categoryTotal) {
+    totalCombinedOrderPrice += categoryTotal;
   }
 
   bool isItemInCart(String productId) {

@@ -18,6 +18,9 @@ class ProductApiServices {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final List productsJson = data['response'] ?? [];
+
+      print('Отримані дані продуктів: $productsJson');
+
       return productsJson.map((json) => Product.fromJson(json)).toList();
     } else {
       // print('Failed to load products. Status code: ${response.statusCode}, body: ${response.body}');
