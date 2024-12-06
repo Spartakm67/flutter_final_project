@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
+import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
@@ -17,7 +18,6 @@ class CategoriesScreen extends StatefulWidget {
 
 class CategoriesScreenState extends State<CategoriesScreen> {
   late ProductStore productStore;
-  // final ProductStore productStore = ProductStore();
   final CategoriesStore _categoriesStore = CategoriesStore();
   late ScrollController _scrollController;
   late ScrollStore _scrollStore;
@@ -44,9 +44,44 @@ class CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cartStore = Provider.of<CartStore>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Категорії товарів'),
+        actions: [
+          Observer(
+            builder: (_) {
+              return cartStore.totalItems > 0
+                  ? GestureDetector(
+                onTap: () {
+                  print("Перехід до корзини");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.shopping_cart,
+                        size: 30,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        cartStore.totalItems.toString(),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+                  : const SizedBox();
+            },
+          ),
+        ],
       ),
       body: Observer(
         builder: (context) {

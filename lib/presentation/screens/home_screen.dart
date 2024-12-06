@@ -272,8 +272,7 @@ class HomeScreenState extends State<HomeScreen>
                   if (cartStore.totalItems > 0)
                     GestureDetector(
                       onTap: () {
-                        // Закладено логіку для переходу на сторінку корзини
-                        print("Перехід до корзини");
+                         print("Перехід до корзини");
                       },
                       child: Row(
                         children: [

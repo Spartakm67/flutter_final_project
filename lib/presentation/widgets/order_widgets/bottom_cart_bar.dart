@@ -24,29 +24,29 @@ class BottomCartBar extends StatelessWidget {
       duration: const Duration(milliseconds: 300),
       height: totalItems > 0 ? null : 0.0,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Colors.white,
+      color: Colors.black.withOpacity(0.8),
       child: totalItems > 0
           ? Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              const Icon(Icons.shopping_cart, size: 24),
+              const Icon(Icons.shopping_cart, size: 24, color: Colors.white,),
               const SizedBox(width: 8),
               Text(
                 "$totalItems",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               const SizedBox(width: 4),
               Text(
                 _getItemText(totalItems),
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 22, color: Colors.white),
               ),
             ],
           ),
           Text(
             "${totalPrice.toStringAsFixed(0)} грн",
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           ElevatedButton(
             onPressed: onOrder,
@@ -55,7 +55,7 @@ class BottomCartBar extends StatelessWidget {
             ),
             child: const Text(
               "Замовити >",
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 20, color: Colors.black),
             ),
           ),
         ],
