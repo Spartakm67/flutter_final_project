@@ -45,7 +45,7 @@ class BottomCartBar extends StatelessWidget {
             ],
           ),
           Text(
-            "${totalPrice.toStringAsFixed(2)} грн",
+            "${totalPrice.toStringAsFixed(0)} грн",
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           ElevatedButton(

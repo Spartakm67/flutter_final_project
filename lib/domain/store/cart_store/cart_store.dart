@@ -35,7 +35,6 @@ abstract class CartStoreBase with Store {
   @action
   Future<void> loadCartFromHive() async {
     final storedItems = hiveBox.get('items') ?? {};
-    print('Завантажені з Hive дані: $storedItems');
 
     counters = ObservableMap.of(
       storedItems.map((key, value) => MapEntry(key, value as int)),
@@ -43,7 +42,6 @@ abstract class CartStoreBase with Store {
 
     final totalPriceMap = hiveBox.get('totalPrice');
     totalCombinedOrderPrice = totalPriceMap?['value'] as double? ?? 0.0;
-    print('Загальна сума після завантаження: $totalCombinedOrderPrice');
   }
 
   @action

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
+import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final HomeScreenStore store;
@@ -50,6 +52,7 @@ class HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final store = widget.store;
+    final cartStore = Provider.of<CartStore>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -264,18 +267,47 @@ class HomeScreenState extends State<HomeScreen>
             Positioned(
               top: MediaQuery.of(context).padding.top + 8,
               right: 8,
-              child: HomeButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const CategoriesScreen();
+              child: Row(
+                children: [
+                  if (cartStore.totalItems > 0)
+                    GestureDetector(
+                      onTap: () {
+                        // Закладено логіку для переходу на сторінку корзини
+                        print("Перехід до корзини");
                       },
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.shopping_cart,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(cartStore.totalItems.toString(),
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                },
-                text: 'Меню',
+                  const SizedBox(width: 20),
+                  HomeButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const CategoriesScreen();
+                          },
+                        ),
+                      );
+                    },
+                    text: 'Меню',
+                  ),
+                ],
               ),
             ),
           ],

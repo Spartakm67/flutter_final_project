@@ -12,13 +12,9 @@ void main() async {
   await dotenv.load(fileName: '.env');
   await Hive.initFlutter();
 
-  // final cartBox = await Hive.openBox<Map>('cart');
-  // print('Дані перед завантаженням: ${cartBox.get('items')}');
-
   final productStore = ProductStore();
   final cartStore = CartStore(productStore);
   await cartStore.initHive();
-  print('Кошик ініціалізовано. Загальна сума: ${cartStore.totalCombinedOrderPrice}');
 
   runApp(
     MultiProvider(

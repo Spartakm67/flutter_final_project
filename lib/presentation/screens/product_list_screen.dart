@@ -138,7 +138,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       ),
                                       TextSpan(
                                         text:
-                                            '${(product.price / 100).toStringAsFixed(2)} грн',
+                                            '${(product.price / 100).toStringAsFixed(0)} грн',
                                         style: TextStyles.authText,
                                       ),
                                     ],
@@ -260,7 +260,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 },
               ),
               Positioned(
-                bottom: 0,
+                bottom: 70,
                 left: 0,
                 right: 0,
                 child: Observer(
