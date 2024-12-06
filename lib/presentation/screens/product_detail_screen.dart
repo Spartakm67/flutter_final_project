@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/data/models/poster/product.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
+import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
-import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -14,6 +14,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartStore = Provider.of<CartStore>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: Text(product.productName)),
       body: SingleChildScrollView(
@@ -36,10 +37,11 @@ class ProductDetailScreen extends StatelessWidget {
                         width: 200,
                         height: 200,
                         fit: BoxFit.cover,
-                        loadingBuilder:
-                            (context, child, loadingProgress) {
+                        loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
-                          return LoadingImageIndicator(loadingProgress: loadingProgress);
+                          return LoadingImageIndicator(
+                            loadingProgress: loadingProgress,
+                          );
                         },
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -58,9 +60,40 @@ class ProductDetailScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(product.productName),
             const SizedBox(height: 16),
-            Text('Ціна: ${(product.price / 100).toStringAsFixed(2)} грн\n'),
+            Text('Ціна: ${(product.price / 100).toStringAsFixed(0)} грн\n'),
             const SizedBox(height: 16),
-            Text('Інгредієнти: ${product.ingredients.map((i) => i.name).join(", ")}',),
+            Text(
+              'Інгредієнти: ${product.ingredients.map((i) => i.name).join(", ")}',
+            ),
+            const SizedBox(height: 32),
+            Center(
+              child: Observer(
+                builder: (_) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      cartStore.incrementCounter(
+                        product.productId,
+                      );
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      backgroundColor: Colors.black.withOpacity(0.5),
+                    ),
+                    child: Text(
+                      'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
+                      style: const TextStyle(fontSize: 18, color: Colors.white,),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
