@@ -52,10 +52,11 @@ class BottomCartBar extends StatelessWidget {
             onPressed: onOrder,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              backgroundColor: Colors.black.withOpacity(0.1),
             ),
             child: const Text(
               "Замовити >",
-              style: TextStyle(fontSize: 20, color: Colors.black),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
         ],
