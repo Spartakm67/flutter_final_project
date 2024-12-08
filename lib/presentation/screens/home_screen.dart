@@ -6,6 +6,7 @@ import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
+import 'package:flutter_final_project/presentation/screens/auth/auth_email_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -188,7 +189,14 @@ class HomeScreenState extends State<HomeScreen>
                                 'label': 'Електронна пошта',
                                 'iconStyle': TextStyles.authIconStyle(Colors.orange),
                                 'onPressed': () {
-                                  print('Авторизація через електронну пошту');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const AuthEmailScreen();
+                                      },
+                                    ),
+                                  );
                                 },
                               },
                             ].map(

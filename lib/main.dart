@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
+import 'package:flutter_final_project/domain/store/firebase_store/firebase_store.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -10,8 +11,10 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
-  await Hive.initFlutter();
+  final firebaseStore = FirebaseStore();
+  await firebaseStore.initialize();
 
+  await Hive.initFlutter();
   final productStore = ProductStore();
   final cartStore = CartStore(productStore);
   await cartStore.initHive();

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "67565756870",
+    "project_id": "pancake-workshop-app",
+    "storage_bucket": "pancake-workshop-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67565756870:android:cf9603b919097b659d92c7",
+        "android_client_info": {
+          "package_name": "com.example.flutter_final_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCkNITQDkxmHxjhDwON8eBPgL4M4DIAhQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
