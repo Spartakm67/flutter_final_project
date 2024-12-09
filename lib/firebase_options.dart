@@ -41,52 +41,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // static const FirebaseOptions web = FirebaseOptions(
-  //   apiKey: 'AIzaSyC_4f3BTgYuSGmxnjW3asTYbDAyGCx_PpY',
-  //   appId: '1:67565756870:web:6cea2631263dbc099d92c7',
-  //   messagingSenderId: '67565756870',
-  //   projectId: 'pancake-workshop-app',
-  //   authDomain: 'pancake-workshop-app.firebaseapp.com',
-  //   storageBucket: 'pancake-workshop-app.firebasestorage.app',
-  //   measurementId: 'G-YZBD2HWD7T',
-  // );
-  //
-  // static const FirebaseOptions android = FirebaseOptions(
-  //   apiKey: 'AIzaSyCCkNITQDkxmHxjhDwON8eBPgL4M4DIAhQ',
-  //   appId: '1:67565756870:android:cf9603b919097b659d92c7',
-  //   messagingSenderId: '67565756870',
-  //   projectId: 'pancake-workshop-app',
-  //   storageBucket: 'pancake-workshop-app.firebasestorage.app',
-  // );
-  //
-  // static const FirebaseOptions ios = FirebaseOptions(
-  //   apiKey: 'AIzaSyCmuYCMa6YVYNTOulTcQZVHxMw1o-efLzc',
-  //   appId: '1:67565756870:ios:ec7c484e0c22e58f9d92c7',
-  //   messagingSenderId: '67565756870',
-  //   projectId: 'pancake-workshop-app',
-  //   storageBucket: 'pancake-workshop-app.firebasestorage.app',
-  //   iosBundleId: 'com.example.flutterFinalProject',
-  // );
-  //
-  // static const FirebaseOptions macos = FirebaseOptions(
-  //   apiKey: 'AIzaSyCmuYCMa6YVYNTOulTcQZVHxMw1o-efLzc',
-  //   appId: '1:67565756870:ios:ec7c484e0c22e58f9d92c7',
-  //   messagingSenderId: '67565756870',
-  //   projectId: 'pancake-workshop-app',
-  //   storageBucket: 'pancake-workshop-app.firebasestorage.app',
-  //   iosBundleId: 'com.example.flutterFinalProject',
-  // );
-  //
-  // static const FirebaseOptions windows = FirebaseOptions(
-  //   apiKey: 'AIzaSyC_4f3BTgYuSGmxnjW3asTYbDAyGCx_PpY',
-  //   appId: '1:67565756870:web:6f2d4bb1f656a08c9d92c7',
-  //   messagingSenderId: '67565756870',
-  //   projectId: 'pancake-workshop-app',
-  //   authDomain: 'pancake-workshop-app.firebaseapp.com',
-  //   storageBucket: 'pancake-workshop-app.firebasestorage.app',
-  //   measurementId: 'G-45SV7VLNHK',
-  // );
-
   static FirebaseOptions get web => FirebaseOptions(
     apiKey: dotenv.env['WEB_API_KEY']!,
     appId: dotenv.env['WEB_APP_ID']!,

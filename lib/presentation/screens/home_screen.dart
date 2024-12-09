@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
+import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
+  final AuthStore authStore = AuthStore();
   late AnimationController _animationController;
   late Animation<Alignment> _alignAnimation;
 
@@ -164,8 +166,30 @@ class HomeScreenState extends State<HomeScreen>
                                 'imagePath': 'assets/images/google_logo.webp',
                                 'label': 'Google',
                                 'iconStyle': TextStyles.hintText,
-                                'onPressed': () {
-                                  print('Авторизація через Google');
+                                'onPressed': () async {
+                                  // final authStore = Provider.of<AuthStore>(context, listen: false);
+
+                                  // Викликаємо авторизацію через Google
+                                  final result = await authStore.signInWithGoogle();
+
+                                  if (result) {
+                                    // Викликаємо навігацію після виконання асинхронної операції
+                                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const CategoriesScreen(),
+                                        ),
+                                      );
+                                    });
+                                  } else if (authStore.errorMessage != null) {
+                                    // Відображаємо повідомлення про помилку
+                                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text(authStore.errorMessage!)),
+                                      );
+                                    });
+                                  }
                                 },
                               },
                               {

@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 part 'auth_store.g.dart';
 
@@ -7,6 +8,7 @@ class AuthStore = AuthStoreBase with _$AuthStore;
 
 abstract class AuthStoreBase with Store {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @observable
   User? currentUser;
@@ -59,12 +61,43 @@ abstract class AuthStoreBase with Store {
     errorMessage = null;
     try {
       await _auth.signOut();
+      await _googleSignIn.signOut();
       currentUser = null;
     } catch (e) {
       errorMessage = 'Failed to sign out: ${e.toString()}';
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
+    }
+  }
+
+  @action
+  Future<bool> signInWithGoogle() async {
+    isLoading = true;
+    errorMessage = null;
+
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        errorMessage = 'Авторизацію скасовано.';
+        return false;
+      }
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _auth.signInWithCredential(credential);
+      currentUser = userCredential.user;
+      return true;
+    } catch (e) {
+      errorMessage = 'Помилка авторизації через Google: ${e.toString()}';
+      return false;
+    } finally {
+      isLoading = false;
+      clearErrorMessageAfterDelay();
     }
   }
 

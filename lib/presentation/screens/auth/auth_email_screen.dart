@@ -30,7 +30,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Реєстрація/авторизація через email',
+        title: 'Реєстрація/авторизація',
         actions: [
           if (_showSignOut)
             IconButton(
