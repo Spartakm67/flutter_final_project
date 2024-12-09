@@ -168,12 +168,8 @@ class HomeScreenState extends State<HomeScreen>
                                 'iconStyle': TextStyles.hintText,
                                 'onPressed': () async {
                                   // final authStore = Provider.of<AuthStore>(context, listen: false);
-
-                                  // Викликаємо авторизацію через Google
                                   final result = await authStore.signInWithGoogle();
-
                                   if (result) {
-                                    // Викликаємо навігацію після виконання асинхронної операції
                                     WidgetsBinding.instance.addPostFrameCallback((_) {
                                       Navigator.pushReplacement(
                                         context,
@@ -183,7 +179,6 @@ class HomeScreenState extends State<HomeScreen>
                                       );
                                     });
                                   } else if (authStore.errorMessage != null) {
-                                    // Відображаємо повідомлення про помилку
                                     WidgetsBinding.instance.addPostFrameCallback((_) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(content: Text(authStore.errorMessage!)),
