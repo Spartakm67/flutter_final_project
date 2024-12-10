@@ -3,11 +3,13 @@ import 'package:flutter_final_project/presentation/screens/product_detail_screen
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
+import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/bottom_cart_bar.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,7 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
+  final CategoriesStore _categoriesStore = CategoriesStore();
   late ScrollController _scrollController;
   late ScrollStore _scrollStore;
 
@@ -65,7 +68,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
             const SizedBox(width: 1),
             GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (_) => CategoriesListWidget(
+                //       categoriesStore: _categoriesStore,
+                //       scrollController: _scrollController,
+                //       onCategoryTap: (categoryId, categoryName) {
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (_) => ProductListScreen(
+                //               productStore: widget.productStore,
+                //               categoryId: int.parse(categoryId),
+                //               categoryName: categoryName,
+                //             ),
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // );
               },
               child: const Icon(
                 Icons.arrow_left_outlined,
