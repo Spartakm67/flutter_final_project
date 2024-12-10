@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
+import 'package:provider/provider.dart';
 
 class AuthEmailScreen extends StatefulWidget {
   const AuthEmailScreen({super.key});
@@ -14,7 +15,7 @@ class AuthEmailScreen extends StatefulWidget {
 class _AuthEmailScreenState extends State<AuthEmailScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final AuthStore authStore = AuthStore();
+  // final AuthStore authStore = AuthStore();
   bool _isLogin = true;
   bool _showSignOut = false;
   bool _obscurePassword = true;
@@ -28,6 +29,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authStore = Provider.of<AuthStore>(context);
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Реєстрація/авторизація',
@@ -100,10 +102,6 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                       if (authStore.errorMessage == null &&
                           authStore.currentUser != null) {
                         if (context.mounted) {
-                          // Navigator.pushReplacementNamed(
-                          //   context,
-                          //   '/habits',
-                          // );
                           Navigator.push(
                             context,
                             MaterialPageRoute(
