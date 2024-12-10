@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:provider/provider.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,6 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authStore = Provider.of<AuthStore>(context);
     return AppBar(
       backgroundColor: backgroundColor,
       title: Text(

@@ -4,7 +4,10 @@ import 'package:flutter_final_project/domain/store/categories_store/categories_s
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
+import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
+import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
+import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -45,6 +48,8 @@ class CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context);
+    final authStore = Provider.of<AuthStore>(context);
+    final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Категорії товарів'),
@@ -73,6 +78,23 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
+                      ),
+                      if (authStore.isLoggedIn)
+                      IconButton(
+                        icon: const Icon(Icons.logout),
+                        onPressed: authStore.isLoading
+                            ? null
+                            : () async {
+                          await authStore.signOut();
+                          if (context.mounted) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(store: homeStore),
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),

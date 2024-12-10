@@ -32,7 +32,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
     final authStore = Provider.of<AuthStore>(context);
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Реєстрація/авторизація',
+        title: _isLogin ? 'Login / Авторизація' : 'Sign Up / Реєстрація',
         actions: [
           if (_showSignOut)
             IconButton(

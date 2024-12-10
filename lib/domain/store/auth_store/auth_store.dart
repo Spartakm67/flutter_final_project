@@ -19,6 +19,10 @@ abstract class AuthStoreBase with Store {
   @observable
   bool isLoading = false;
 
+  @observable
+  bool isLoggedIn = false;
+
+
   @action
   Future<void> signUpWithEmail(String email, String password) async {
     isLoading = true;
@@ -47,6 +51,7 @@ abstract class AuthStoreBase with Store {
         password: password,
       );
       currentUser = userCredential.user;
+      isLoggedIn = true;
     } catch (e) {
       errorMessage = 'Failed to sign in: ${e.toString()}';
       clearErrorMessageAfterDelay();
@@ -63,6 +68,7 @@ abstract class AuthStoreBase with Store {
       await _auth.signOut();
       await _googleSignIn.signOut();
       currentUser = null;
+      isLoggedIn = false;
     } catch (e) {
       errorMessage = 'Failed to sign out: ${e.toString()}';
       clearErrorMessageAfterDelay();
