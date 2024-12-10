@@ -102,7 +102,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                       if (authStore.errorMessage == null &&
                           authStore.currentUser != null) {
                         if (context.mounted) {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) {

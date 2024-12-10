@@ -55,9 +55,30 @@ class _ProductListScreenState extends State<ProductListScreen> {
     final cartStore = Provider.of<CartStore>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.categoryName,
-          style: TextStyles.greetingsText,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.categoryName,
+              style: TextStyles.greetingsText,
+            ),
+            const SizedBox(width: 1),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.arrow_left_outlined,
+                color: Colors.deepOrange,
+              ),
+            ),
+          ],
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Observer(
@@ -230,8 +251,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           CustomIconButton(
                                             icon: Icons.add,
                                             onPressed: () {
-                                              cartStore
-                                                  .incrementCounter(
+                                              cartStore.incrementCounter(
                                                 product.productId,
                                               );
                                             },

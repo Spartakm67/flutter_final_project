@@ -52,54 +52,58 @@ class CategoriesScreenState extends State<CategoriesScreen> {
     final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Категорії товарів'),
+        title: const Text(
+          'Категорії товарів',
+          style: TextStyles.greetingsText,
+        ),
         actions: [
           Observer(
             builder: (_) {
               return cartStore.totalItems > 0
                   ? GestureDetector(
-                onTap: () {
-                  print("Перехід до корзини");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.shopping_cart,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        cartStore.totalItems.toString(),
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      onTap: () {
+                        print("Перехід до корзини");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.shopping_cart,
+                              size: 30,
+                              color: Colors.blueGrey,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              cartStore.totalItems.toString(),
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                            if (authStore.isLoggedIn)
+                              IconButton(
+                                icon: const Icon(Icons.logout),
+                                onPressed: authStore.isLoading
+                                    ? null
+                                    : () async {
+                                        await authStore.signOut();
+                                        if (context.mounted) {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen(store: homeStore),
+                                            ),
+                                          );
+                                        }
+                                      },
+                              ),
+                          ],
                         ),
                       ),
-                      if (authStore.isLoggedIn)
-                      IconButton(
-                        icon: const Icon(Icons.logout),
-                        onPressed: authStore.isLoading
-                            ? null
-                            : () async {
-                          await authStore.signOut();
-                          if (context.mounted) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreen(store: homeStore),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              )
+                    )
                   : const SizedBox();
             },
           ),

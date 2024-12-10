@@ -24,7 +24,7 @@ class BottomCartBar extends StatelessWidget {
       duration: const Duration(milliseconds: 300),
       height: totalItems > 0 ? null : 0.0,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Colors.black.withOpacity(0.8),
+      color: Colors.black.withOpacity(0.7),
       child: totalItems > 0
           ? Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

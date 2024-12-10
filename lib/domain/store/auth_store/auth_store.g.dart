@@ -57,6 +57,22 @@ mixin _$AuthStore on AuthStoreBase, Store {
     });
   }
 
+  late final _$isLoggedInAtom =
+      Atom(name: 'AuthStoreBase.isLoggedIn', context: context);
+
+  @override
+  bool get isLoggedIn {
+    _$isLoggedInAtom.reportRead();
+    return super.isLoggedIn;
+  }
+
+  @override
+  set isLoggedIn(bool value) {
+    _$isLoggedInAtom.reportWrite(value, super.isLoggedIn, () {
+      super.isLoggedIn = value;
+    });
+  }
+
   late final _$signUpWithEmailAsyncAction =
       AsyncAction('AuthStoreBase.signUpWithEmail', context: context);
 
@@ -110,7 +126,8 @@ mixin _$AuthStore on AuthStoreBase, Store {
     return '''
 currentUser: ${currentUser},
 errorMessage: ${errorMessage},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+isLoggedIn: ${isLoggedIn}
     ''';
   }
 }
