@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
-import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:shimmer/shimmer.dart';
 

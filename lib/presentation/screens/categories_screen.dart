@@ -11,7 +11,6 @@ import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -118,6 +117,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
             context,
             MaterialPageRoute(
               builder: (_) => ProductListScreen(
+                categoriesStore: _categoriesStore,
                 productStore: productStore,
                 categoryId: int.parse(categoryId),
                 categoryName: categoryName,
@@ -130,98 +130,3 @@ class CategoriesScreenState extends State<CategoriesScreen> {
   }
 }
 
-// body: Observer(
-//   builder: (context) {
-//     if (_categoriesStore.isLoading) {
-//       return const Center(child: CircularProgressIndicator());
-//     }
-//
-//     if (_categoriesStore.error != null) {
-//       return Center(
-//         child: Text(_categoriesStore.error!),
-//       );
-//     }
-//
-//     if (_categoriesStore.categories.isEmpty) {
-//       return const Center(child: Text('Немає категорій'));
-//     }
-//
-//     return ListView.builder(
-//       controller: _scrollController,
-//       padding: const EdgeInsets.all(8.0),
-//       itemCount: _categoriesStore.categories.length,
-//       itemBuilder: (context, index) {
-//         final category = _categoriesStore.categories[index];
-//         return Card(
-//           margin: const EdgeInsets.symmetric(vertical: 4.0),
-//           elevation: 4.0,
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(10.0),
-//           ),
-//           child: InkWell(
-//             onTap: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (_) => ProductListScreen(
-//                     productStore: productStore,
-//                     categoryId: int.parse(category.categoryId),
-//                     categoryName: category.categoryName,
-//                   ),
-//                 ),
-//               );
-//             },
-//             child: Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: Row(
-//                 crossAxisAlignment: CrossAxisAlignment.center,
-//                 children: [
-//                   ClipRRect(
-//                     borderRadius: BorderRadius.circular(8.0),
-//                     child: category.categoryPhoto != null
-//                         ? Image.network(
-//                             'https://joinposter.com${category.categoryPhoto}',
-//                             width: 75,
-//                             height: 75,
-//                             fit: BoxFit.cover,
-//                             loadingBuilder:
-//                                 (context, child, loadingProgress) {
-//                               if (loadingProgress == null) return child;
-//                               return Shimmer.fromColors(
-//                                 baseColor: Colors.grey[300]!,
-//                                 highlightColor: Colors.grey[100]!,
-//                                 child: Container(
-//                                   width: 75,
-//                                   height: 75,
-//                                   color: Colors.grey,
-//                                 ),
-//                               );
-//                             },
-//                             errorBuilder: (context, error, stackTrace) =>
-//                                 const Icon(Icons.broken_image, size: 75),
-//                           )
-//                         : Image.asset(
-//                             'assets/images/default_image.png',
-//                             width: 75,
-//                             height: 75,
-//                             fit: BoxFit.cover,
-//                           ),
-//                   ),
-//                   const SizedBox(width: 30.0),
-//                   Expanded(
-//                     child: Text(
-//                       category.categoryName,
-//                       style: TextStyles.categoriesText,
-//                       // textAlign: TextAlign.center,
-//                     ),
-//                   ),
-//                   const Icon(Icons.chevron_right),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   },
-// ),

@@ -15,6 +15,7 @@ import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatefulWidget {
+  final CategoriesStore categoriesStore;
   final ProductStore productStore;
   final int categoryId;
   final String categoryName;
@@ -24,6 +25,7 @@ class ProductListScreen extends StatefulWidget {
     required this.productStore,
     required this.categoryId,
     required this.categoryName,
+    required this.categoriesStore,
   }) {
     productStore.fetchProducts(categoryId.toString());
   }
@@ -33,7 +35,6 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  final CategoriesStore _categoriesStore = CategoriesStore();
   late ScrollController _scrollController;
   late ScrollStore _scrollStore;
 
@@ -68,30 +69,44 @@ class _ProductListScreenState extends State<ProductListScreen> {
             const SizedBox(width: 1),
             GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (_) => CategoriesListWidget(
-                //       categoriesStore: _categoriesStore,
-                //       scrollController: _scrollController,
-                //       onCategoryTap: (categoryId, categoryName) {
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (_) => ProductListScreen(
-                //               productStore: widget.productStore,
-                //               categoryId: int.parse(categoryId),
-                //               categoryName: categoryName,
-                //             ),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // );
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.9,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: CategoriesListWidget(
+                        categoriesStore: widget.categoriesStore,
+                        scrollController: ScrollController(),
+                        onCategoryTap: (categoryId, categoryName) {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ProductListScreen(
+                                categoriesStore: widget.categoriesStore,
+                                productStore: widget.productStore,
+                                categoryId: int.parse(categoryId),
+                                categoryName: categoryName,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
               },
               child: const Icon(
-                Icons.arrow_left_outlined,
+                Icons.keyboard_arrow_down_rounded,
                 color: Colors.deepOrange,
               ),
             ),
