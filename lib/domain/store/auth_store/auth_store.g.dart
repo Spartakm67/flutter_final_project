@@ -107,6 +107,51 @@ mixin _$AuthStore on AuthStoreBase, Store {
     return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
   }
 
+  late final _$saveInitialUserDataAsyncAction =
+      AsyncAction('AuthStoreBase.saveInitialUserData', context: context);
+
+  @override
+  Future<void> saveInitialUserData(UserModel user) {
+    return _$saveInitialUserDataAsyncAction
+        .run(() => super.saveInitialUserData(user));
+  }
+
+  late final _$updateUserDataAsyncAction =
+      AsyncAction('AuthStoreBase.updateUserData', context: context);
+
+  @override
+  Future<void> updateUserData(String userId, Map<String, dynamic> updates) {
+    return _$updateUserDataAsyncAction
+        .run(() => super.updateUserData(userId, updates));
+  }
+
+  late final _$savePhoneNumberAsyncAction =
+      AsyncAction('AuthStoreBase.savePhoneNumber', context: context);
+
+  @override
+  Future<void> savePhoneNumber(String userId, String phoneNumber) {
+    return _$savePhoneNumberAsyncAction
+        .run(() => super.savePhoneNumber(userId, phoneNumber));
+  }
+
+  late final _$updateUserProfileAsyncAction =
+      AsyncAction('AuthStoreBase.updateUserProfile', context: context);
+
+  @override
+  Future<void> updateUserProfile(Map<String, dynamic> updates) {
+    return _$updateUserProfileAsyncAction
+        .run(() => super.updateUserProfile(updates));
+  }
+
+  late final _$saveUserPhoneNumberAsyncAction =
+      AsyncAction('AuthStoreBase.saveUserPhoneNumber', context: context);
+
+  @override
+  Future<void> saveUserPhoneNumber(String phoneNumber) {
+    return _$saveUserPhoneNumberAsyncAction
+        .run(() => super.saveUserPhoneNumber(phoneNumber));
+  }
+
   late final _$AuthStoreBaseActionController =
       ActionController(name: 'AuthStoreBase', context: context);
 
