@@ -36,6 +36,7 @@ abstract class AuthStoreBase with Store {
       );
       currentUser = userCredential.user;
       final userModel = UserModel(
+        userId: currentUser!.uid,
         email: email,
         createdAt: Timestamp.now(),
       );
@@ -108,6 +109,7 @@ abstract class AuthStoreBase with Store {
       final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
       if (isNewUser && currentUser != null) {
         final userModel = UserModel(
+          userId: currentUser!.uid,
           email: currentUser!.email!,
           createdAt: Timestamp.now(),
           phoneNumber: currentUser!.phoneNumber,
@@ -116,10 +118,10 @@ abstract class AuthStoreBase with Store {
             'photoURL': currentUser!.photoURL,
           },
         );
-
         await saveInitialUserData(userModel);
       }
 
+      isLoggedIn = true;
       return true;
     } catch (e) {
       errorMessage = 'Помилка авторизації через Google: ${e.toString()}';
@@ -134,7 +136,7 @@ abstract class AuthStoreBase with Store {
   Future<void> saveInitialUserData(UserModel user) async {
     try {
       final usersCollection = _firestore.collection('users');
-      await usersCollection.doc(user.email).set(user.toFirestore());
+      await usersCollection.doc(user.userId).set(user.toFirestore());
     } catch (e) {
       errorMessage = 'Failed to save user data: ${e.toString()}';
       clearErrorMessageAfterDelay();
@@ -170,7 +172,7 @@ abstract class AuthStoreBase with Store {
       return;
     }
 
-    await updateUserData(currentUser!.email!, updates);
+    await updateUserData(currentUser!.uid, updates);
   }
 
   @action
@@ -180,7 +182,7 @@ abstract class AuthStoreBase with Store {
       return;
     }
 
-    await savePhoneNumber(currentUser!.email!, phoneNumber);
+    await savePhoneNumber(currentUser!.uid, phoneNumber);
   }
 
   @action
