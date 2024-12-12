@@ -25,6 +25,92 @@ abstract class AuthStoreBase with Store {
   @observable
   bool isLoggedIn = false;
 
+  @observable
+  String? verificationId;
+
+  @observable
+  String? phoneNumber;
+
+
+  @action
+  void setPhoneNumber(String value) {
+    phoneNumber = value.trim();
+  }
+
+  @action
+  bool isPhoneNumberValid(String number) {
+    final regex = RegExp(r'^\d{9}$');
+    return regex.hasMatch(number);
+  }
+
+  @action
+  Future<void> sendOTP({required bool viaWhatsApp}) async {
+    if (!isPhoneNumberValid(phoneNumber!)) {
+      errorMessage = 'Номер телефону має містити 9 цифр!';
+      clearErrorMessageAfterDelay();
+      return;
+    }
+    isLoading = true;
+    errorMessage = null;
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: '+380$phoneNumber',
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await _auth.signInWithCredential(credential);
+          currentUser = _auth.currentUser;
+          if (currentUser != null) {
+            await saveUserPhoneNumber(phoneNumber!);
+          }
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          errorMessage = 'Verification failed: ${e.message}';
+          clearErrorMessageAfterDelay();
+        },
+        codeSent: (String verId, int? resendToken) {
+          verificationId = verId;
+        },
+        codeAutoRetrievalTimeout: (String verId) {
+          verificationId = verId;
+        },
+      );
+    } catch (e) {
+      errorMessage = 'Failed to send OTP: ${e.toString()}';
+      clearErrorMessageAfterDelay();
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @action
+  Future<void> verifyOTP(String smsCode) async {
+    isLoading = true;
+    errorMessage = null;
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId!,
+        smsCode: smsCode,
+      );
+      final userCredential = await _auth.signInWithCredential(credential);
+      currentUser = userCredential.user;
+      isLoggedIn = true;
+      if (currentUser != null) {
+        final userModel = UserModel(
+          userId: currentUser!.uid,
+          phoneNumber: phoneNumber!,
+          createdAt: Timestamp.now(),
+        );
+        await saveInitialUserData(userModel);
+      }
+    } catch (e) {
+      errorMessage = 'Failed to verify OTP: ${e.toString()}';
+      clearErrorMessageAfterDelay();
+    } finally {
+      isLoading = false;
+    }
+  }
+
+
   @action
   Future<void> signUpWithEmail(String email, String password) async {
     isLoading = true;

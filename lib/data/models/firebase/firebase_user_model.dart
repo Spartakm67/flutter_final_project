@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   final String userId;
-  final String email;
+  final String? email;
   final String? phoneNumber;
   final Timestamp createdAt;
   final Map<String, dynamic>? otherDetails;
 
   UserModel({
     required this.userId,
-    required this.email,
+    this.email,
     this.phoneNumber,
     required this.createdAt,
     this.otherDetails,

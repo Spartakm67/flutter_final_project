@@ -4,6 +4,7 @@ import 'package:flutter_final_project/domain/store/home_store/home_screen_store.
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
+import 'package:flutter_final_project/presentation/widgets/sms/code_option_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
@@ -21,7 +22,8 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  final AuthStore authStore = AuthStore();
+  // final AuthStore authStore = AuthStore();
+
   late AnimationController _animationController;
   late Animation<Alignment> _alignAnimation;
 
@@ -54,7 +56,9 @@ class HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController phoneController = TextEditingController();
     final store = widget.store;
+    final authStore = Provider.of<AuthStore>(context);
     final cartStore = Provider.of<CartStore>(context);
 
     return Scaffold(
@@ -137,17 +141,70 @@ class HomeScreenState extends State<HomeScreen>
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: TextField(
-                                      onChanged: store.setPhoneNumber,
+                                      controller: phoneController,
+                                      onChanged: authStore.setPhoneNumber,
                                       keyboardType: TextInputType.phone,
                                       autofocus: true,
                                       decoration: InputDecoration(
                                         hintText: 'Мобільний номер',
-                                        hintStyle:  TextStyles.hintText,
+                                        hintStyle: TextStyles.hintText,
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(16),
                                         ),
                                       ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      if (authStore.phoneNumber?.isNotEmpty ??
+                                          false) {
+                                        if (!authStore.isPhoneNumberValid(
+                                            authStore.phoneNumber!)) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  'Номер телефону має містити 9 цифр!'),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              margin: EdgeInsets.symmetric(
+                                                horizontal: 20,
+                                                vertical: 50,
+                                              ),
+                                              backgroundColor: Colors.redAccent,
+                                              duration: Duration(seconds: 3),
+                                            ),
+                                          );
+                                          return;
+                                        }
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) => CodeOptionDialog(
+                                              authStore: authStore),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Будь ласка, введіть номер телефону!',
+                                            ),
+                                            behavior: SnackBarBehavior.floating,
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 50,
+                                            ),
+                                            backgroundColor: Colors.redAccent,
+                                            duration: Duration(seconds: 3),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: const Text(
+                                      'SMS',
+                                      style: TextStyles.authText,
                                     ),
                                   ),
                                 ],
@@ -168,20 +225,27 @@ class HomeScreenState extends State<HomeScreen>
                                 'iconStyle': TextStyles.hintText,
                                 'onPressed': () async {
                                   // final authStore = Provider.of<AuthStore>(context, listen: false);
-                                  final result = await authStore.signInWithGoogle();
+                                  final result =
+                                      await authStore.signInWithGoogle();
                                   if (result) {
-                                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const CategoriesScreen(),
+                                          builder: (context) =>
+                                              const CategoriesScreen(),
                                         ),
                                       );
                                     });
                                   } else if (authStore.errorMessage != null) {
-                                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text(authStore.errorMessage!)),
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text(authStore.errorMessage!)),
                                       );
                                     });
                                   }
@@ -190,7 +254,8 @@ class HomeScreenState extends State<HomeScreen>
                               {
                                 'icon': FontAwesomeIcons.apple,
                                 'label': 'Apple',
-                                'iconStyle': TextStyles.authIconStyle(Colors.black),
+                                'iconStyle':
+                                    TextStyles.authIconStyle(Colors.black),
                                 'onPressed': () {
                                   print('Авторизація через Apple');
                                 },
@@ -198,7 +263,8 @@ class HomeScreenState extends State<HomeScreen>
                               {
                                 'icon': FontAwesomeIcons.facebook,
                                 'label': 'Facebook',
-                                'iconStyle': TextStyles.authIconStyle(Colors.blue),
+                                'iconStyle':
+                                    TextStyles.authIconStyle(Colors.blue),
                                 'onPressed': () {
                                   print('Авторизація через Facebook');
                                 },
@@ -206,7 +272,8 @@ class HomeScreenState extends State<HomeScreen>
                               {
                                 'icon': Icons.email,
                                 'label': 'Електронна пошта',
-                                'iconStyle': TextStyles.authIconStyle(Colors.orange),
+                                'iconStyle':
+                                    TextStyles.authIconStyle(Colors.orange),
                                 'onPressed': () {
                                   Navigator.push(
                                     context,
@@ -242,15 +309,21 @@ class HomeScreenState extends State<HomeScreen>
                                             children: [
                                               auth['imagePath'] != null
                                                   ? Image.asset(
-                                                auth['imagePath'] as String,
-                                                width: 24,
-                                                height: 24,
-                                              )
+                                                      auth['imagePath']
+                                                          as String,
+                                                      width: 24,
+                                                      height: 24,
+                                                    )
                                                   : Icon(
-                                                auth['icon'] as IconData,
-                                                size: (auth['iconStyle'] as TextStyle).fontSize ?? 24,
-                                                color: (auth['iconStyle'] as TextStyle).color,
-                                              ),
+                                                      auth['icon'] as IconData,
+                                                      size: (auth['iconStyle']
+                                                                  as TextStyle)
+                                                              .fontSize ??
+                                                          24,
+                                                      color: (auth['iconStyle']
+                                                              as TextStyle)
+                                                          .color,
+                                                    ),
                                             ],
                                           ),
                                           Center(
@@ -299,7 +372,7 @@ class HomeScreenState extends State<HomeScreen>
                   if (cartStore.totalItems > 0)
                     GestureDetector(
                       onTap: () {
-                         print("Перехід до корзини");
+                        print("Перехід до корзини");
                       },
                       child: Row(
                         children: [
@@ -309,7 +382,8 @@ class HomeScreenState extends State<HomeScreen>
                             color: Colors.white,
                           ),
                           const SizedBox(width: 4),
-                          Text(cartStore.totalItems.toString(),
+                          Text(
+                            cartStore.totalItems.toString(),
                             style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,

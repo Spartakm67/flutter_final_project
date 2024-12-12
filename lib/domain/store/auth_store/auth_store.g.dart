@@ -73,6 +73,55 @@ mixin _$AuthStore on AuthStoreBase, Store {
     });
   }
 
+  late final _$verificationIdAtom =
+      Atom(name: 'AuthStoreBase.verificationId', context: context);
+
+  @override
+  String? get verificationId {
+    _$verificationIdAtom.reportRead();
+    return super.verificationId;
+  }
+
+  @override
+  set verificationId(String? value) {
+    _$verificationIdAtom.reportWrite(value, super.verificationId, () {
+      super.verificationId = value;
+    });
+  }
+
+  late final _$phoneNumberAtom =
+      Atom(name: 'AuthStoreBase.phoneNumber', context: context);
+
+  @override
+  String? get phoneNumber {
+    _$phoneNumberAtom.reportRead();
+    return super.phoneNumber;
+  }
+
+  @override
+  set phoneNumber(String? value) {
+    _$phoneNumberAtom.reportWrite(value, super.phoneNumber, () {
+      super.phoneNumber = value;
+    });
+  }
+
+  late final _$sendOTPAsyncAction =
+      AsyncAction('AuthStoreBase.sendOTP', context: context);
+
+  @override
+  Future<void> sendOTP({required bool viaWhatsApp}) {
+    return _$sendOTPAsyncAction
+        .run(() => super.sendOTP(viaWhatsApp: viaWhatsApp));
+  }
+
+  late final _$verifyOTPAsyncAction =
+      AsyncAction('AuthStoreBase.verifyOTP', context: context);
+
+  @override
+  Future<void> verifyOTP(String smsCode) {
+    return _$verifyOTPAsyncAction.run(() => super.verifyOTP(smsCode));
+  }
+
   late final _$signUpWithEmailAsyncAction =
       AsyncAction('AuthStoreBase.signUpWithEmail', context: context);
 
@@ -156,6 +205,28 @@ mixin _$AuthStore on AuthStoreBase, Store {
       ActionController(name: 'AuthStoreBase', context: context);
 
   @override
+  void setPhoneNumber(String value) {
+    final _$actionInfo = _$AuthStoreBaseActionController.startAction(
+        name: 'AuthStoreBase.setPhoneNumber');
+    try {
+      return super.setPhoneNumber(value);
+    } finally {
+      _$AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool isPhoneNumberValid(String number) {
+    final _$actionInfo = _$AuthStoreBaseActionController.startAction(
+        name: 'AuthStoreBase.isPhoneNumberValid');
+    try {
+      return super.isPhoneNumberValid(number);
+    } finally {
+      _$AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void clearErrorMessageAfterDelay() {
     final _$actionInfo = _$AuthStoreBaseActionController.startAction(
         name: 'AuthStoreBase.clearErrorMessageAfterDelay');
@@ -172,7 +243,9 @@ mixin _$AuthStore on AuthStoreBase, Store {
 currentUser: ${currentUser},
 errorMessage: ${errorMessage},
 isLoading: ${isLoading},
-isLoggedIn: ${isLoggedIn}
+isLoggedIn: ${isLoggedIn},
+verificationId: ${verificationId},
+phoneNumber: ${phoneNumber}
     ''';
   }
 }
