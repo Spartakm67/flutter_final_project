@@ -34,6 +34,10 @@ class OTPVerificationDialog extends StatelessWidget {
                     const SnackBar(content: Text('Авторизація успішна!')),
                   );
                 }
+              }).catchError((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Невірний код підтвердження!')),
+                );
               });
             } else {
               ScaffoldMessenger.of(context).showSnackBar(

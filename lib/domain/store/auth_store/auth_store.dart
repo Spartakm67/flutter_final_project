@@ -112,6 +112,7 @@ abstract class AuthStoreBase with Store {
     } catch (e) {
       errorMessage = 'Failed to verify OTP: ${e.toString()}';
       clearErrorMessageAfterDelay();
+      throw Exception('OTP verification failed');
     } finally {
       isLoading = false;
     }
