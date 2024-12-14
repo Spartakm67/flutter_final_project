@@ -161,12 +161,12 @@ class HomeScreenState extends State<HomeScreen>
                                       if (authStore.phoneNumber?.isNotEmpty ??
                                           false) {
                                         if (!authStore.isPhoneNumberValid(
-                                            authStore.phoneNumber!)) {
+                                            authStore.phoneNumber!,)) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
                                               content: Text(
-                                                  'Номер телефону має містити 9 цифр!'),
+                                                  'Номер телефону має містити 9 цифр!',),
                                               behavior:
                                                   SnackBarBehavior.floating,
                                               margin: EdgeInsets.symmetric(
@@ -182,7 +182,7 @@ class HomeScreenState extends State<HomeScreen>
                                         showDialog(
                                           context: context,
                                           builder: (_) => CodeOptionDialog(
-                                              authStore: authStore),
+                                              authStore: authStore,),
                                         );
                                       } else {
                                         ScaffoldMessenger.of(context)
@@ -245,7 +245,7 @@ class HomeScreenState extends State<HomeScreen>
                                           .showSnackBar(
                                         SnackBar(
                                             content:
-                                                Text(authStore.errorMessage!)),
+                                                Text(authStore.errorMessage!),),
                                       );
                                     });
                                   }

@@ -105,6 +105,22 @@ mixin _$AuthStore on AuthStoreBase, Store {
     });
   }
 
+  late final _$isCodeSentAtom =
+      Atom(name: 'AuthStoreBase.isCodeSent', context: context);
+
+  @override
+  bool get isCodeSent {
+    _$isCodeSentAtom.reportRead();
+    return super.isCodeSent;
+  }
+
+  @override
+  set isCodeSent(bool value) {
+    _$isCodeSentAtom.reportWrite(value, super.isCodeSent, () {
+      super.isCodeSent = value;
+    });
+  }
+
   late final _$sendOTPAsyncAction =
       AsyncAction('AuthStoreBase.sendOTP', context: context);
 
@@ -245,7 +261,8 @@ errorMessage: ${errorMessage},
 isLoading: ${isLoading},
 isLoggedIn: ${isLoggedIn},
 verificationId: ${verificationId},
-phoneNumber: ${phoneNumber}
+phoneNumber: ${phoneNumber},
+isCodeSent: ${isCodeSent}
     ''';
   }
 }

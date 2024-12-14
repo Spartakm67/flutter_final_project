@@ -21,7 +21,7 @@ class CodeOptionDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             Navigator.pop(context);
-            authStore.sendOTP(viaWhatsApp: true); // WhatsApp (може знадобитися кастомізація)
+            authStore.sendOTP(viaWhatsApp: true);
           },
           child: const Text('WhatsApp'),
         ),

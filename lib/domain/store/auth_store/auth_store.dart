@@ -31,6 +31,10 @@ abstract class AuthStoreBase with Store {
   @observable
   String? phoneNumber;
 
+  @observable
+  bool isCodeSent = false;
+
+  int? _resendToken;
 
   @action
   void setPhoneNumber(String value) {
@@ -69,6 +73,9 @@ abstract class AuthStoreBase with Store {
         },
         codeSent: (String verId, int? resendToken) {
           verificationId = verId;
+          _resendToken = resendToken;
+          isCodeSent = true;
+
         },
         codeAutoRetrievalTimeout: (String verId) {
           verificationId = verId;
