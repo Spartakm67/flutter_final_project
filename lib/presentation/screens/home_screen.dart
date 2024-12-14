@@ -4,6 +4,7 @@ import 'package:flutter_final_project/domain/store/home_store/home_screen_store.
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/sms/code_option_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
@@ -22,8 +23,6 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  // final AuthStore authStore = AuthStore();
-
   late AnimationController _animationController;
   late Animation<Alignment> _alignAnimation;
 
@@ -161,44 +160,28 @@ class HomeScreenState extends State<HomeScreen>
                                       if (authStore.phoneNumber?.isNotEmpty ??
                                           false) {
                                         if (!authStore.isPhoneNumberValid(
-                                            authStore.phoneNumber!,)) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'Номер телефону має містити 9 цифр!',),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              margin: EdgeInsets.symmetric(
-                                                horizontal: 20,
-                                                vertical: 50,
-                                              ),
-                                              backgroundColor: Colors.redAccent,
-                                              duration: Duration(seconds: 3),
-                                            ),
+                                          authStore.phoneNumber!,
+                                        )) {
+                                          CustomSnackBar.show(
+                                            context: context,
+                                            message: 'Номер телефону має містити 9 цифр!',
+                                            backgroundColor: Colors.redAccent,
+                                            position: SnackBarPosition.top,
                                           );
                                           return;
                                         }
                                         showDialog(
                                           context: context,
                                           builder: (_) => CodeOptionDialog(
-                                              authStore: authStore,),
+                                            authStore: authStore,
+                                          ),
                                         );
                                       } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              'Будь ласка, введіть номер телефону!',
-                                            ),
-                                            behavior: SnackBarBehavior.floating,
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                              vertical: 50,
-                                            ),
-                                            backgroundColor: Colors.redAccent,
-                                            duration: Duration(seconds: 3),
-                                          ),
+                                        CustomSnackBar.show(
+                                          context: context,
+                                          message: 'Будь ласка, введіть номер телефону!',
+                                          backgroundColor: Colors.redAccent,
+                                          position: SnackBarPosition.top,
                                         );
                                       }
                                     },
@@ -224,7 +207,6 @@ class HomeScreenState extends State<HomeScreen>
                                 'label': 'Google',
                                 'iconStyle': TextStyles.hintText,
                                 'onPressed': () async {
-                                  // final authStore = Provider.of<AuthStore>(context, listen: false);
                                   final result =
                                       await authStore.signInWithGoogle();
                                   if (result) {
@@ -244,8 +226,9 @@ class HomeScreenState extends State<HomeScreen>
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                            content:
-                                                Text(authStore.errorMessage!),),
+                                          content:
+                                              Text(authStore.errorMessage!),
+                                        ),
                                       );
                                     });
                                   }

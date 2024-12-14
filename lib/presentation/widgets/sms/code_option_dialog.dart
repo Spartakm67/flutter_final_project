@@ -15,7 +15,6 @@ class CodeOptionDialog extends StatelessWidget {
         TextButton(
           onPressed: () async {
             Navigator.pop(context);
-            // authStore.sendOTP(viaWhatsApp: false);
             await _handleSendOTP(context, viaWhatsApp: false);
           },
           child: const Text('SMS'),
