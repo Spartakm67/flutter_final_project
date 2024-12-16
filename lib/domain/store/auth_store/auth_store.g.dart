@@ -156,6 +156,14 @@ mixin _$AuthStore on AuthStoreBase, Store {
         .run(() => super.signInWithEmail(email, password));
   }
 
+  late final _$resetPasswordAsyncAction =
+      AsyncAction('AuthStoreBase.resetPassword', context: context);
+
+  @override
+  Future<void> resetPassword(String email) {
+    return _$resetPasswordAsyncAction.run(() => super.resetPassword(email));
+  }
+
   late final _$signOutAsyncAction =
       AsyncAction('AuthStoreBase.signOut', context: context);
 

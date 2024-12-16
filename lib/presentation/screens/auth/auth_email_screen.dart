@@ -15,7 +15,6 @@ class AuthEmailScreen extends StatefulWidget {
 class _AuthEmailScreenState extends State<AuthEmailScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  // final AuthStore authStore = AuthStore();
   bool _isLogin = true;
   bool _showSignOut = false;
   bool _obscurePassword = true;
@@ -138,6 +137,30 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                         ? 'Create an account'
                         : 'Already have an account? Log in',
                   ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final email = _emailController.text.trim();
+
+                    if (email.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please enter your email')),
+                      );
+                      return;
+                    }
+
+                    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+                    FocusScope.of(context).unfocus();
+                    await authStore.resetPassword(email);
+
+                    if (authStore.errorMessage != null) {
+                      scaffoldMessenger.showSnackBar(
+                        SnackBar(content: Text(authStore.errorMessage!)),
+                      );
+                    }
+                  },
+                  child: const Text('Forgot Password?'),
                 ),
                 if (authStore.errorMessage != null)
                   Padding(

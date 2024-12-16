@@ -163,6 +163,21 @@ abstract class AuthStoreBase with Store {
   }
 
   @action
+  Future<void> resetPassword(String email) async {
+    isLoading = true;
+    errorMessage = null;
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      errorMessage = 'Password reset email sent. Check your inbox.';
+    } catch (e) {
+      errorMessage = 'Failed to send reset email: ${e.toString()}';
+      clearErrorMessageAfterDelay();
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @action
   Future<void> signOut() async {
     isLoading = true;
     errorMessage = null;
