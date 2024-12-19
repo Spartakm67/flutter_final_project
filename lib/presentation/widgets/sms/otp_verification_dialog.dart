@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
+import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
 
 class OTPVerificationDialog extends StatelessWidget {
   final AuthStore authStore;
@@ -16,7 +17,7 @@ class OTPVerificationDialog extends StatelessWidget {
       content: TextField(
         onChanged: (value) => otpCode = value,
         keyboardType: TextInputType.number,
-        maxLength: 4,
+        maxLength: 6,
         decoration: InputDecoration(
           hintText: 'Код OTP',
           border: OutlineInputBorder(
@@ -27,20 +28,22 @@ class OTPVerificationDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () async {
-            if (otpCode.length == 4) {
+            if (otpCode.length == 4 || otpCode.length == 6) {
               try {
                 await authStore.verifyOTP(otpCode);
                 if (context.mounted && authStore.isLoggedIn) {
-                  Navigator.pop(context);
                   CustomSnackBar.show(
                     context: context,
                     message: 'Авторизація успішна!',
                     backgroundColor: Colors.lightGreen,
                     position: SnackBarPosition.top,
                   );
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(content: Text('Авторизація успішна!')),
-                  // );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CategoriesScreen(),
+                    ),
+                  );
                 }
               } catch (_) {
                 if (context.mounted) {
@@ -50,9 +53,6 @@ class OTPVerificationDialog extends StatelessWidget {
                     backgroundColor: Colors.redAccent,
                     position: SnackBarPosition.top,
                   );
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(content: Text('Невірний код підтвердження!')),
-                  // );
                 }
               }
             } else {
@@ -63,9 +63,6 @@ class OTPVerificationDialog extends StatelessWidget {
                   backgroundColor: Colors.redAccent,
                   position: SnackBarPosition.top,
                 );
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   const SnackBar(content: Text('Код має бути 4 цифри!')),
-                // );
               }
             }
           },
@@ -75,4 +72,3 @@ class OTPVerificationDialog extends StatelessWidget {
     );
   }
 }
-
