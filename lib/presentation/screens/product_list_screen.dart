@@ -10,6 +10,7 @@ import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.
 import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/bottom_cart_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_screen.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
@@ -329,14 +330,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       totalItems: totalItems,
                       totalPrice: totalPrice,
                       onOrder: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) =>
-                        //
-                        //         CheckoutScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CartPreviewScreen()),
+                        );
                       },
                     );
                   },

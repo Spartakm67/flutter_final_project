@@ -47,6 +47,22 @@ mixin _$CartStore on CartStoreBase, Store {
     });
   }
 
+  late final _$cartItemsAtom =
+      Atom(name: 'CartStoreBase.cartItems', context: context);
+
+  @override
+  ObservableList<ProductCounterHive> get cartItems {
+    _$cartItemsAtom.reportRead();
+    return super.cartItems;
+  }
+
+  @override
+  set cartItems(ObservableList<ProductCounterHive> value) {
+    _$cartItemsAtom.reportWrite(value, super.cartItems, () {
+      super.cartItems = value;
+    });
+  }
+
   late final _$totalCombinedOrderPriceAtom =
       Atom(name: 'CartStoreBase.totalCombinedOrderPrice', context: context);
 
@@ -81,6 +97,26 @@ mixin _$CartStore on CartStoreBase, Store {
         .reportWrite(value, _hiveBoxIsInitialized ? super.hiveBox : null, () {
       super.hiveBox = value;
       _hiveBoxIsInitialized = true;
+    });
+  }
+
+  late final _$productHiveBoxAtom =
+      Atom(name: 'CartStoreBase.productHiveBox', context: context);
+
+  @override
+  Box<ProductCounterHive> get productHiveBox {
+    _$productHiveBoxAtom.reportRead();
+    return super.productHiveBox;
+  }
+
+  bool _productHiveBoxIsInitialized = false;
+
+  @override
+  set productHiveBox(Box<ProductCounterHive> value) {
+    _$productHiveBoxAtom.reportWrite(
+        value, _productHiveBoxIsInitialized ? super.productHiveBox : null, () {
+      super.productHiveBox = value;
+      _productHiveBoxIsInitialized = true;
     });
   }
 
@@ -175,8 +211,10 @@ mixin _$CartStore on CartStoreBase, Store {
   String toString() {
     return '''
 counters: ${counters},
+cartItems: ${cartItems},
 totalCombinedOrderPrice: ${totalCombinedOrderPrice},
 hiveBox: ${hiveBox},
+productHiveBox: ${productHiveBox},
 products: ${products},
 totalItems: ${totalItems},
 totalPrice: ${totalPrice}

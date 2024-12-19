@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/data/models/poster/product.dart';
+import 'package:flutter_final_project/data/models/hive/product_counter_hive.dart';
 
 part 'cart_store.g.dart';
 
@@ -14,6 +15,9 @@ abstract class CartStoreBase with Store {
   @observable
   ObservableMap<String, int> counters = ObservableMap<String, int>();
 
+  @observable
+  ObservableList<ProductCounterHive> cartItems = ObservableList<ProductCounterHive>();
+
   @computed
   ObservableList<Product> get products => productStore.products;
 
@@ -23,12 +27,16 @@ abstract class CartStoreBase with Store {
   @observable
   late Box<Map> hiveBox;
 
+  @observable
+  late Box<ProductCounterHive> productHiveBox;
+
   @computed
   int get totalItems => counters.values.fold(0, (prev, next) => prev + next);
 
   @action
   Future<void> initHive() async {
     hiveBox = await Hive.openBox<Map>('cart');
+    productHiveBox = await Hive.openBox<ProductCounterHive>('cartProducts');
     loadCartFromHive();
   }
 
@@ -42,6 +50,8 @@ abstract class CartStoreBase with Store {
 
     final totalPriceMap = hiveBox.get('totalPrice');
     totalCombinedOrderPrice = totalPriceMap?['value'] as double? ?? 0.0;
+
+    cartItems = ObservableList.of(productHiveBox.values.toList());
   }
 
   @action
@@ -51,12 +61,27 @@ abstract class CartStoreBase with Store {
       counters.map((key, value) => MapEntry(key, value)),
     );
     await hiveBox.put('totalPrice', {'value': totalCombinedOrderPrice});
+    await productHiveBox.clear();
+    for (var item in cartItems) {
+      await productHiveBox.add(item);
+    }
   }
 
   @action
   void incrementCounter(String productId) {
     counters[productId] = (counters[productId] ?? 0) + 1;
     totalCombinedOrderPrice += _getProductPrice(productId);
+
+    final product = _getProduct(productId);
+    if (counters[productId] == 1) {
+      cartItems.add(ProductCounterHive(
+        productId: productId,
+        productName: product.productName,
+        price: product.price,
+        photo: product.photo,
+      ),);
+    }
+
     saveCartToHive();
   }
 
@@ -65,6 +90,11 @@ abstract class CartStoreBase with Store {
     if ((counters[productId] ?? 0) > 0) {
       counters[productId] = counters[productId]! - 1;
       totalCombinedOrderPrice -= _getProductPrice(productId);
+
+      if (counters[productId] == 0) {
+        cartItems.removeWhere((item) => item.productId == productId);
+      }
+
       saveCartToHive();
     }
   }
@@ -72,12 +102,19 @@ abstract class CartStoreBase with Store {
   @action
   Future<void> clearCart() async {
     counters.clear();
+    cartItems.clear();
     await hiveBox.delete('items');
     await hiveBox.delete('totalPrice');
+    await productHiveBox.clear();
   }
 
   double _getProductPrice(String productId) {
-    final product = productStore.products.firstWhere(
+    final product = _getProduct(productId);
+    return product.price / 100;
+  }
+
+  Product _getProduct(String productId) {
+    return productStore.products.firstWhere(
       (p) => p.productId == productId,
       orElse: () => Product(
         categoryProductId: '',
@@ -92,7 +129,6 @@ abstract class CartStoreBase with Store {
         ingredients: [],
       ),
     );
-    return product.price / 100;
   }
 
   @computed
@@ -122,12 +158,15 @@ abstract class CartStoreBase with Store {
 
   Future<void> closeHive() async {
     await hiveBox.close();
+    await productHiveBox.close();
   }
 
   @action
   Future<void> resetCart() async {
     counters.clear();
+    cartItems.clear();
     await hiveBox.clear();
+    await productHiveBox.clear();
   }
 
   @action

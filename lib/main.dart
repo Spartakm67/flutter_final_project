@@ -4,6 +4,7 @@ import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/domain/store/firebase_store/firebase_store.dart';
+import 'package:flutter_final_project/data/models/hive/product_counter_hive.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -16,6 +17,7 @@ void main() async {
   await firebaseStore.initialize();
 
   await Hive.initFlutter();
+  Hive.registerAdapter(ProductCounterHiveAdapter());
   final productStore = ProductStore();
   final cartStore = CartStore(productStore);
   final authStore = AuthStore();
