@@ -22,6 +22,8 @@ void main() async {
   final cartStore = CartStore(productStore);
   final authStore = AuthStore();
   await cartStore.initHive();
+  // await cartStore.resetCart();
+  // cartStore.resetTotalCombinedOrderPrice();
 
   runApp(
     MultiProvider(
