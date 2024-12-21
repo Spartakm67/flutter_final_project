@@ -23,13 +23,13 @@ mixin _$CartStore on CartStoreBase, Store {
       (_$totalItemsComputed ??= Computed<int>(() => super.totalItems,
               name: 'CartStoreBase.totalItems'))
           .value;
-  Computed<double>? _$totalPriceComputed;
+  Computed<double>? _$totalCombinedOrderPriceComputed;
 
   @override
-  double get totalPrice =>
-      (_$totalPriceComputed ??= Computed<double>(() => super.totalPrice,
-              name: 'CartStoreBase.totalPrice'))
-          .value;
+  double get totalCombinedOrderPrice => (_$totalCombinedOrderPriceComputed ??=
+          Computed<double>(() => super.totalCombinedOrderPrice,
+              name: 'CartStoreBase.totalCombinedOrderPrice'))
+      .value;
 
   late final _$countersAtom =
       Atom(name: 'CartStoreBase.counters', context: context);
@@ -60,23 +60,6 @@ mixin _$CartStore on CartStoreBase, Store {
   set cartItems(ObservableList<ProductCounterHive> value) {
     _$cartItemsAtom.reportWrite(value, super.cartItems, () {
       super.cartItems = value;
-    });
-  }
-
-  late final _$totalCombinedOrderPriceAtom =
-      Atom(name: 'CartStoreBase.totalCombinedOrderPrice', context: context);
-
-  @override
-  double get totalCombinedOrderPrice {
-    _$totalCombinedOrderPriceAtom.reportRead();
-    return super.totalCombinedOrderPrice;
-  }
-
-  @override
-  set totalCombinedOrderPrice(double value) {
-    _$totalCombinedOrderPriceAtom
-        .reportWrite(value, super.totalCombinedOrderPrice, () {
-      super.totalCombinedOrderPrice = value;
     });
   }
 
@@ -186,38 +169,15 @@ mixin _$CartStore on CartStoreBase, Store {
   }
 
   @override
-  void updateTotalCombinedOrderPrice(double categoryTotal) {
-    final _$actionInfo = _$CartStoreBaseActionController.startAction(
-        name: 'CartStoreBase.updateTotalCombinedOrderPrice');
-    try {
-      return super.updateTotalCombinedOrderPrice(categoryTotal);
-    } finally {
-      _$CartStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void resetTotalCombinedOrderPrice() {
-    final _$actionInfo = _$CartStoreBaseActionController.startAction(
-        name: 'CartStoreBase.resetTotalCombinedOrderPrice');
-    try {
-      return super.resetTotalCombinedOrderPrice();
-    } finally {
-      _$CartStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 counters: ${counters},
 cartItems: ${cartItems},
-totalCombinedOrderPrice: ${totalCombinedOrderPrice},
 hiveBox: ${hiveBox},
 productHiveBox: ${productHiveBox},
 products: ${products},
 totalItems: ${totalItems},
-totalPrice: ${totalPrice}
+totalCombinedOrderPrice: ${totalCombinedOrderPrice}
     ''';
   }
 }

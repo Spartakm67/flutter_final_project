@@ -16,13 +16,11 @@ abstract class CartStoreBase with Store {
   ObservableMap<String, int> counters = ObservableMap<String, int>();
 
   @observable
-  ObservableList<ProductCounterHive> cartItems = ObservableList<ProductCounterHive>();
+  ObservableList<ProductCounterHive> cartItems =
+      ObservableList<ProductCounterHive>();
 
   @computed
   ObservableList<Product> get products => productStore.products;
-
-  @observable
-  double totalCombinedOrderPrice = 0.0;
 
   @observable
   late Box<Map> hiveBox;
@@ -48,9 +46,6 @@ abstract class CartStoreBase with Store {
       storedItems.map((key, value) => MapEntry(key, value as int)),
     );
 
-    final totalPriceMap = hiveBox.get('totalPrice');
-    totalCombinedOrderPrice = totalPriceMap?['value'] as double? ?? 0.0;
-
     cartItems = ObservableList.of(productHiveBox.values.toList());
   }
 
@@ -60,7 +55,7 @@ abstract class CartStoreBase with Store {
       'items',
       counters.map((key, value) => MapEntry(key, value)),
     );
-    await hiveBox.put('totalPrice', {'value': totalCombinedOrderPrice});
+
     await productHiveBox.clear();
     for (var item in cartItems) {
       await productHiveBox.add(item);
@@ -70,18 +65,17 @@ abstract class CartStoreBase with Store {
   @action
   void incrementCounter(String productId) {
     counters[productId] = (counters[productId] ?? 0) + 1;
-    // totalCombinedOrderPrice += _getProductPrice(productId);
-    final productPrice = _getProductPrice(productId);
-    totalCombinedOrderPrice += productPrice;
 
-    final product = _getProduct(productId);
     if (counters[productId] == 1) {
-      cartItems.add(ProductCounterHive(
-        productId: productId,
-        productName: product.productName,
-        price: product.price,
-        photo: product.photo,
-      ),);
+      final product = _getProduct(productId);
+      cartItems.add(
+        ProductCounterHive(
+          productId: productId,
+          productName: product.productName,
+          price: product.price,
+          photo: product.photo,
+        ),
+      );
     }
 
     saveCartToHive();
@@ -91,9 +85,6 @@ abstract class CartStoreBase with Store {
   void decrementCounter(String productId) {
     if ((counters[productId] ?? 0) > 0) {
       counters[productId] = counters[productId]! - 1;
-      // totalCombinedOrderPrice -= _getProductPrice(productId);
-      final productPrice = _getProductPrice(productId);
-      totalCombinedOrderPrice -= productPrice;
 
       if (counters[productId] == 0) {
         cartItems.removeWhere((item) => item.productId == productId);
@@ -110,11 +101,6 @@ abstract class CartStoreBase with Store {
     await hiveBox.delete('items');
     await hiveBox.delete('totalPrice');
     await productHiveBox.clear();
-  }
-
-  double _getProductPrice(String productId) {
-    final product = _getProduct(productId);
-    return product.price / 100;
   }
 
   Product _getProduct(String productId) {
@@ -136,20 +122,10 @@ abstract class CartStoreBase with Store {
   }
 
   @computed
-  double get totalPrice {
-    final total = counters.entries.fold(
-      0.0,
-          (sum, entry) {
-        final productPrice = _getProductPrice(entry.key);
-        return sum + (productPrice * entry.value);
-      },
-    );
-    return total;
-  }
-
-  @action
-  void updateTotalCombinedOrderPrice(double categoryTotal) {
-    totalCombinedOrderPrice += categoryTotal;
+  double get totalCombinedOrderPrice {
+    return cartItems.fold(0.0, (sum, item) {
+      return sum + (item.price / 100) * getItemCount(item.productId);
+    });
   }
 
   bool isItemInCart(String productId) {
@@ -171,10 +147,5 @@ abstract class CartStoreBase with Store {
     cartItems.clear();
     await hiveBox.clear();
     await productHiveBox.clear();
-  }
-
-  @action
-  void resetTotalCombinedOrderPrice() {
-    totalCombinedOrderPrice = 0.0;
   }
 }

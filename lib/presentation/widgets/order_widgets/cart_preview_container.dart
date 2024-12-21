@@ -94,7 +94,7 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                             ),
                           ),
                           Text(
-                            'Сума: ${cartStore.totalPrice.toStringAsFixed(0)} грн',
+                            'Сума: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
