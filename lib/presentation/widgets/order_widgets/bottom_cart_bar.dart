@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_final_project/services/get_item_text.dart';
 
 class BottomCartBar extends StatelessWidget {
   final int totalItems;
@@ -11,12 +12,6 @@ class BottomCartBar extends StatelessWidget {
     required this.totalPrice,
     required this.onOrder,
   });
-
-  String _getItemText(int count) {
-    if (count == 1) return "товар";
-    if (count >= 2 && count <= 4) return "товари";
-    return "товарів";
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +34,7 @@ class BottomCartBar extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                _getItemText(totalItems),
+                GetItemText.getItemText(totalItems),
                 style: const TextStyle(fontSize: 22, color: Colors.white),
               ),
             ],

@@ -4,18 +4,19 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 
-class CartPreviewScreen extends StatelessWidget {
-  const CartPreviewScreen({super.key});
+class CartPreviewOrderList extends StatelessWidget {
+  const CartPreviewOrderList({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Вибрані товари'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Вибрані товари'),
+      // ),
       body: Observer(
         builder: (_) {
           final items = cartStore.cartItems;
@@ -105,8 +106,8 @@ class CartPreviewScreen extends StatelessWidget {
                                     },
                                   ),
                                   const SizedBox(width: 4),
-                                  IconButton(
-                                    icon: const Icon(Icons.add),
+                                  CustomIconButton(
+                                    icon: Icons.add,
                                     onPressed: () {
                                       cartStore
                                           .incrementCounter(product.productId);

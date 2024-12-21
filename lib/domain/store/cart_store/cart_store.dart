@@ -70,7 +70,9 @@ abstract class CartStoreBase with Store {
   @action
   void incrementCounter(String productId) {
     counters[productId] = (counters[productId] ?? 0) + 1;
-    totalCombinedOrderPrice += _getProductPrice(productId);
+    // totalCombinedOrderPrice += _getProductPrice(productId);
+    final productPrice = _getProductPrice(productId);
+    totalCombinedOrderPrice += productPrice;
 
     final product = _getProduct(productId);
     if (counters[productId] == 1) {
@@ -89,7 +91,9 @@ abstract class CartStoreBase with Store {
   void decrementCounter(String productId) {
     if ((counters[productId] ?? 0) > 0) {
       counters[productId] = counters[productId]! - 1;
-      totalCombinedOrderPrice -= _getProductPrice(productId);
+      // totalCombinedOrderPrice -= _getProductPrice(productId);
+      final productPrice = _getProductPrice(productId);
+      totalCombinedOrderPrice -= productPrice;
 
       if (counters[productId] == 0) {
         cartItems.removeWhere((item) => item.productId == productId);
