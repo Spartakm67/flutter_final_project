@@ -28,14 +28,22 @@ abstract class CartStoreBase with Store {
   @observable
   late Box<ProductCounterHive> productHiveBox;
 
+  @observable
+  String? comment;
+
+  @observable
+  late Box<String> commentsBox;
+
   @computed
   int get totalItems => counters.values.fold(0, (prev, next) => prev + next);
 
   @action
   Future<void> initHive() async {
     hiveBox = await Hive.openBox<Map>('cart');
+    commentsBox = await Hive.openBox<String>('comments');
     productHiveBox = await Hive.openBox<ProductCounterHive>('cartProducts');
     loadCartFromHive();
+    loadCommentFromHive();
   }
 
   @action
@@ -60,6 +68,18 @@ abstract class CartStoreBase with Store {
     for (var item in cartItems) {
       await productHiveBox.add(item);
     }
+  }
+
+  @action
+  Future<void> saveCommentToHive(String? comment) async {
+    this.comment = comment;
+    await commentsBox.put('comment', comment ?? '');
+  }
+
+  @action
+  Future<void> loadCommentFromHive() async {
+    final storedComment = commentsBox.get('comment');
+    comment = storedComment ?? '';
   }
 
   @action
@@ -139,6 +159,7 @@ abstract class CartStoreBase with Store {
   Future<void> closeHive() async {
     await hiveBox.close();
     await productHiveBox.close();
+    await commentsBox.close();
   }
 
   @action
@@ -147,5 +168,13 @@ abstract class CartStoreBase with Store {
     cartItems.clear();
     await hiveBox.clear();
     await productHiveBox.clear();
+    await commentsBox.clear();
+  }
+
+  @action
+  Future<void> completeOrder() async {
+    // Тут можна виконати дії після виконання замовлення
+    await resetCart();  // Очистити корзину та коментарі
+    // Інші дії, наприклад, збереження інформації про замовлення
   }
 }

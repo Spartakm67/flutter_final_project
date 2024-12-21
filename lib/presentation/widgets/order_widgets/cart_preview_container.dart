@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
+import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_order_list.dart';
 
 class CartPreviewContainer extends StatefulWidget {
@@ -46,7 +47,7 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
         duration: const Duration(milliseconds: 300),
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.9,
+          height: MediaQuery.of(context).size.height * 0.85,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -59,46 +60,73 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
           ),
           child: Column(
             children: [
-              // Верхня панель із кнопкою закриття
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: _closeWidget,
-                  ),
-                ],
-              ),
-              // Список товарів
-              const Expanded(
-                child: CartPreviewOrderList(),
-              ),
-              // Нижній бар із загальною сумою та кнопкою переходу до оформлення
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.grey,
+                          ),
+                          iconSize: 32,
+                          onPressed: _closeWidget,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withAlpha(30),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Вартість доставлення 50 грн.\n'
+                          'Доставимо безкоштовно при замовленні від 250 грн.',
+                          style: TextStyles.cartText,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Expanded(
+                child: CartPreviewOrderList(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(22.0),
+                child: Column(
+                  children: [
                     Observer(
                       builder: (_) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
                             '${cartStore.totalItems}',
-                            style: const TextStyle(fontSize: 18),
+                            style: TextStyles.cartText,
                           ),
+                          const SizedBox(width: 12,),
                           Text(
                             GetItemText.getItemText(cartStore.totalItems),
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.black,
-                            ),
+                            style: TextStyles.cartText,
                           ),
+                          const Spacer(),
                           Text(
                             'Сума: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyles.cartText,
                           ),
                         ],
                       ),
@@ -106,9 +134,20 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Логіка переходу до оформлення
+                        null;
                       },
-                      child: const Text('Перейти до оформлення'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        backgroundColor: Colors.black.withAlpha(100),
+                      ),
+                      child: const Text('Перейти до оформлення',
+                        style: TextStyle(fontSize: 18, color: Colors.white,),),
                     ),
                   ],
                 ),

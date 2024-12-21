@@ -32,6 +32,12 @@ class TextStyles {
     fontSize: 16,
   );
 
+  static const TextStyle cartText = TextStyle(
+    color: Colors.blueGrey,
+    fontSize: 16,
+    decoration: TextDecoration.none,
+  );
+
   static const TextStyle spanKeyText = TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 16,

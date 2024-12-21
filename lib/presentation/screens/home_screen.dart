@@ -5,6 +5,8 @@ import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/presentation/widgets/sms/code_option_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
@@ -355,7 +357,10 @@ class HomeScreenState extends State<HomeScreen>
                   if (cartStore.totalItems > 0)
                     GestureDetector(
                       onTap: () {
-                        print("Перехід до корзини");
+                        CustomDialog.show(
+                          context: context,
+                          builder: (_) => const CartPreviewContainer(),
+                        );
                       },
                       child: Row(
                         children: [

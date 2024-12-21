@@ -9,6 +9,8 @@ import 'package:flutter_final_project/domain/store/home_store/home_screen_store.
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +64,10 @@ class CategoriesScreenState extends State<CategoriesScreen> {
               return cartStore.totalItems > 0
                   ? GestureDetector(
                       onTap: () {
-                        print("Перехід до корзини");
+                        CustomDialog.show(
+                          context: context,
+                          builder: (_) => const CartPreviewContainer(),
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(right: 16.0),

@@ -103,6 +103,42 @@ mixin _$CartStore on CartStoreBase, Store {
     });
   }
 
+  late final _$commentAtom =
+      Atom(name: 'CartStoreBase.comment', context: context);
+
+  @override
+  String? get comment {
+    _$commentAtom.reportRead();
+    return super.comment;
+  }
+
+  @override
+  set comment(String? value) {
+    _$commentAtom.reportWrite(value, super.comment, () {
+      super.comment = value;
+    });
+  }
+
+  late final _$commentsBoxAtom =
+      Atom(name: 'CartStoreBase.commentsBox', context: context);
+
+  @override
+  Box<String> get commentsBox {
+    _$commentsBoxAtom.reportRead();
+    return super.commentsBox;
+  }
+
+  bool _commentsBoxIsInitialized = false;
+
+  @override
+  set commentsBox(Box<String> value) {
+    _$commentsBoxAtom.reportWrite(
+        value, _commentsBoxIsInitialized ? super.commentsBox : null, () {
+      super.commentsBox = value;
+      _commentsBoxIsInitialized = true;
+    });
+  }
+
   late final _$initHiveAsyncAction =
       AsyncAction('CartStoreBase.initHive', context: context);
 
@@ -127,6 +163,24 @@ mixin _$CartStore on CartStoreBase, Store {
     return _$saveCartToHiveAsyncAction.run(() => super.saveCartToHive());
   }
 
+  late final _$saveCommentToHiveAsyncAction =
+      AsyncAction('CartStoreBase.saveCommentToHive', context: context);
+
+  @override
+  Future<void> saveCommentToHive(String? comment) {
+    return _$saveCommentToHiveAsyncAction
+        .run(() => super.saveCommentToHive(comment));
+  }
+
+  late final _$loadCommentFromHiveAsyncAction =
+      AsyncAction('CartStoreBase.loadCommentFromHive', context: context);
+
+  @override
+  Future<void> loadCommentFromHive() {
+    return _$loadCommentFromHiveAsyncAction
+        .run(() => super.loadCommentFromHive());
+  }
+
   late final _$clearCartAsyncAction =
       AsyncAction('CartStoreBase.clearCart', context: context);
 
@@ -141,6 +195,14 @@ mixin _$CartStore on CartStoreBase, Store {
   @override
   Future<void> resetCart() {
     return _$resetCartAsyncAction.run(() => super.resetCart());
+  }
+
+  late final _$completeOrderAsyncAction =
+      AsyncAction('CartStoreBase.completeOrder', context: context);
+
+  @override
+  Future<void> completeOrder() {
+    return _$completeOrderAsyncAction.run(() => super.completeOrder());
   }
 
   late final _$CartStoreBaseActionController =
@@ -175,6 +237,8 @@ counters: ${counters},
 cartItems: ${cartItems},
 hiveBox: ${hiveBox},
 productHiveBox: ${productHiveBox},
+comment: ${comment},
+commentsBox: ${commentsBox},
 products: ${products},
 totalItems: ${totalItems},
 totalCombinedOrderPrice: ${totalCombinedOrderPrice}
