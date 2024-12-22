@@ -45,6 +45,7 @@ class _OrderContainerState extends State<OrderContainer> {
 
     return Center(
       child: AnimatedOpacity(
+
         opacity: _isVisible ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
         child: Container(

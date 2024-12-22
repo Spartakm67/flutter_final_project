@@ -27,6 +27,7 @@ class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Alignment> _alignAnimation;
+  late TextEditingController phoneController;
 
   @override
   void initState() {
@@ -47,17 +48,18 @@ class HomeScreenState extends State<HomeScreen>
     );
 
     _animationController.forward();
+    phoneController = TextEditingController();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController phoneController = TextEditingController();
     final authStore = Provider.of<AuthStore>(context);
     final cartStore = Provider.of<CartStore>(context);
 
