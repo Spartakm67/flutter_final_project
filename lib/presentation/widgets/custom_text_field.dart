@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? suffixIcon;
   final VoidCallback? onSuffixIconPressed;
   final Function(String)? onChanged;
+  final TextInputType? keyboardType;
 
   const CustomTextField({
     super.key,
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.onSuffixIconPressed,
     this.onChanged,
+    this.keyboardType,
   });
 
   @override

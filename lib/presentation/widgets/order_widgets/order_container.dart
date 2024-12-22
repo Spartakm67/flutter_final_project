@@ -4,7 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_order_list.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_order_widget.dart';
 
 class OrderContainer extends StatefulWidget {
   const OrderContainer({super.key});
@@ -40,12 +40,9 @@ class _OrderContainerState extends State<OrderContainer> {
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context, listen: false);
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController phoneController = TextEditingController();
 
     return Center(
       child: AnimatedOpacity(
-
         opacity: _isVisible ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
         child: Container(
@@ -123,7 +120,7 @@ class _OrderContainerState extends State<OrderContainer> {
                 ),
               ),
               const Expanded(
-                child: CartPreviewOrderList(),
+                child: CartOrderWidget(),
               ),
               Padding(
                 padding: const EdgeInsets.all(22.0),
