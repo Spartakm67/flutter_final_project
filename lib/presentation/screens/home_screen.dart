@@ -58,7 +58,6 @@ class HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final TextEditingController phoneController = TextEditingController();
-    final store = widget.store;
     final authStore = Provider.of<AuthStore>(context);
     final cartStore = Provider.of<CartStore>(context);
 

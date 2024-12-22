@@ -38,6 +38,20 @@ class TextStyles {
     decoration: TextDecoration.none,
   );
 
+  static const TextStyle cartBottomText = TextStyle(
+    color: Colors.blueGrey,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    decoration: TextDecoration.none,
+  );
+
+  static const TextStyle oderAppBarText = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Colors.grey,
+    decoration: TextDecoration.none,
+  );
+
   static const TextStyle spanKeyText = TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 16,

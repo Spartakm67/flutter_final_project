@@ -4,18 +4,16 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
-import 'package:flutter_final_project/presentation/widgets/order_widgets/order_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_order_list.dart';
 
-class CartPreviewContainer extends StatefulWidget {
-  const CartPreviewContainer({super.key});
+class OrderContainer extends StatefulWidget {
+  const OrderContainer({super.key});
 
   @override
-  State<CartPreviewContainer> createState() => _CartPreviewContainerState();
+  State<OrderContainer> createState() => _OrderContainerState();
 }
 
-class _CartPreviewContainerState extends State<CartPreviewContainer> {
+class _OrderContainerState extends State<OrderContainer> {
   bool _isVisible = false;
 
   @override
@@ -42,6 +40,8 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context, listen: false);
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController phoneController = TextEditingController();
 
     return Center(
       child: AnimatedOpacity(
@@ -67,15 +67,31 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.grey,
+                          ),
+                          iconSize: 32,
+                          onPressed: _closeWidget,
+                        ),
+                        const Text('ЗАМОВЛЕННЯ', style: TextStyles.oderAppBarText,),
                         IconButton(
                           icon: const Icon(
                             Icons.close,
                             color: Colors.grey,
                           ),
                           iconSize: 32,
-                          onPressed: _closeWidget,
+                          onPressed: () {
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => PreviousPage()),
+                            // );
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
                         ),
                       ],
                     ),
@@ -96,7 +112,7 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                         padding: EdgeInsets.all(8.0),
                         child: Text(
                           'Вартість доставлення 50 грн.\n'
-                          'Доставимо безкоштовно при замовленні від 250 грн.',
+                              'Доставимо безкоштовно при замовленні від 250 грн.',
                           style: TextStyles.cartText,
                           textAlign: TextAlign.center,
                         ),
@@ -136,23 +152,20 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        CustomDialog.show(
-                          context: context,
-                          builder: (_) => const OrderContainer(),
-                        );
+                        null;
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,
-                          horizontal: 20,
+                          horizontal: 40,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         backgroundColor: Colors.black.withAlpha(100),
                       ),
-                      child: const Text('Перейти до оформлення',
-                        style: TextStyle(fontSize: 18, color: Colors.white,),),
+                      child: const Text('Оформити',
+                        style: TextStyle(fontSize: 20, color: Colors.white,),),
                     ),
                   ],
                 ),
