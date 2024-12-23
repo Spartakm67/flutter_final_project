@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onSuffixIconPressed;
   final Function(String)? onChanged;
   final TextInputType? keyboardType;
+  final InputDecoration? decoration;
 
   const CustomTextField({
     super.key,
@@ -20,41 +21,39 @@ class CustomTextField extends StatelessWidget {
     this.onSuffixIconPressed,
     this.onChanged,
     this.keyboardType,
+    this.decoration,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: labelText,
-          hintText: hintText,
-          labelStyle: const TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.grey),
-          ),
-          filled: true,
-          fillColor: Colors.grey[200],
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-          prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: Colors.grey) : null,
-          suffixIcon: suffixIcon != null
-              ? IconButton(
-            icon: Icon(suffixIcon, color: Colors.grey),
-            onPressed: onSuffixIconPressed,
-          )
-              : null,
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        labelStyle: const TextStyle(color: Colors.grey),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Colors.grey),
         ),
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.black,
-        ),
-        maxLines: null,
-        keyboardType: TextInputType.multiline,
-        onChanged: onChanged,
+        filled: true,
+        fillColor: Colors.grey[200],
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: Colors.grey) : null,
+        suffixIcon: suffixIcon != null
+            ? IconButton(
+          icon: Icon(suffixIcon, color: Colors.grey),
+          onPressed: onSuffixIconPressed,
+        )
+            : null,
       ),
+      style: const TextStyle(
+        fontSize: 16,
+        color: Colors.black,
+      ),
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      onChanged: onChanged,
     );
   }
 }

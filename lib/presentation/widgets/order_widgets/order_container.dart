@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_order_widget.dart';
 
 class OrderContainer extends StatefulWidget {
@@ -75,7 +76,10 @@ class _OrderContainerState extends State<OrderContainer> {
                           iconSize: 32,
                           onPressed: _closeWidget,
                         ),
-                        const Text('ЗАМОВЛЕННЯ', style: TextStyles.oderAppBarText,),
+                        const Text(
+                          'ЗАМОВЛЕННЯ',
+                          style: TextStyles.oderAppBarText,
+                        ),
                         IconButton(
                           icon: const Icon(
                             Icons.close,
@@ -96,26 +100,6 @@ class _OrderContainerState extends State<OrderContainer> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withAlpha(30),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Вартість доставлення 50 грн.\n'
-                              'Доставимо безкоштовно при замовленні від 250 грн.',
-                          style: TextStyles.cartText,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -134,7 +118,9 @@ class _OrderContainerState extends State<OrderContainer> {
                             '${cartStore.totalItems}',
                             style: TextStyles.cartBottomText,
                           ),
-                          const SizedBox(width: 12,),
+                          const SizedBox(
+                            width: 12,
+                          ),
                           Text(
                             GetItemText.getItemText(cartStore.totalItems),
                             style: TextStyles.cartBottomText,
@@ -162,8 +148,13 @@ class _OrderContainerState extends State<OrderContainer> {
                         ),
                         backgroundColor: Colors.black.withAlpha(100),
                       ),
-                      child: const Text('Оформити',
-                        style: TextStyle(fontSize: 20, color: Colors.white,),),
+                      child: const Text(
+                        'Оформити',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),

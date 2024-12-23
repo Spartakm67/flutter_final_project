@@ -174,18 +174,21 @@ class _CartPreviewOrderListState extends State<CartPreviewOrderList> {
                   ),
                 ),
               ),
-              CustomTextField(
-                controller: commentController,
-                labelText: 'Коментар до замовлення',
-                prefixIcon: Icons.comment,
-                suffixIcon: Icons.delete_forever,
-                onSuffixIconPressed: () {
-                  commentController.clear();
-                  cartStore?.saveCommentToHive('');
-                },
-                onChanged: (value) {
-                  cartStore?.saveCommentToHive(value);
-                },
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: CustomTextField(
+                  controller: commentController,
+                  labelText: 'Коментар до замовлення',
+                  prefixIcon: Icons.comment,
+                  suffixIcon: Icons.delete_forever,
+                  onSuffixIconPressed: () {
+                    commentController.clear();
+                    cartStore?.saveCommentToHive('');
+                  },
+                  onChanged: (value) {
+                    cartStore?.saveCommentToHive(value);
+                  },
+                ),
               ),
             ],
           );

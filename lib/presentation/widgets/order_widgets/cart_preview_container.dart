@@ -5,6 +5,7 @@ import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_order_list.dart';
 
@@ -82,25 +83,14 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withAlpha(30),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Вартість доставлення 50 грн.\n'
-                          'Доставимо безкоштовно при замовленні від 250 грн.',
-                          style: TextStyles.cartText,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                    CustomContainer(
+                      backgroundColor: Colors.black.withAlpha(30),
+                      children: const [
+                        Text(
+                        'Вартість доставлення 50 грн.\nДоставимо безкоштовно при замовленні від 250 грн.',
+                        style: TextStyles.cartText,
+                        textAlign: TextAlign.center,
+                      ),],
                     ),
                   ],
                 ),
