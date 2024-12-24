@@ -6,20 +6,21 @@ import 'package:flutter_final_project/presentation/widgets/custom_container.dart
 import 'package:flutter_final_project/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
-class CartOrderWidget extends StatefulWidget {
-  const CartOrderWidget({super.key});
+class OrderWidget extends StatefulWidget {
+  const OrderWidget({super.key});
 
   @override
-  State<CartOrderWidget> createState() => _CartOrderWidgetState();
+  State<OrderWidget> createState() => _OrderWidgetState();
 }
 
-class _CartOrderWidgetState extends State<CartOrderWidget> {
+class _OrderWidgetState extends State<OrderWidget> {
   late TextEditingController nameController;
   late TextEditingController phoneController;
   late TextEditingController addressController;
 
   CartStore? cartStore;
   bool _isInitialized = false;
+  late bool _isDelivery;
 
   @override
   void didChangeDependencies() {
@@ -31,6 +32,7 @@ class _CartOrderWidgetState extends State<CartOrderWidget> {
       phoneController = TextEditingController();
       addressController = TextEditingController();
       _isInitialized = true;
+      _isDelivery = true;
     }
   }
 
@@ -108,6 +110,99 @@ class _CartOrderWidgetState extends State<CartOrderWidget> {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(_isDelivery ? 'Доставлення' : 'Самовивіз'),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              color: _isDelivery
+                                  ? Colors.black.withAlpha(200)
+                                  : Colors.white,
+                              border: Border.all(
+                                color: Colors.black.withAlpha(200),
+                                width: 2.0,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12.0),
+                                bottomLeft: Radius.circular(12.0),
+                              ),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() => _isDelivery = true);
+                              },
+                              borderRadius:
+                                  BorderRadius.zero,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                  vertical: 10.0,
+                                ),
+                                child: Text(
+                                  'Доставлення',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: _isDelivery
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              color: !_isDelivery
+                                  ? Colors.black.withAlpha(200)
+                                  : Colors.white,
+                              border: Border.all(
+                                color: Colors.black.withAlpha(200),
+                                width: 2.0,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(12.0),
+                                bottomRight: Radius.circular(12.0),
+                              ),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() => _isDelivery = false);
+                              },
+                              borderRadius:
+                                  BorderRadius.zero,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                  vertical: 10.0,
+                                ),
+                                child: Text(
+                                  'Самовивіз',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: !_isDelivery
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     TextFormField(
                       controller: nameController,
                       decoration: const InputDecoration(
@@ -152,7 +247,7 @@ class _CartOrderWidgetState extends State<CartOrderWidget> {
                       backgroundColor: Colors.black.withAlpha(30),
                       children: const [
                         Text(
-                          'Вартість доставлення 50 грн.\nДоставимо безкоштовно при замовленні від 250 грн.',
+                          'Зараз наш заклад не працює.\nЗробіть замовлення, а ми приготуємо його завтра після 9:00.',
                           style: TextStyles.cartText,
                           textAlign: TextAlign.center,
                         ),

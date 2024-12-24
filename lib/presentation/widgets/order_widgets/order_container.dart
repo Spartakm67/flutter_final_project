@@ -5,7 +5,7 @@ import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
-import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_order_widget.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
 
 class OrderContainer extends StatefulWidget {
   const OrderContainer({super.key});
@@ -104,7 +104,7 @@ class _OrderContainerState extends State<OrderContainer> {
                 ),
               ),
               const Expanded(
-                child: CartOrderWidget(),
+                child: OrderWidget(),
               ),
               Padding(
                 padding: const EdgeInsets.all(22.0),
