@@ -1,57 +1,32 @@
-// import 'package:mobx/mobx.dart';
-// part 'order_store.g.dart';
-//
-// class OrderStore = OrderStoreBase with _$OrderStore;
-//
-// abstract class OrderStoreBase with Store {
-//   @observable
-//   ObservableList<OrderItem> orderItems = ObservableList<OrderItem>();
-//
-//   @computed
-//   double get totalPrice =>
-//       orderItems.fold(0, (sum, item) => sum + item.price * item.quantity);
-//
-//   @computed
-//   int get totalItems =>
-//       orderItems.fold(0, (sum, item) => sum + item.quantity);
-//
-//   @action
-//   void addItem(OrderItem item) {
-//     final existingItem = orderItems.firstWhere(
-//           (orderItem) => orderItem.id == item.id,
-//       orElse: () => null,
-//     );
-//     if (existingItem != null) {
-//       existingItem.quantity += 1;
-//     } else {
-//       orderItems.add(item);
-//     }
-//   }
-//
-//   @action
-//   void removeItem(String itemId) {
-//     orderItems.removeWhere((item) => item.id == itemId);
-//   }
-//
-//   @action
-//   void updateQuantity(String itemId, int quantity) {
-//     final item = orderItems.firstWhere((item) => item.id == itemId);
-//     if (item != null) {
-//       item.quantity = quantity;
-//     }
-//   }
-// }
-//
-// class OrderItem {
-//   final String id;
-//   final String name;
-//   final double price;
-//   int quantity;
-//
-//   OrderItem({
-//     required this.id,
-//     required this.name,
-//     required this.price,
-//     this.quantity = 1,
-//   });
-// }
+import 'package:mobx/mobx.dart';
+import 'package:flutter/material.dart';
+
+part 'order_store.g.dart';
+
+class OrderStore = OrderStoreBase with _$OrderStore;
+
+abstract class OrderStoreBase with Store {
+
+  @observable
+  Observable<TimeOfDay> _selectedTime = Observable(TimeOfDay(hour: 9, minute: 30));
+
+  @computed
+  TimeOfDay get selectedTime => _selectedTime.value;
+
+  List<TimeOfDay> availableTimes = List.generate(
+    23,
+        (index) {
+      int hours = 9 + (index ~/ 2);
+      int minutes = (index % 2 == 0) ? 0 : 30;
+      if (hours == 20 && minutes == 30) {
+        minutes = 0;
+      }
+      return TimeOfDay(hour: hours, minute: minutes);
+    },
+  ).skip(1).toList();
+
+  @action
+  void selectTime(TimeOfDay time) {
+    _selectedTime.value = time;
+  }
+}

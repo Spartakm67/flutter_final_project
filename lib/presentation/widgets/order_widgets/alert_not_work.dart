@@ -9,14 +9,12 @@ class AlertNotWork extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     const start = TimeOfDay(hour: 19, minute: 30);
-    const end = TimeOfDay(hour: 8, minute: 59);
+    const end = TimeOfDay(hour: 9, minute: 0);
 
-    final bool isClosedToday = (now.hour > start.hour ||
-        (now.hour == start.hour && now.minute >= start.minute)) &&
-        (now.hour < 24);
+    final bool isClosedToday = now.hour >= start.hour &&
+        now.hour < 24;
 
-    final bool isClosedTmrw = (now.hour >= 0 && now.hour < end.hour) ||
-        (now.hour == end.hour && now.minute <= end.minute);
+    final bool isClosedTmrw = (now.hour >= 24 && now.hour < end.hour);
 
     return Center(
       child: Column(
@@ -44,6 +42,7 @@ class AlertNotWork extends StatelessWidget {
                 ),
               ],
             ),
+          // if (!isClosedToday && !isClosedTmrw) const SizedBox(),
         ],
       ),
     );

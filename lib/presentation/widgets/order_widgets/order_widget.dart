@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
+import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/alert_not_work.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/time_picker_field.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class OrderWidget extends StatefulWidget {
@@ -15,6 +17,7 @@ class OrderWidget extends StatefulWidget {
 }
 
 class _OrderWidgetState extends State<OrderWidget> {
+  final OrderStore orderStore = OrderStore();
   late TextEditingController nameController;
   late TextEditingController phoneController;
   late TextEditingController addressController;
@@ -204,46 +207,28 @@ class _OrderWidgetState extends State<OrderWidget> {
                         ),
                       ],
                     ),
-                    TextFormField(
-                      controller: nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Ім’я',
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Будь ласка, введіть ім’я';
-                        }
-                        return null;
-                      },
+                    const SizedBox(height: 6,),
+                    CustomContainer(
+                      backgroundColor: Colors.black.withAlpha(0),
+                      padding: EdgeInsets.zero,
+                      children: [
+                        TextFormField(
+                          controller: addressController,
+                          decoration: const InputDecoration(
+                            labelText: 'Вкажіть адресу доставлення',
+                            prefixIcon: Icon(Icons.location_on),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Будь ласка, введіть адресу';
+                            }
+                            return null;
+                          },
+                        ),
+                        TimePickerField(store: orderStore),
+                      ],
                     ),
-                    TextFormField(
-                      controller: phoneController,
-                      decoration: const InputDecoration(
-                        labelText: 'Телефон',
-                        prefixIcon: Icon(Icons.phone),
-                      ),
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Будь ласка, введіть номер телефону';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      controller: addressController,
-                      decoration: const InputDecoration(
-                        labelText: 'Адреса',
-                        prefixIcon: Icon(Icons.location_on),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Будь ласка, введіть адресу';
-                        }
-                        return null;
-                      },
-                    ),
+                    const SizedBox(height: 6,),
                     const AlertNotWork(),
                   ],
                 ),
