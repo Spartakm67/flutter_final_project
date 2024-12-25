@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_text_field.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/alert_not_work.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class OrderWidget extends StatefulWidget {
@@ -243,16 +244,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                         return null;
                       },
                     ),
-                    CustomContainer(
-                      backgroundColor: Colors.black.withAlpha(30),
-                      children: const [
-                        Text(
-                          'Зараз наш заклад не працює.\nЗробіть замовлення, а ми приготуємо його завтра після 9:00.',
-                          style: TextStyles.cartText,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
+                    const AlertNotWork(),
                   ],
                 ),
               ),
