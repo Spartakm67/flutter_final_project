@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
+import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/domain/store/firebase_store/firebase_store.dart';
 import 'package:flutter_final_project/data/models/hive/product_counter_hive.dart';
@@ -21,6 +22,8 @@ void main() async {
   final productStore = ProductStore();
   final cartStore = CartStore(productStore);
   final authStore = AuthStore();
+  final orderStore = OrderStore();
+
   await cartStore.initHive();
 
   runApp(
@@ -34,6 +37,9 @@ void main() async {
         ),
         Provider<AuthStore>.value(
           value: authStore,
+        ),
+        Provider<OrderStore>.value(
+          value: orderStore,
         ),
         Provider<HomeScreenStore>(
           create: (_) => HomeScreenStore(),

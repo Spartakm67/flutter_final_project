@@ -1,13 +1,12 @@
-import 'package:mobx/mobx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 
 class TimePickerField extends StatelessWidget {
-  final OrderStore store;
+  final OrderStore orderStore;
 
-  const TimePickerField({super.key, required this.store});
+  const TimePickerField({super.key, required this.orderStore});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class TimePickerField extends StatelessWidget {
                 const SizedBox(width: 8.0),
                 Expanded(
                   child: Text(
-                    '${store.selectedTime.hour.toString().padLeft(2, '0')}:${store.selectedTime.minute.toString().padLeft(2, '0')}',
+                    '${orderStore.selectedTime.hour.toString().padLeft(2, '0')}:${orderStore.selectedTime.minute.toString().padLeft(2, '0')}',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 ),
@@ -45,18 +44,18 @@ class TimePickerField extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.9,
             width: MediaQuery.of(context).size.width * 0.70,
             child: ListView.separated(
-              itemCount: store.availableTimes.length,
+              itemCount: orderStore.availableTimes.length,
               separatorBuilder: (_, __) => const Divider(),
               itemBuilder: (context, index) {
-                final time = store.availableTimes[index];
-                final isSelected = time == store.selectedTime;
+                final time = orderStore.availableTimes[index];
+                final isSelected = time == orderStore.selectedTime;
                 return ListTile(
                   title: Text(
                     '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
                   ),
                   trailing: isSelected ? const Icon(Icons.check, color: Colors.green) : null,
                   onTap: () {
-                    store.selectTime(time);
+                    orderStore.selectTime(time);
                     Navigator.pop(context, time);
                   },
                 );
@@ -67,7 +66,7 @@ class TimePickerField extends StatelessWidget {
       },
     );
     if (selected != null) {
-      store.selectTime(selected);
+      orderStore.selectTime(selected);
     }
   }
 }
