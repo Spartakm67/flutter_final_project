@@ -2,30 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 
-class TimePickerField extends StatelessWidget {
+class PointPickerField extends StatelessWidget {
   final OrderStore orderStore;
 
-  const TimePickerField({super.key, required this.orderStore});
+  const PointPickerField({super.key, required this.orderStore});
 
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
         return GestureDetector(
-          onTap: () => _showTimePicker(context),
+          onTap: () => _showPointPicker(context),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                const Icon(Icons.access_time),
+                const Icon(Icons.restaurant_menu,
+                    size: 24.0, color: Colors.black,),
                 const SizedBox(width: 8.0),
                 Expanded(
                   child: Text(
-                    '${orderStore.selectedTime.hour.toString().padLeft(2, '0')}:${orderStore.selectedTime.minute.toString().padLeft(2, '0')}',
+                    orderStore.selectedPoint,
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 ),
-                const Icon(Icons.keyboard_arrow_down, size: 24.0, color: Colors.black),
+                const Icon(Icons.keyboard_arrow_down,
+                    size: 24.0, color: Colors.black,),
               ],
             ),
           ),
@@ -34,28 +36,28 @@ class TimePickerField extends StatelessWidget {
     );
   }
 
-  Future<void> _showTimePicker(BuildContext context) async {
-    final selected = await showDialog<TimeOfDay>(
+  Future<void> _showPointPicker(BuildContext context) async {
+    final selected = await showDialog<String>(
       context: context,
       builder: (context) {
         return Dialog(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.9,
+            height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width * 0.70,
             child: ListView.separated(
-              itemCount: orderStore.availableTimes.length,
+              itemCount: orderStore.availablePoints.length,
               separatorBuilder: (_, __) => const Divider(),
               itemBuilder: (context, index) {
-                final time = orderStore.availableTimes[index];
-                final isSelected = time == orderStore.selectedTime;
+                final point = orderStore.availablePoints[index];
+                final isSelected = point == orderStore.selectedPoint;
                 return ListTile(
-                  title: Text(
-                    '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
-                  ),
-                  trailing: isSelected ? const Icon(Icons.check, color: Colors.green) : null,
+                  title: Text(point),
+                  trailing: isSelected
+                      ? const Icon(Icons.check, color: Colors.green)
+                      : null,
                   onTap: () {
-                    orderStore.selectTime(time);
-                    Navigator.pop(context, time);
+                    orderStore.selectPoint(point);
+                    Navigator.pop(context, point);
                   },
                 );
               },
@@ -65,7 +67,7 @@ class TimePickerField extends StatelessWidget {
       },
     );
     if (selected != null) {
-      orderStore.selectTime(selected);
+      orderStore.selectPoint(selected);
     }
   }
 }

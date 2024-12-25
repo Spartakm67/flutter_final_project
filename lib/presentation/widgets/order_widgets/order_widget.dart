@@ -7,6 +7,7 @@ import 'package:flutter_final_project/presentation/widgets/custom_container.dart
 import 'package:flutter_final_project/presentation/widgets/order_widgets/delivery_option_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/alert_not_work.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/time_picker_field.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/point_picker_field.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class OrderWidget extends StatefulWidget {
@@ -152,6 +153,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                       backgroundColor: Colors.black.withAlpha(0),
                       padding: EdgeInsets.zero,
                       children: [
+                        if (_isDelivery)
                         TextFormField(
                           controller: addressController,
                           decoration: const InputDecoration(
@@ -165,9 +167,14 @@ class _OrderWidgetState extends State<OrderWidget> {
                             return null;
                           },
                         ),
-                        TimePickerField(
-                          orderStore: orderStore,
+                        if (!_isDelivery)
+                        PointPickerField(orderStore: orderStore),
+                        const Divider(
+                          color: Colors.grey,
+                          thickness: 1.0,
+                          height: 1.0,
                         ),
+                        TimePickerField(orderStore: orderStore),
                       ],
                     ),
                     const SizedBox(height: 8),

@@ -16,20 +16,43 @@ mixin _$OrderStore on OrderStoreBase, Store {
       (_$selectedTimeComputed ??= Computed<TimeOfDay>(() => super.selectedTime,
               name: 'OrderStoreBase.selectedTime'))
           .value;
+  Computed<String>? _$selectedPointComputed;
+
+  @override
+  String get selectedPoint =>
+      (_$selectedPointComputed ??= Computed<String>(() => super.selectedPoint,
+              name: 'OrderStoreBase.selectedPoint'))
+          .value;
 
   late final _$_selectedTimeAtom =
       Atom(name: 'OrderStoreBase._selectedTime', context: context);
 
   @override
-  Observable<TimeOfDay> get _selectedTime {
+  TimeOfDay get _selectedTime {
     _$_selectedTimeAtom.reportRead();
     return super._selectedTime;
   }
 
   @override
-  set _selectedTime(Observable<TimeOfDay> value) {
+  set _selectedTime(TimeOfDay value) {
     _$_selectedTimeAtom.reportWrite(value, super._selectedTime, () {
       super._selectedTime = value;
+    });
+  }
+
+  late final _$_selectedPointAtom =
+      Atom(name: 'OrderStoreBase._selectedPoint', context: context);
+
+  @override
+  String get _selectedPoint {
+    _$_selectedPointAtom.reportRead();
+    return super._selectedPoint;
+  }
+
+  @override
+  set _selectedPoint(String value) {
+    _$_selectedPointAtom.reportWrite(value, super._selectedPoint, () {
+      super._selectedPoint = value;
     });
   }
 
@@ -48,9 +71,21 @@ mixin _$OrderStore on OrderStoreBase, Store {
   }
 
   @override
+  void selectPoint(String point) {
+    final _$actionInfo = _$OrderStoreBaseActionController.startAction(
+        name: 'OrderStoreBase.selectPoint');
+    try {
+      return super.selectPoint(point);
+    } finally {
+      _$OrderStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-selectedTime: ${selectedTime}
+selectedTime: ${selectedTime},
+selectedPoint: ${selectedPoint}
     ''';
   }
 }

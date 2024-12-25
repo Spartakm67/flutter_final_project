@@ -11,10 +11,11 @@ class AlertNotWork extends StatelessWidget {
     const start = TimeOfDay(hour: 19, minute: 30);
     const end = TimeOfDay(hour: 9, minute: 0);
 
-    final bool isClosedToday = now.hour >= start.hour &&
-        now.hour < 24;
+    DateTime startDateTime = DateTime(now.year, now.month, now.day, start.hour, start.minute);
+    DateTime endDateTimeTomorrow = DateTime(now.year, now.month, now.day + 1, end.hour, end.minute);
 
-    final bool isClosedTmrw = (now.hour >= 24 && now.hour < end.hour);
+    final bool isClosedToday = now.isAfter(startDateTime) || now.isBefore(endDateTimeTomorrow);
+    final bool isClosedTomorrow = now.isBefore(endDateTimeTomorrow) && now.day != DateTime.now().day;
 
     return Center(
       child: Column(
@@ -31,7 +32,7 @@ class AlertNotWork extends StatelessWidget {
                 ),
               ],
             ),
-          if (isClosedTmrw)
+          if (isClosedTomorrow)
             CustomContainer(
               backgroundColor: Colors.black.withAlpha(30),
               children: const [
@@ -42,7 +43,6 @@ class AlertNotWork extends StatelessWidget {
                 ),
               ],
             ),
-          // if (!isClosedToday && !isClosedTmrw) const SizedBox(),
         ],
       ),
     );
