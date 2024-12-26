@@ -24,6 +24,16 @@ abstract class OrderStoreBase with Store {
     },
   ).skip(1).toList();
 
+  List<TimeOfDay> availablePointTimes = List.generate(
+    44,
+        (index) {
+      int totalMinutes = 9 * 60 + 15 + index * 15;
+      int hours = totalMinutes ~/ 60;
+      int minutes = totalMinutes % 60;
+      return TimeOfDay(hour: hours, minute: minutes);
+    },
+  ).skip(1).toList();
+
   @action
   void selectTime(TimeOfDay time) {
     _selectedTime = time;

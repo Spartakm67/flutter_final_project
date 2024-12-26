@@ -7,7 +7,7 @@ class CustomDialog {
     Color barrierColor = const Color(0x80000000),
     Duration transitionDuration = const Duration(milliseconds: 300),
     bool barrierDismissible = true,
-    String barrierLabel = 'Закрити', // Додано barrierLabel
+    String barrierLabel = 'Закрити',
   }) {
     showGeneralDialog(
       context: context,

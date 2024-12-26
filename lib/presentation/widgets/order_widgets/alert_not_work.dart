@@ -12,9 +12,15 @@ class AlertNotWork extends StatelessWidget {
     const end = TimeOfDay(hour: 9, minute: 0);
 
     DateTime startDateTime = DateTime(now.year, now.month, now.day, start.hour, start.minute);
-    DateTime endDateTimeTomorrow = DateTime(now.year, now.month, now.day + 1, end.hour, end.minute);
+    DateTime endDateTimeTomorrow = DateTime(
+      now.year,
+      now.month,
+      now.hour < end.hour ? now.day : now.day + 1,
+      end.hour,
+      end.minute,
+    );
 
-    final bool isClosedToday = now.isAfter(startDateTime) || now.isBefore(endDateTimeTomorrow);
+    final bool isClosedToday = now.isAfter(startDateTime) && now.isBefore(endDateTimeTomorrow);
     final bool isClosedTomorrow = now.isBefore(endDateTimeTomorrow) && now.day != DateTime.now().day;
 
     return Center(

@@ -8,6 +8,7 @@ import 'package:flutter_final_project/presentation/widgets/order_widgets/deliver
 import 'package:flutter_final_project/presentation/widgets/order_widgets/alert_not_work.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/time_picker_field.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/point_picker_field.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/time_point_picker_field.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class OrderWidget extends StatefulWidget {
@@ -174,7 +175,10 @@ class _OrderWidgetState extends State<OrderWidget> {
                           thickness: 1.0,
                           height: 1.0,
                         ),
+                        if (_isDelivery)
                         TimePickerField(orderStore: orderStore),
+                        if (!_isDelivery)
+                          TimePointPickerField(orderStore: orderStore),
                       ],
                     ),
                     const SizedBox(height: 8),
