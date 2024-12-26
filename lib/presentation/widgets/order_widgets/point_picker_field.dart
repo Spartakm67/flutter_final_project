@@ -42,9 +42,9 @@ class PointPickerField extends StatelessWidget {
       builder: (context) {
         return Dialog(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width * 0.70,
             child: ListView.separated(
+              shrinkWrap: true,
               itemCount: orderStore.availablePoints.length,
               separatorBuilder: (_, __) => const Divider(),
               itemBuilder: (context, index) {

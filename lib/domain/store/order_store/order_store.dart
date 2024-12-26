@@ -7,8 +7,6 @@ class OrderStore = OrderStoreBase with _$OrderStore;
 
 abstract class OrderStoreBase with Store {
 
-  // @observable
-  // TimeOfDay _selectedTime = TimeOfDay(hour: 9, minute: 30);
   @observable
   TimeOfDay _selectedTime = TimeOfDay(
     hour: DateTime.now().hour,
@@ -84,13 +82,10 @@ abstract class OrderStoreBase with Store {
       int hours = 9 + (index ~/ 2);
       int minutes = (index % 2 == 0) ? 0 : 30;
 
-      // Генерація часу
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
 
-      // Перевірка на неробочий час
       if (now.hour >= 20 || now.hour < 9) {
-        // Якщо зараз неробочий час, генеруємо час з 9:00
-        if (hours < 20) {
+              if (hours < 20) {
           return TimeOfDay(hour: hours, minute: minutes);
         }
       } else if (generatedTime.isAfter(now)) {
@@ -108,12 +103,9 @@ abstract class OrderStoreBase with Store {
       int hours = totalMinutes ~/ 60;
       int minutes = totalMinutes % 60;
 
-      // Генерація часу
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
 
-      // Перевірка на неробочий час
       if (now.hour >= 20 || now.hour < 9) {
-        // Якщо зараз неробочий час, генеруємо час з 9:00
         if (hours < 20) {
           return TimeOfDay(hour: hours, minute: minutes);
         }

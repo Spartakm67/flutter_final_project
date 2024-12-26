@@ -25,7 +25,8 @@ class TimePointPickerField extends StatelessWidget {
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 ),
-                const Icon(Icons.keyboard_arrow_down, size: 24.0, color: Colors.black),
+                const Icon(Icons.keyboard_arrow_down,
+                    size: 24.0, color: Colors.black),
               ],
             ),
           ),
@@ -40,7 +41,6 @@ class TimePointPickerField extends StatelessWidget {
       builder: (context) {
         return Dialog(
           child: SizedBox(
-             // height: MediaQuery.of(context).size.height * 0.9,
             width: MediaQuery.of(context).size.width * 0.70,
             child: ListView.separated(
               shrinkWrap: true,
@@ -53,7 +53,9 @@ class TimePointPickerField extends StatelessWidget {
                   title: Text(
                     '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
                   ),
-                  trailing: isSelected ? const Icon(Icons.check, color: Colors.green) : null,
+                  trailing: isSelected
+                      ? const Icon(Icons.check, color: Colors.green)
+                      : null,
                   onTap: () {
                     orderStore.selectTime(time);
                     Navigator.pop(context, time);

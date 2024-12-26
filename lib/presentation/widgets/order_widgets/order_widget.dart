@@ -133,6 +133,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             });
                           },
                           label: 'Доставлення',
+                          excludeRightBorder: true,
                         ),
                         DeliveryOptionContainer(
                           isSelected: !_isDelivery,
@@ -146,6 +147,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             });
                           },
                           label: 'Самовивіз',
+                          excludeLeftBorder: true,
                         ),
                       ],
                     ),
@@ -198,6 +200,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             });
                           },
                           label: 'Готівкою',
+                          excludeRightBorder: true,
                         ),
                         DeliveryOptionContainer(
                           isSelected: !_isCash,
@@ -211,6 +214,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             });
                           },
                           label: 'Карткою',
+                          excludeLeftBorder: true,
                         ),
                       ],
                     ),

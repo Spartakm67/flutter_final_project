@@ -5,6 +5,8 @@ class DeliveryOptionContainer extends StatelessWidget {
   final BorderRadius borderRadius;
   final VoidCallback onTap;
   final String label;
+  final bool excludeLeftBorder;
+  final bool excludeRightBorder;
 
   const DeliveryOptionContainer({
     super.key,
@@ -12,6 +14,8 @@ class DeliveryOptionContainer extends StatelessWidget {
     required this.borderRadius,
     required this.onTap,
     required this.label,
+    this.excludeLeftBorder = false,
+    this.excludeRightBorder = false,
   });
 
   @override
@@ -21,9 +25,15 @@ class DeliveryOptionContainer extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         decoration: BoxDecoration(
           color: isSelected ? Colors.black.withAlpha(200) : Colors.white,
-          border: Border.all(
-            color: Colors.black.withAlpha(200),
-            width: 2.0,
+          border: Border(
+            left: excludeLeftBorder
+                ? BorderSide.none
+                : BorderSide(color: Colors.black.withAlpha(200), width: 2.0),
+            top: BorderSide(color: Colors.black.withAlpha(200), width: 2.0),
+            right: excludeRightBorder
+                ? BorderSide.none
+                : BorderSide(color: Colors.black.withAlpha(200), width: 2.0),
+            bottom: BorderSide(color: Colors.black.withAlpha(200), width: 2.0),
           ),
           borderRadius: borderRadius,
         ),
