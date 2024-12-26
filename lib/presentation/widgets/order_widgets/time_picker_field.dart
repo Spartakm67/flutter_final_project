@@ -40,9 +40,10 @@ class TimePickerField extends StatelessWidget {
       builder: (context) {
         return Dialog(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.9,
+            // height: MediaQuery.of(context).size.height * 0.9,
             width: MediaQuery.of(context).size.width * 0.70,
             child: ListView.separated(
+              shrinkWrap: true,
               itemCount: orderStore.availableTimes.length,
               separatorBuilder: (_, __) => const Divider(),
               itemBuilder: (context, index) {
