@@ -6,6 +6,7 @@ import 'package:flutter_final_project/domain/store/order_store/order_store.dart'
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/domain/store/firebase_store/firebase_store.dart';
 import 'package:flutter_final_project/data/models/hive/product_counter_hive.dart';
+import 'package:flutter_final_project/data/models/hive/order_model_hive.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,12 +20,14 @@ void main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(ProductCounterHiveAdapter());
+  Hive.registerAdapter(OrderModelHiveAdapter());
   final productStore = ProductStore();
   final cartStore = CartStore(productStore);
   final authStore = AuthStore();
   final orderStore = OrderStore();
 
   await cartStore.initHive();
+  await orderStore.initHive();
 
   runApp(
     MultiProvider(

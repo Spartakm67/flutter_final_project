@@ -130,7 +130,7 @@ class _OrderContainerState extends State<OrderContainer> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        null;
+                        null; // тут буде код для оформлення замовлення
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(

@@ -24,6 +24,22 @@ mixin _$OrderStore on OrderStoreBase, Store {
               name: 'OrderStoreBase.selectedPoint'))
           .value;
 
+  late final _$orderBoxAtom =
+      Atom(name: 'OrderStoreBase.orderBox', context: context);
+
+  @override
+  Box<OrderModelHive>? get orderBox {
+    _$orderBoxAtom.reportRead();
+    return super.orderBox;
+  }
+
+  @override
+  set orderBox(Box<OrderModelHive>? value) {
+    _$orderBoxAtom.reportWrite(value, super.orderBox, () {
+      super.orderBox = value;
+    });
+  }
+
   late final _$_selectedTimeAtom =
       Atom(name: 'OrderStoreBase._selectedTime', context: context);
 
@@ -56,6 +72,38 @@ mixin _$OrderStore on OrderStoreBase, Store {
     });
   }
 
+  late final _$isPhoneNumberValidAtom =
+      Atom(name: 'OrderStoreBase.isPhoneNumberValid', context: context);
+
+  @override
+  bool get isPhoneNumberValid {
+    _$isPhoneNumberValidAtom.reportRead();
+    return super.isPhoneNumberValid;
+  }
+
+  @override
+  set isPhoneNumberValid(bool value) {
+    _$isPhoneNumberValidAtom.reportWrite(value, super.isPhoneNumberValid, () {
+      super.isPhoneNumberValid = value;
+    });
+  }
+
+  late final _$initHiveAsyncAction =
+      AsyncAction('OrderStoreBase.initHive', context: context);
+
+  @override
+  Future<void> initHive() {
+    return _$initHiveAsyncAction.run(() => super.initHive());
+  }
+
+  late final _$saveOrderAsyncAction =
+      AsyncAction('OrderStoreBase.saveOrder', context: context);
+
+  @override
+  Future<void> saveOrder(OrderModelHive order) {
+    return _$saveOrderAsyncAction.run(() => super.saveOrder(order));
+  }
+
   late final _$OrderStoreBaseActionController =
       ActionController(name: 'OrderStoreBase', context: context);
 
@@ -82,8 +130,21 @@ mixin _$OrderStore on OrderStoreBase, Store {
   }
 
   @override
+  void validatePhoneNumber(String phone) {
+    final _$actionInfo = _$OrderStoreBaseActionController.startAction(
+        name: 'OrderStoreBase.validatePhoneNumber');
+    try {
+      return super.validatePhoneNumber(phone);
+    } finally {
+      _$OrderStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+orderBox: ${orderBox},
+isPhoneNumberValid: ${isPhoneNumberValid},
 selectedTime: ${selectedTime},
 selectedPoint: ${selectedPoint}
     ''';

@@ -23,6 +23,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   late TextEditingController phoneController;
   late TextEditingController addressController;
 
+  late OrderStore orderStore;
   CartStore? cartStore;
   bool _isInitialized = false;
   late bool _isDelivery;
@@ -33,6 +34,7 @@ class _OrderWidgetState extends State<OrderWidget> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       cartStore = Provider.of<CartStore>(context, listen: false);
+      orderStore = Provider.of<OrderStore>(context, listen: false);
       nameController = TextEditingController();
       phoneController = TextEditingController();
       addressController = TextEditingController();
@@ -42,11 +44,44 @@ class _OrderWidgetState extends State<OrderWidget> {
     }
   }
 
+  FocusNode phoneFocusNode = FocusNode();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   phoneFocusNode.addListener(() {
+  //     if (!phoneFocusNode.hasFocus) {
+  //       if (!RegExp(r'^\+380\d{9}$').hasMatch(phoneController.text)) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(content: Text('Невірний формат номера телефону.')),
+  //         );
+  //       }
+  //     }
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    phoneFocusNode.addListener(() {
+      if (!phoneFocusNode.hasFocus) {
+        orderStore.validatePhoneNumber(phoneController.text);
+
+        if (!orderStore.isPhoneNumberValid) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Невірний формат номера телефону')),
+          );
+        }
+      }
+    });
+  }
+
   @override
   void dispose() {
     nameController.dispose();
     phoneController.dispose();
     addressController.dispose();
+    phoneFocusNode.dispose();
     super.dispose();
   }
 
@@ -54,7 +89,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final orderStore = Provider.of<OrderStore>(context, listen: false);
+    // final orderStore = Provider.of<OrderStore>(context, listen: false);
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -104,6 +139,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                         ),
                         TextFormField(
                           controller: phoneController,
+                          focusNode: phoneFocusNode,
                           decoration: InputDecoration(
                             labelText: phoneController.text.isEmpty ? 'Номер телефону' : null,
                             prefixIcon: const Icon(Icons.phone_android),
@@ -120,17 +156,6 @@ class _OrderWidgetState extends State<OrderWidget> {
                             setState(() {});
                           },
                           keyboardType: TextInputType.phone,
-                          validator: (value) {
-                            const phonePattern = r'^\+380\d{9}$';
-                            final regExp = RegExp(phonePattern);
-
-                            if (value == null || value.isEmpty) {
-                              return 'Будь ласка, введіть номер телефону';
-                            } else if (!regExp.hasMatch(value)) {
-                              return 'Невірний формат. Введіть номер виду +380501111111';
-                            }
-                            return null;
-                          },
                         ),
                       ],
                     ),
@@ -257,3 +282,53 @@ class _OrderWidgetState extends State<OrderWidget> {
     );
   }
 }
+
+
+// void _submitOrder() {
+//   if (_formKey.currentState!.validate()) {
+//     final orderStore = Provider.of<OrderStore>(context, listen: false);
+//     final order = OrderModel(
+//       name: nameController.text.trim(),
+//       phone: phoneController.text.trim(),
+//       address: _isDelivery ? addressController.text.trim() : null,
+//       status: _isDelivery ? "Доставлення" : "Самовивіз",
+//       point: !_isDelivery ? orderStore.selectedPoint : '',
+//       time: orderStore.selectedTime,
+//       paymentMethod: _isCash ? "Готівкою" : "Карткою",
+//     );
+//
+//     orderStore.saveOrder(order);
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       const SnackBar(content: Text('Замовлення успішно створено!')),
+//     );
+//   }
+// }
+
+// ElevatedButton(
+// onPressed: _submitOrder,
+// child: const Text('Оформити'),
+// ),
+
+// void submitOrder() {
+//   if (!orderStore.isPhoneNumberValid) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       const SnackBar(content: Text('Перевірте номер телефону перед відправкою замовлення')),
+//     );
+//     return;
+//   }
+//
+//   // Логіка для відправки замовлення
+//   sendOrderToServer();
+// }
+
+// validator: (value) {
+//   const phonePattern = r'^\+380\d{9}$';
+//   final regExp = RegExp(phonePattern);
+//
+//   if (value == null || value.isEmpty) {
+//     return 'Будь ласка, введіть номер телефону';
+//   } else if (!regExp.hasMatch(value)) {
+//     return 'Невірний формат. Введіть номер виду +380501111111';
+//   }
+//   return null;
+// },
