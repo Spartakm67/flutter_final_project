@@ -19,7 +19,7 @@ class PointPickerField extends StatelessWidget {
               children: [
                 const Icon(Icons.restaurant_menu,
                     size: 24.0, color: Colors.black,),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 12.0),
                 Expanded(
                   child: Text(
                     orderStore.selectedPoint,

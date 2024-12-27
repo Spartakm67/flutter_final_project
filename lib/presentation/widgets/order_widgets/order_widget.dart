@@ -33,7 +33,6 @@ class _OrderWidgetState extends State<OrderWidget> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       cartStore = Provider.of<CartStore>(context, listen: false);
-      // nameController = TextEditingController(text: cartStore?.userName ?? '');
       nameController = TextEditingController();
       phoneController = TextEditingController();
       addressController = TextEditingController();
@@ -88,10 +87,14 @@ class _OrderWidgetState extends State<OrderWidget> {
                       children: [
                         TextFormField(
                           controller: nameController,
-                          decoration: const InputDecoration(
-                            labelText: 'Ім’я',
-                            prefixIcon: Icon(Icons.person),
+                          decoration: InputDecoration(
+                            labelText: nameController.text.isEmpty ? 'Ім’я' : null,
+                            prefixIcon: const Icon(Icons.person),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                           ),
+                          onChanged: (value) {
+                            setState(() {});
+                          },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Будь ласка, введіть ім’я';
@@ -101,15 +104,30 @@ class _OrderWidgetState extends State<OrderWidget> {
                         ),
                         TextFormField(
                           controller: phoneController,
-                          decoration: const InputDecoration(
-                            labelText: 'Телефон',
-                            prefixIcon: Icon(Icons.phone),
+                          decoration: InputDecoration(
+                            labelText: phoneController.text.isEmpty ? 'Номер телефону' : null,
+                            prefixIcon: const Icon(Icons.phone_android),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                             border: InputBorder.none,
                           ),
+                          onChanged: (value) {
+                            if (!value.startsWith('+380')) {
+                              phoneController.text = '+380';
+                              phoneController.selection = TextSelection.fromPosition(
+                                TextPosition(offset: phoneController.text.length),
+                              );
+                            }
+                            setState(() {});
+                          },
                           keyboardType: TextInputType.phone,
                           validator: (value) {
+                            const phonePattern = r'^\+380\d{9}$';
+                            final regExp = RegExp(phonePattern);
+
                             if (value == null || value.isEmpty) {
                               return 'Будь ласка, введіть номер телефону';
+                            } else if (!regExp.hasMatch(value)) {
+                              return 'Невірний формат. Введіть номер виду +380501111111';
                             }
                             return null;
                           },
@@ -152,6 +170,9 @@ class _OrderWidgetState extends State<OrderWidget> {
                       ],
                     ),
                     const SizedBox(height: 8),
+                    if (_isDelivery)
+                      const Text('Вкажіть адресу, під\'їзд, поверх, квартиру (офіс):'),
+                    const SizedBox(height: 8),
                     CustomContainer(
                       backgroundColor: Colors.black.withAlpha(0),
                       padding: EdgeInsets.zero,
@@ -159,10 +180,16 @@ class _OrderWidgetState extends State<OrderWidget> {
                         if (_isDelivery)
                         TextFormField(
                           controller: addressController,
-                          decoration: const InputDecoration(
-                            labelText: 'Вкажіть адресу доставлення',
-                            prefixIcon: Icon(Icons.location_on),
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            labelText: addressController.text.isEmpty ? 'Вкажіть адресу' : null,
+                            prefixIcon: const Icon(Icons.location_on),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                           ),
+                          onChanged: (value) {
+                            setState(() {});
+                          },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Будь ласка, введіть адресу';

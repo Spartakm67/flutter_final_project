@@ -11,7 +11,8 @@ class AlertNotWork extends StatelessWidget {
     const start = TimeOfDay(hour: 19, minute: 30);
     const end = TimeOfDay(hour: 9, minute: 0);
 
-    DateTime startDateTime = DateTime(now.year, now.month, now.day, start.hour, start.minute);
+    DateTime startDateTime =
+    DateTime(now.year, now.month, now.day, start.hour, start.minute);
     DateTime endDateTimeTomorrow = DateTime(
       now.year,
       now.month,
@@ -20,14 +21,15 @@ class AlertNotWork extends StatelessWidget {
       end.minute,
     );
 
-    final bool isClosedToday = now.isAfter(startDateTime) && now.isBefore(endDateTimeTomorrow);
-    final bool isClosedTomorrow = now.isBefore(endDateTimeTomorrow) && now.day != DateTime.now().day;
+    final bool isClosedToday = now.isAfter(startDateTime);
+    final bool isClosedTomorrow =
+        now.isBefore(endDateTimeTomorrow) && now.hour < end.hour;
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (isClosedToday)
+          if (isClosedToday && now.isBefore(endDateTimeTomorrow))
             CustomContainer(
               backgroundColor: Colors.black.withAlpha(30),
               children: const [

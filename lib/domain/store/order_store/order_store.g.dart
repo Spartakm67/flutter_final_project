@@ -28,13 +28,13 @@ mixin _$OrderStore on OrderStoreBase, Store {
       Atom(name: 'OrderStoreBase._selectedTime', context: context);
 
   @override
-  TimeOfDay get _selectedTime {
+  TimeOfDay? get _selectedTime {
     _$_selectedTimeAtom.reportRead();
     return super._selectedTime;
   }
 
   @override
-  set _selectedTime(TimeOfDay value) {
+  set _selectedTime(TimeOfDay? value) {
     _$_selectedTimeAtom.reportWrite(value, super._selectedTime, () {
       super._selectedTime = value;
     });

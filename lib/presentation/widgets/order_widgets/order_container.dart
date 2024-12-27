@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
 
 class OrderContainer extends StatefulWidget {
@@ -41,7 +40,6 @@ class _OrderContainerState extends State<OrderContainer> {
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context, listen: false);
-
     return Center(
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0.0,
@@ -87,10 +85,6 @@ class _OrderContainerState extends State<OrderContainer> {
                           ),
                           iconSize: 32,
                           onPressed: () {
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => PreviousPage()),
-                            // );
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },
