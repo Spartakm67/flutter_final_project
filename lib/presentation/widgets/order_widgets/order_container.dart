@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
+import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
 
@@ -40,6 +41,7 @@ class _OrderContainerState extends State<OrderContainer> {
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context, listen: false);
+    final orderStore = Provider.of<OrderStore>(context, listen: false);
     return Center(
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0.0,
@@ -105,25 +107,22 @@ class _OrderContainerState extends State<OrderContainer> {
                 child: Column(
                   children: [
                     Observer(
-                      builder: (_) => Row(
+                      builder: (_) => Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          // const Spacer(),
                           Text(
-                            '${cartStore.totalItems}',
+                            'Сума замовлення: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
                             style: TextStyles.cartBottomText,
                           ),
                           const SizedBox(
-                            width: 12,
+                            height: 12,
                           ),
-                          Text(
-                            GetItemText.getItemText(cartStore.totalItems),
-                            style: TextStyles.cartBottomText,
-                          ),
-                          const Spacer(),
-                          Text(
-                            'Сума: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
-                            style: TextStyles.cartBottomText,
-                          ),
+                          if (orderStore.isDelivery)
+                            Text(
+                              'Доставлення: ${cartStore.deliveryPrice.toStringAsFixed(0)} грн.',
+                              style: TextStyles.cartBottomText,
+                            ),
                         ],
                       ),
                     ),
@@ -140,13 +139,15 @@ class _OrderContainerState extends State<OrderContainer> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        backgroundColor: Colors.black.withAlpha(100),
+                        backgroundColor: Colors.black.withAlpha(200),
                       ),
-                      child: const Text(
-                        'Оформити',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
+                      child: Observer(
+                        builder: (_) => Text(
+                          'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

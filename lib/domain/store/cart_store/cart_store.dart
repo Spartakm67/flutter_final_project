@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
+import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/data/models/poster/product.dart';
 import 'package:flutter_final_project/data/models/hive/product_counter_hive.dart';
 
@@ -10,7 +11,8 @@ class CartStore = CartStoreBase with _$CartStore;
 
 abstract class CartStoreBase with Store {
   final ProductStore productStore;
-  CartStoreBase(this.productStore);
+  final OrderStore orderStore;
+  CartStoreBase(this.productStore, this.orderStore);
 
   @observable
   ObservableMap<String, int> counters = ObservableMap<String, int>();
@@ -97,7 +99,6 @@ abstract class CartStoreBase with Store {
         ),
       );
     }
-
     saveCartToHive();
   }
 
@@ -109,7 +110,6 @@ abstract class CartStoreBase with Store {
       if (counters[productId] == 0) {
         cartItems.removeWhere((item) => item.productId == productId);
       }
-
       saveCartToHive();
     }
   }
@@ -170,6 +170,20 @@ abstract class CartStoreBase with Store {
     await productHiveBox.clear();
     await commentsBox.clear();
   }
+
+  @computed
+  double get deliveryPrice {
+    if (!orderStore.isDelivery) {
+      return 0.0;
+    }
+    return totalCombinedOrderPrice >= 250 ? 0.0 : 50.0;
+  }
+
+  @computed
+  double get finalOrderPrice {
+    return totalCombinedOrderPrice + deliveryPrice;
+  }
+
 
   @action
   Future<void> completeOrder() async {

@@ -30,6 +30,20 @@ mixin _$CartStore on CartStoreBase, Store {
           Computed<double>(() => super.totalCombinedOrderPrice,
               name: 'CartStoreBase.totalCombinedOrderPrice'))
       .value;
+  Computed<double>? _$deliveryPriceComputed;
+
+  @override
+  double get deliveryPrice =>
+      (_$deliveryPriceComputed ??= Computed<double>(() => super.deliveryPrice,
+              name: 'CartStoreBase.deliveryPrice'))
+          .value;
+  Computed<double>? _$finalOrderPriceComputed;
+
+  @override
+  double get finalOrderPrice => (_$finalOrderPriceComputed ??= Computed<double>(
+          () => super.finalOrderPrice,
+          name: 'CartStoreBase.finalOrderPrice'))
+      .value;
 
   late final _$countersAtom =
       Atom(name: 'CartStoreBase.counters', context: context);
@@ -241,7 +255,9 @@ comment: ${comment},
 commentsBox: ${commentsBox},
 products: ${products},
 totalItems: ${totalItems},
-totalCombinedOrderPrice: ${totalCombinedOrderPrice}
+totalCombinedOrderPrice: ${totalCombinedOrderPrice},
+deliveryPrice: ${deliveryPrice},
+finalOrderPrice: ${finalOrderPrice}
     ''';
   }
 }

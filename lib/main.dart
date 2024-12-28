@@ -24,9 +24,10 @@ void main() async {
   Hive.registerAdapter(OrderModelHiveAdapter());
   Hive.registerAdapter(TimeOfDayAdapter());
   final productStore = ProductStore();
-  final cartStore = CartStore(productStore);
-  final authStore = AuthStore();
   final orderStore = OrderStore();
+  final cartStore = CartStore(productStore, orderStore);
+  final authStore = AuthStore();
+
 
   await cartStore.initHive();
   await orderStore.initHive();
