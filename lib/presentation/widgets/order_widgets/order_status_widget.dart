@@ -6,17 +6,17 @@ import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
-import 'package:flutter_final_project/presentation/widgets/order_widgets/order_status_widget.dart';
 
-class OrderContainer extends StatefulWidget {
-  const OrderContainer({super.key});
+class OrderStatusWidget extends StatefulWidget {
+  const OrderStatusWidget({super.key});
 
   @override
-  State<OrderContainer> createState() => _OrderContainerState();
+  State<OrderStatusWidget> createState() => _OrderStatusWidgetState();
 }
 
-class _OrderContainerState extends State<OrderContainer> {
+class _OrderStatusWidgetState extends State<OrderStatusWidget> {
   bool _isVisible = false;
 
   @override
@@ -79,7 +79,7 @@ class _OrderContainerState extends State<OrderContainer> {
                           onPressed: _closeWidget,
                         ),
                         const Text(
-                          'Замовлення',
+                          'Статус замовлення',
                           style: TextStyles.oderAppBarText,
                         ),
                         IconButton(
@@ -101,9 +101,9 @@ class _OrderContainerState extends State<OrderContainer> {
                   ],
                 ),
               ),
-              const Expanded(
-                child: OrderWidget(),
-              ),
+              // const Expanded(
+              //   child: OrderWidget(),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(22.0),
                 child: Column(
@@ -113,18 +113,30 @@ class _OrderContainerState extends State<OrderContainer> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           // const Spacer(),
-                          Text(
-                            'Сума замовлення: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
+                          const Text(
+                            'ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!',
                             style: TextStyles.cartBottomText,
                           ),
                           const SizedBox(
                             height: 12,
                           ),
-                          if (orderStore.isDelivery)
-                            Text(
-                              'Доставлення: ${cartStore.deliveryPrice.toStringAsFixed(0)} грн.',
-                              style: TextStyles.cartBottomText,
-                            ),
+                          Text(
+                            'Замовлення №${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)}',
+                            style: TextStyles.cartBottomText,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          const Text(
+                            'За потреби ми зателефонуємо вам, щоб уточнити деталі.\n',
+                            style: TextStyles.cartText,
+                            textAlign: TextAlign.center,
+                          ),
+                          // if (orderStore.isDelivery)
+                          //   Text(
+                          //     'Доставлення: ${cartStore.deliveryPrice.toStringAsFixed(0)} грн.',
+                          //     style: TextStyles.cartBottomText,
+                          //   ),
                         ],
                       ),
                     ),
@@ -133,8 +145,8 @@ class _OrderContainerState extends State<OrderContainer> {
                       onPressed: () {
                         CustomDialog.show(
                           context: context,
-                          builder: (_) => const OrderStatusWidget(),
-                        ); // тут буде код для оформлення замовлення
+                          builder: (_) => const CategoriesScreen(),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -147,9 +159,9 @@ class _OrderContainerState extends State<OrderContainer> {
                         backgroundColor: Colors.black.withAlpha(200),
                       ),
                       child: Observer(
-                        builder: (_) => Text(
-                          'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
-                          style: const TextStyle(
+                        builder: (_) => const Text(
+                          'Повернутися у додаток',
+                          style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
                           ),
