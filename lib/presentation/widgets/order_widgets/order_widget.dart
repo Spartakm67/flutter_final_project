@@ -26,8 +26,6 @@ class _OrderWidgetState extends State<OrderWidget> {
   late OrderStore orderStore;
   CartStore? cartStore;
   bool _isInitialized = false;
-  late bool _isDelivery;
-  late bool _isCash;
 
   @override
   void didChangeDependencies() {
@@ -46,16 +44,13 @@ class _OrderWidgetState extends State<OrderWidget> {
         nameController.text = currentOrder.name ?? '';
         phoneController.text = currentOrder.phone ?? '';
         addressController.text = currentOrder.address ?? '';
-        // _isDelivery = currentOrder.status == "Доставлення";
-        // _isCash = currentOrder.paymentMethod == "Готівкою";
       }
 
       _isInitialized = true;
-      _isDelivery = true;
-      _isCash = true;
     }
   }
-
+  bool get _isDelivery => orderStore.isDelivery;
+  bool get _isCash => orderStore.isCash;
   FocusNode phoneFocusNode = FocusNode();
 
   @override
@@ -87,7 +82,6 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final orderStore = Provider.of<OrderStore>(context, listen: false);
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -125,9 +119,6 @@ class _OrderWidgetState extends State<OrderWidget> {
                             prefixIcon: const Icon(Icons.person),
                             contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                           ),
-                          // onChanged: (value) {
-                          //   setState(() {});
-                          // },
                           onChanged: _onNameChanged,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -151,9 +142,9 @@ class _OrderWidgetState extends State<OrderWidget> {
                               phoneController.selection = TextSelection.fromPosition(
                                 TextPosition(offset: phoneController.text.length),
                               );
+                            } else {
+                              _onPhoneChanged(value);
                             }
-                            // setState(() {});
-                            _onPhoneChanged;
                           },
                           keyboardType: TextInputType.phone,
                         ),
@@ -171,9 +162,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             bottomLeft: Radius.circular(12.0),
                           ),
                           onTap: () {
-                            setState(() {
-                              _isDelivery = true;
-                            });
+                            orderStore.updateDelivery(true);
                           },
                           label: 'Доставлення',
                           excludeRightBorder: true,
@@ -185,9 +174,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             bottomRight: Radius.circular(12.0),
                           ),
                           onTap: () {
-                            setState(() {
-                              _isDelivery = false;
-                            });
+                            orderStore.updateDelivery(false);
                           },
                           label: 'Самовивіз',
                           excludeLeftBorder: true,
@@ -212,9 +199,6 @@ class _OrderWidgetState extends State<OrderWidget> {
                             prefixIcon: const Icon(Icons.location_on),
                             contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                           ),
-                          // onChanged: (value) {
-                          //   setState(() {});
-                          // },
                           onChanged: _onAddressChanged,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -248,9 +232,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             bottomLeft: Radius.circular(12.0),
                           ),
                           onTap: () {
-                            setState(() {
-                              _isCash = true;
-                            });
+                            orderStore.updatePaymentMethod(true);
                           },
                           label: 'Готівкою',
                           excludeRightBorder: true,
@@ -262,9 +244,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             bottomRight: Radius.circular(12.0),
                           ),
                           onTap: () {
-                            setState(() {
-                              _isCash = false;
-                            });
+                            orderStore.updatePaymentMethod(false);
                           },
                           label: 'Карткою',
                           excludeLeftBorder: true,
@@ -295,17 +275,6 @@ class _OrderWidgetState extends State<OrderWidget> {
       orderStore.updateOrder(address: value.trim());
     }
   }
-
-  void _onDeliveryToggle(bool isDelivery) {
-    _isDelivery = isDelivery;
-    orderStore.updateOrder(status: isDelivery ? "Доставлення" : "Самовивіз");
-  }
-
-  void _onPaymentMethodToggle(bool isCash) {
-    _isCash = isCash;
-    orderStore.updateOrder(paymentMethod: isCash ? "Готівкою" : "Карткою");
-  }
-
 }
 
 

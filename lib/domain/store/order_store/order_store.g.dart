@@ -24,6 +24,38 @@ mixin _$OrderStore on OrderStoreBase, Store {
               name: 'OrderStoreBase.selectedPoint'))
           .value;
 
+  late final _$isDeliveryAtom =
+      Atom(name: 'OrderStoreBase.isDelivery', context: context);
+
+  @override
+  bool get isDelivery {
+    _$isDeliveryAtom.reportRead();
+    return super.isDelivery;
+  }
+
+  @override
+  set isDelivery(bool value) {
+    _$isDeliveryAtom.reportWrite(value, super.isDelivery, () {
+      super.isDelivery = value;
+    });
+  }
+
+  late final _$isCashAtom =
+      Atom(name: 'OrderStoreBase.isCash', context: context);
+
+  @override
+  bool get isCash {
+    _$isCashAtom.reportRead();
+    return super.isCash;
+  }
+
+  @override
+  set isCash(bool value) {
+    _$isCashAtom.reportWrite(value, super.isCash, () {
+      super.isCash = value;
+    });
+  }
+
   late final _$orderBoxAtom =
       Atom(name: 'OrderStoreBase.orderBox', context: context);
 
@@ -154,6 +186,28 @@ mixin _$OrderStore on OrderStoreBase, Store {
       ActionController(name: 'OrderStoreBase', context: context);
 
   @override
+  void updateDelivery(bool value) {
+    final _$actionInfo = _$OrderStoreBaseActionController.startAction(
+        name: 'OrderStoreBase.updateDelivery');
+    try {
+      return super.updateDelivery(value);
+    } finally {
+      _$OrderStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updatePaymentMethod(bool value) {
+    final _$actionInfo = _$OrderStoreBaseActionController.startAction(
+        name: 'OrderStoreBase.updatePaymentMethod');
+    try {
+      return super.updatePaymentMethod(value);
+    } finally {
+      _$OrderStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void selectTime(TimeOfDay time) {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
         name: 'OrderStoreBase.selectTime');
@@ -189,6 +243,8 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   String toString() {
     return '''
+isDelivery: ${isDelivery},
+isCash: ${isCash},
 orderBox: ${orderBox},
 currentOrder: ${currentOrder},
 isPhoneNumberValid: ${isPhoneNumberValid},

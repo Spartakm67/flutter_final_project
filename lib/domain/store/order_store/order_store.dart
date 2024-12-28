@@ -2,13 +2,18 @@ import 'package:mobx/mobx.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_final_project/data/models/hive/order_model_hive.dart';
-import 'package:flutter_final_project/data/models/hive/time_of_day_adapter.dart';
 
 part 'order_store.g.dart';
 
 class OrderStore = OrderStoreBase with _$OrderStore;
 
 abstract class OrderStoreBase with Store {
+
+  @observable
+  bool isDelivery = true;
+
+  @observable
+  bool isCash = true;
 
   @observable
   Box<OrderModelHive>? orderBox;
@@ -44,6 +49,19 @@ abstract class OrderStoreBase with Store {
   }
 
   @action
+  void updateDelivery(bool value) {
+    isDelivery = value;
+    updateOrder(status: value ? "Доставлення" : "Самовивіз");
+  }
+
+  @action
+  void updatePaymentMethod(bool value) {
+    isCash = value;
+    updateOrder(paymentMethod: value ? "Готівкою" : "Карткою");
+  }
+
+
+  @action
   Future<void> saveOrder(OrderModelHive order) async {
     await orderBox?.put('currentOrder', order);
   }
@@ -51,8 +69,11 @@ abstract class OrderStoreBase with Store {
   @action
   Future<void> loadOrder() async {
     currentOrder = orderBox?.get('currentOrder');
+    if (currentOrder != null) {
+      isDelivery = currentOrder!.status == "Доставлення";
+      isCash = currentOrder!.paymentMethod == "Готівкою";
+    }
   }
-
 
   @observable
   TimeOfDay? _selectedTime;
