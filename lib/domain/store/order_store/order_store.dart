@@ -72,6 +72,7 @@ abstract class OrderStoreBase with Store {
     if (currentOrder != null) {
       isDelivery = currentOrder!.status == "Доставлення";
       isCash = currentOrder!.paymentMethod == "Готівкою";
+      _selectedPoint = currentOrder!.point;
     }
   }
 
@@ -146,6 +147,7 @@ abstract class OrderStoreBase with Store {
   @action
   void selectPoint(String point) {
     _selectedPoint = point;
+    updateOrder(point: point);
   }
 
   @observable
