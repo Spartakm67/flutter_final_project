@@ -73,6 +73,7 @@ abstract class OrderStoreBase with Store {
       isDelivery = currentOrder!.status == "Доставлення";
       isCash = currentOrder!.paymentMethod == "Готівкою";
       _selectedPoint = currentOrder!.point;
+      _selectedTime = currentOrder!.time;
     }
   }
 
@@ -131,6 +132,7 @@ abstract class OrderStoreBase with Store {
   @action
   void selectTime(TimeOfDay time) {
     _selectedTime = time;
+    updateOrder(time: time);
   }
 
   List<String> availablePoints = [
