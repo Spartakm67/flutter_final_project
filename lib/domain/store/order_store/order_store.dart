@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_final_project/data/models/hive/order_model_hive.dart';
+import 'package:flutter_final_project/data/models/hive/time_of_day_adapter.dart';
 
 part 'order_store.g.dart';
 
@@ -17,23 +18,41 @@ abstract class OrderStoreBase with Store {
     orderBox = await Hive.openBox<OrderModelHive>('orders');
   }
 
+  @observable
+  OrderModelHive? currentOrder;
+
   @action
-  Future<void> saveOrder(OrderModelHive order) async {
-    if (orderBox != null) {
-      await orderBox!.add(order);
-    } else {
-      throw Exception('OrderBox is not initialized');
-    }
+  Future<void> updateOrder({
+    String? name,
+    String? phone,
+    String? address,
+    String? status,
+    String? point,
+    TimeOfDay? time,
+    String? paymentMethod,
+  }) async {
+    currentOrder = OrderModelHive(
+      name: name ?? currentOrder?.name ?? '',
+      phone: phone ?? currentOrder?.phone ?? '',
+      address: address ?? currentOrder?.address,
+      status: status ?? currentOrder?.status ?? '',
+      point: point ?? currentOrder?.point ?? '',
+      time: time ?? currentOrder?.time ?? TimeOfDay.now(),
+      paymentMethod: paymentMethod ?? currentOrder?.paymentMethod ?? '',
+    );
+    await saveOrder(currentOrder!);
   }
 
-  // @action
-  // Future<List<OrderModelHive>> getOrders() async {
-  //   if (orderBox != null) {
-  //     return orderBox!.values.toList();
-  //   } else {
-  //     throw Exception('OrderBox is not initialized');
-  //   }
-  // }
+  @action
+  Future<void> saveOrder(OrderModelHive order) async {
+    await orderBox?.put('currentOrder', order);
+  }
+
+  @action
+  Future<void> loadOrder() async {
+    currentOrder = orderBox?.get('currentOrder');
+  }
+
 
   @observable
   TimeOfDay? _selectedTime;

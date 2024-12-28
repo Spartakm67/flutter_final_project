@@ -40,6 +40,22 @@ mixin _$OrderStore on OrderStoreBase, Store {
     });
   }
 
+  late final _$currentOrderAtom =
+      Atom(name: 'OrderStoreBase.currentOrder', context: context);
+
+  @override
+  OrderModelHive? get currentOrder {
+    _$currentOrderAtom.reportRead();
+    return super.currentOrder;
+  }
+
+  @override
+  set currentOrder(OrderModelHive? value) {
+    _$currentOrderAtom.reportWrite(value, super.currentOrder, () {
+      super.currentOrder = value;
+    });
+  }
+
   late final _$_selectedTimeAtom =
       Atom(name: 'OrderStoreBase._selectedTime', context: context);
 
@@ -96,12 +112,42 @@ mixin _$OrderStore on OrderStoreBase, Store {
     return _$initHiveAsyncAction.run(() => super.initHive());
   }
 
+  late final _$updateOrderAsyncAction =
+      AsyncAction('OrderStoreBase.updateOrder', context: context);
+
+  @override
+  Future<void> updateOrder(
+      {String? name,
+      String? phone,
+      String? address,
+      String? status,
+      String? point,
+      TimeOfDay? time,
+      String? paymentMethod}) {
+    return _$updateOrderAsyncAction.run(() => super.updateOrder(
+        name: name,
+        phone: phone,
+        address: address,
+        status: status,
+        point: point,
+        time: time,
+        paymentMethod: paymentMethod));
+  }
+
   late final _$saveOrderAsyncAction =
       AsyncAction('OrderStoreBase.saveOrder', context: context);
 
   @override
   Future<void> saveOrder(OrderModelHive order) {
     return _$saveOrderAsyncAction.run(() => super.saveOrder(order));
+  }
+
+  late final _$loadOrderAsyncAction =
+      AsyncAction('OrderStoreBase.loadOrder', context: context);
+
+  @override
+  Future<void> loadOrder() {
+    return _$loadOrderAsyncAction.run(() => super.loadOrder());
   }
 
   late final _$OrderStoreBaseActionController =
@@ -144,6 +190,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
   String toString() {
     return '''
 orderBox: ${orderBox},
+currentOrder: ${currentOrder},
 isPhoneNumberValid: ${isPhoneNumberValid},
 selectedTime: ${selectedTime},
 selectedPoint: ${selectedPoint}

@@ -38,6 +38,18 @@ class _OrderWidgetState extends State<OrderWidget> {
       nameController = TextEditingController();
       phoneController = TextEditingController();
       addressController = TextEditingController();
+
+      orderStore.loadOrder();
+      final currentOrder = orderStore.currentOrder;
+
+      if (currentOrder != null) {
+        nameController.text = currentOrder.name ?? '';
+        phoneController.text = currentOrder.phone ?? '';
+        addressController.text = currentOrder.address ?? '';
+        // _isDelivery = currentOrder.status == "Доставлення";
+        // _isCash = currentOrder.paymentMethod == "Готівкою";
+      }
+
       _isInitialized = true;
       _isDelivery = true;
       _isCash = true;
@@ -45,20 +57,6 @@ class _OrderWidgetState extends State<OrderWidget> {
   }
 
   FocusNode phoneFocusNode = FocusNode();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   phoneFocusNode.addListener(() {
-  //     if (!phoneFocusNode.hasFocus) {
-  //       if (!RegExp(r'^\+380\d{9}$').hasMatch(phoneController.text)) {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(content: Text('Невірний формат номера телефону.')),
-  //         );
-  //       }
-  //     }
-  //   });
-  // }
 
   @override
   void initState() {
@@ -127,9 +125,10 @@ class _OrderWidgetState extends State<OrderWidget> {
                             prefixIcon: const Icon(Icons.person),
                             contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                           ),
-                          onChanged: (value) {
-                            setState(() {});
-                          },
+                          // onChanged: (value) {
+                          //   setState(() {});
+                          // },
+                          onChanged: _onNameChanged,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Будь ласка, введіть ім’я';
@@ -153,7 +152,8 @@ class _OrderWidgetState extends State<OrderWidget> {
                                 TextPosition(offset: phoneController.text.length),
                               );
                             }
-                            setState(() {});
+                            // setState(() {});
+                            _onPhoneChanged;
                           },
                           keyboardType: TextInputType.phone,
                         ),
@@ -212,9 +212,10 @@ class _OrderWidgetState extends State<OrderWidget> {
                             prefixIcon: const Icon(Icons.location_on),
                             contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                           ),
-                          onChanged: (value) {
-                            setState(() {});
-                          },
+                          // onChanged: (value) {
+                          //   setState(() {});
+                          // },
+                          onChanged: _onAddressChanged,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Будь ласка, введіть адресу';
@@ -281,33 +282,34 @@ class _OrderWidgetState extends State<OrderWidget> {
       ),
     );
   }
+  void _onNameChanged(String value) {
+    orderStore.updateOrder(name: value.trim());
+  }
+
+  void _onPhoneChanged(String value) {
+    orderStore.updateOrder(phone: value.trim());
+  }
+
+  void _onAddressChanged(String value) {
+    if (_isDelivery) {
+      orderStore.updateOrder(address: value.trim());
+    }
+  }
+
+  void _onDeliveryToggle(bool isDelivery) {
+    _isDelivery = isDelivery;
+    orderStore.updateOrder(status: isDelivery ? "Доставлення" : "Самовивіз");
+  }
+
+  void _onPaymentMethodToggle(bool isCash) {
+    _isCash = isCash;
+    orderStore.updateOrder(paymentMethod: isCash ? "Готівкою" : "Карткою");
+  }
+
 }
 
 
-// void _submitOrder() {
-//   if (_formKey.currentState!.validate()) {
-//     final orderStore = Provider.of<OrderStore>(context, listen: false);
-//     final order = OrderModel(
-//       name: nameController.text.trim(),
-//       phone: phoneController.text.trim(),
-//       address: _isDelivery ? addressController.text.trim() : null,
-//       status: _isDelivery ? "Доставлення" : "Самовивіз",
-//       point: !_isDelivery ? orderStore.selectedPoint : '',
-//       time: orderStore.selectedTime,
-//       paymentMethod: _isCash ? "Готівкою" : "Карткою",
-//     );
-//
-//     orderStore.saveOrder(order);
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text('Замовлення успішно створено!')),
-//     );
-//   }
-// }
 
-// ElevatedButton(
-// onPressed: _submitOrder,
-// child: const Text('Оформити'),
-// ),
 
 // void submitOrder() {
 //   if (!orderStore.isPhoneNumberValid) {
