@@ -9,6 +9,8 @@ import 'package:flutter_final_project/presentation/widgets/loading_image_indicat
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
+import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/bottom_cart_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
@@ -110,6 +112,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
               child: const Icon(
                 Icons.keyboard_arrow_down_rounded,
                 color: Colors.deepOrange,
+              ),
+            ),
+            const Spacer(),
+            CustomBurgerButton(
+              backgroundColor: Colors.white,
+              lineColor: Colors.black,
+              borderColor: Colors.black,
+              borderRadius: 12.0,
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => const ContactsWidget(),
               ),
             ),
           ],

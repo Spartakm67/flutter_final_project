@@ -107,10 +107,10 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                                         }
                                       },
                               ),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: 10),
                             CustomBurgerButton(
                               backgroundColor: Colors.white,
-                              lineColor: Colors.black,
+                              lineColor: Colors.blueGrey,
                               borderColor: Colors.grey,
                               borderRadius: 12.0,
                               onTap: () => showDialog(
