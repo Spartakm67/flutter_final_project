@@ -8,6 +8,8 @@ import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
+import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
@@ -55,7 +57,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Категорії товарів',
+          'Категорії',
           style: TextStyles.greetingsText,
         ),
         actions: [
@@ -105,6 +107,17 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                                         }
                                       },
                               ),
+                            const SizedBox(width: 6),
+                            CustomBurgerButton(
+                              backgroundColor: Colors.white,
+                              lineColor: Colors.black,
+                              borderColor: Colors.grey,
+                              borderRadius: 12.0,
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => const ContactsWidget(),
+                              ),
+                            ),
                           ],
                         ),
                       ),

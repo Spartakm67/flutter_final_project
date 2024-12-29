@@ -7,7 +7,9 @@ import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
 import 'package:flutter_final_project/presentation/widgets/sms/code_option_dialog.dart';
+import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
@@ -167,7 +169,8 @@ class HomeScreenState extends State<HomeScreen>
                                         )) {
                                           CustomSnackBar.show(
                                             context: context,
-                                            message: 'Номер телефону має містити 9 цифр!',
+                                            message:
+                                                'Номер телефону має містити 9 цифр!',
                                             backgroundColor: Colors.redAccent,
                                             position: SnackBarPosition.top,
                                           );
@@ -182,7 +185,8 @@ class HomeScreenState extends State<HomeScreen>
                                       } else {
                                         CustomSnackBar.show(
                                           context: context,
-                                          message: 'Будь ласка, введіть номер телефону!',
+                                          message:
+                                              'Будь ласка, введіть номер телефону!',
                                           backgroundColor: Colors.redAccent,
                                           position: SnackBarPosition.top,
                                         );
@@ -353,48 +357,64 @@ class HomeScreenState extends State<HomeScreen>
             Positioned(
               top: MediaQuery.of(context).padding.top + 8,
               right: 8,
+              left: 12,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (cartStore.totalItems > 0)
-                    GestureDetector(
-                      onTap: () {
-                        CustomDialog.show(
-                          context: context,
-                          builder: (_) => const CartPreviewContainer(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.shopping_cart,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            cartStore.totalItems.toString(),
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                  CustomBurgerButton(
+                    backgroundColor: Colors.white,
+                    lineColor: Colors.black,
+                    borderColor: Colors.grey,
+                    borderRadius: 12.0,
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => const ContactsWidget(),
                     ),
-                  const SizedBox(width: 20),
-                  HomeButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const CategoriesScreen();
+                  ),
+                  Row(
+                    children: [
+                      if (cartStore.totalItems > 0)
+                        GestureDetector(
+                          onTap: () {
+                            CustomDialog.show(
+                              context: context,
+                              builder: (_) => const CartPreviewContainer(),
+                            );
                           },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.shopping_cart,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                cartStore.totalItems.toString(),
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      );
-                    },
-                    text: 'Меню',
+                      const SizedBox(width: 20),
+                      HomeButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const CategoriesScreen();
+                              },
+                            ),
+                          );
+                        },
+                        text: 'Меню',
+                      ),
+                    ],
                   ),
                 ],
               ),

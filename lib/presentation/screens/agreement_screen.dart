@@ -10,14 +10,14 @@ import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
 
-class OrderStatusWidget extends StatefulWidget {
-  const OrderStatusWidget({super.key});
+class AgreementScreen extends StatefulWidget {
+  const AgreementScreen({super.key});
 
   @override
-  State<OrderStatusWidget> createState() => _OrderStatusWidgetState();
+  State<AgreementScreen> createState() => _AgreementScreenState();
 }
 
-class _OrderStatusWidgetState extends State<OrderStatusWidget> {
+class _AgreementScreenState extends State<AgreementScreen> {
   bool _isVisible = false;
 
   @override
@@ -44,7 +44,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context, listen: false);
-    final orderStore = Provider.of<OrderStore>(context, listen: false);
     final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Center(
       child: AnimatedOpacity(
@@ -134,11 +133,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                             style: TextStyles.cartText,
                             textAlign: TextAlign.center,
                           ),
-                          // if (orderStore.isDelivery)
-                          //   Text(
-                          //     'Доставлення: ${cartStore.deliveryPrice.toStringAsFixed(0)} грн.',
-                          //     style: TextStyles.cartBottomText,
-                          //   ),
+                          
                         ],
                       ),
                     ),
