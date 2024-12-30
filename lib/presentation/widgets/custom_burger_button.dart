@@ -6,7 +6,7 @@ class CustomBurgerButton extends StatelessWidget {
   final Color borderColor;
   final double borderRadius;
   final VoidCallback onTap;
-  final double lineSpacing; // Відстань між рисками
+  final double lineSpacing;
 
   const CustomBurgerButton({
     super.key,
@@ -14,7 +14,7 @@ class CustomBurgerButton extends StatelessWidget {
     this.lineColor = Colors.black,
     this.borderColor = Colors.grey,
     this.borderRadius = 12.0,
-    this.lineSpacing = 6.0, // Дефолтна відстань 8.0
+    this.lineSpacing = 4.0,
     required this.onTap,
   });
 
@@ -23,8 +23,8 @@ class CustomBurgerButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 48.0,
-        height: 46.0,
+        width: 46.0,
+        height: 44.0,
         decoration: BoxDecoration(
           color: backgroundColor,
           border: Border.all(color: borderColor),
@@ -34,9 +34,9 @@ class CustomBurgerButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildLine(),
-            SizedBox(height: lineSpacing), // Відступ між рисками
+            SizedBox(height: lineSpacing),
             _buildLine(),
-            SizedBox(height: lineSpacing), // Відступ між рисками
+            SizedBox(height: lineSpacing),
             _buildLine(),
           ],
         ),
@@ -46,8 +46,8 @@ class CustomBurgerButton extends StatelessWidget {
 
   Widget _buildLine() {
     return Container(
-      width: 28.0, // Довжина риски
-      height: 2.5, // Товщина риски
+      width: 24.0,
+      height: 2.5,
       color: lineColor,
     );
   }
