@@ -9,7 +9,7 @@ import 'package:flutter_final_project/domain/store/home_store/home_screen_store.
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
-import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
+import 'package:flutter_final_project/presentation/widgets/contacts/burger_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
@@ -115,7 +115,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                               borderRadius: 12.0,
                               onTap: () => showDialog(
                                 context: context,
-                                builder: (context) => const ContactsWidget(),
+                                builder: (context) => const BurgerWidget(),
                               ),
                             ),
                           ],

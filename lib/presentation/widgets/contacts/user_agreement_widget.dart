@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
-class AgreementWidget extends StatefulWidget {
-  const AgreementWidget({super.key});
+class UserAgreementWidget extends StatefulWidget {
+  const UserAgreementWidget({super.key});
 
   @override
-  State<AgreementWidget> createState() => _AgreementWidgetState();
+  State<UserAgreementWidget> createState() => _UserAgreementWidgetState();
 }
 
-class _AgreementWidgetState extends State<AgreementWidget> {
+class _UserAgreementWidgetState extends State<UserAgreementWidget> {
   final PageController _controller = PageController();
   int _currentPage = 0;
   bool _isVisible = false;
@@ -126,13 +126,13 @@ class _AgreementWidgetState extends State<AgreementWidget> {
                               index;
                         });
                       },
-                      children: [
+                      children: <Widget>[
                         Container(
-                          color: Colors.red,
+                          color: Colors.white60,
                           child: const Center(
                               child: Text('Page 1',
                                   style: TextStyle(
-                                      fontSize: 24, color: Colors.white,),),),
+                                      fontSize: 24, color: Colors.black,),),),
                         ),
                         Container(
                           color: Colors.green,
