@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_final_project/services/get_item_text.dart';
-import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
-import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
-import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
-import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:flutter_final_project/presentation/screens/home_screen.dart';
-import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
 
-class AgreementScreen extends StatefulWidget {
-  const AgreementScreen({super.key});
+class AgreementWidget extends StatefulWidget {
+  const AgreementWidget({super.key});
 
   @override
-  State<AgreementScreen> createState() => _AgreementScreenState();
+  State<AgreementWidget> createState() => _AgreementWidgetState();
 }
 
-class _AgreementScreenState extends State<AgreementScreen> {
+class _AgreementWidgetState extends State<AgreementWidget> {
+  final PageController _controller = PageController();
+  int _currentPage = 0;
   bool _isVisible = false;
 
   @override
@@ -42,136 +35,182 @@ class _AgreementScreenState extends State<AgreementScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  // void _nextPage() {
+  //   setState(() {
+  //     _currentPage = (_currentPage + 1) % 6;
+  //   });
+  //   _controller.animateToPage(
+  //     _currentPage,
+  //     duration: const Duration(milliseconds: 500),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
+
+  @override
   Widget build(BuildContext context) {
-    final cartStore = Provider.of<CartStore>(context, listen: false);
-    final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
-    return Center(
-      child: AnimatedOpacity(
-        opacity: _isVisible ? 1.0 : 0.0,
-        duration: const Duration(milliseconds: 300),
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.9,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(50),
-                blurRadius: 10,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth * 0.95;
+        final height = constraints.maxHeight * 0.95;
+        return Center(
+          child: AnimatedOpacity(
+            opacity: _isVisible ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(50),
+                    blurRadius: 10,
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
                       children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.grey,
-                          ),
-                          iconSize: 32,
-                          onPressed: _closeWidget,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.grey,
+                              ),
+                              iconSize: 32,
+                              onPressed: _closeWidget,
+                            ),
+                            const Text(
+                              'Угода користувача',
+                              style: TextStyles.oderAppBarText,
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.grey,
+                              ),
+                              iconSize: 32,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
                         ),
-                        const Text(
-                          'Статус замовлення',
-                          style: TextStyles.oderAppBarText,
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.grey,
-                          ),
-                          iconSize: 32,
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          },
+                        const SizedBox(
+                          height: 8,
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                  ],
-                ),
-              ),
-              // const Expanded(
-              //   child: OrderWidget(),
-              // ),
-              Padding(
-                padding: const EdgeInsets.all(22.0),
-                child: Column(
-                  children: [
-                    Observer(
-                      builder: (_) => Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // const Spacer(),
-                          const Text(
-                            'ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!',
-                            style: TextStyles.cartBottomText,
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Text(
-                            'Замовлення №${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)}',
-                            style: TextStyles.cartBottomText,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          const Text(
-                            'За потреби ми зателефонуємо вам, щоб уточнити деталі.\n',
-                            style: TextStyles.cartText,
-                            textAlign: TextAlign.center,
-                          ),
-                          
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        CustomDialog.show(
-                          context: context,
-                          builder: (_) => HomeScreen(store: homeStore),
-                        );
+                  ),
+                  // const Expanded(
+                  //   child: OrderWidget(),
+                  // ),
+                  Expanded(
+                    child: PageView(
+                      scrollDirection: Axis.horizontal,
+                      controller: _controller,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _currentPage =
+                              index;
+                        });
                       },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 40,
+                      children: [
+                        Container(
+                          color: Colors.red,
+                          child: const Center(
+                              child: Text('Page 1',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white,),),),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        Container(
+                          color: Colors.green,
+                          child: const Center(
+                              child: Text('Page 2',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white,),),),
                         ),
-                        backgroundColor: Colors.black.withAlpha(200),
-                      ),
-                      child: Observer(
-                        builder: (_) => const Text(
-                          'Повернутися у додаток',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                        Container(
+                          color: Colors.blue,
+                          child: const Center(
+                              child: Text('Page 3',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white,),),),
                         ),
-                      ),
+                        Container(
+                          color: Colors.yellow,
+                          child: const Center(
+                              child: Text('Page 4',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white,),),),
+                        ),
+                        Container(
+                          color: Colors.orange,
+                          child: const Center(
+                              child: Text('Page 5',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white,),),),
+                        ),
+                        Container(
+                          color: Colors.purple,
+                          child: const Center(
+                              child: Text('Page 6',
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.white,),),),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _previousPage,
+                        child: const Text('Previous Page'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _nextPage,
+                        child: const Text('Next Page'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  void _nextPage() {
+    if (_currentPage < 6) {
+      _controller.animateToPage(
+        _currentPage + 1,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _previousPage() {
+    if (_currentPage > 0) {
+      _controller.animateToPage(
+        _currentPage - 1,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }
