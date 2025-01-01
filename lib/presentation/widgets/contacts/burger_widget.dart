@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
-import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
@@ -111,18 +110,22 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                                 ),
                               );
                             },
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Угода користувача',
-                                  style: TextStyles.cartBottomText,
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ),
-                              ],
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              color: Colors.transparent, // Додаємо прозорий фон для покриття області
+                              child: const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Угода користувача',
+                                    style: TextStyles.cartBottomText,
+                                  ),
+                                  Divider(
+                                    thickness: 1,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -145,21 +148,24 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                                 ),
                               );
                             },
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Контакти',
-                                  style: TextStyles.cartBottomText,
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ),
-                              ],
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              color: Colors.transparent, // Прозорий фон для покриття області
+                              child: const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Контакти',
+                                    style: TextStyles.cartBottomText,
+                                  ),
+                                  Divider(
+                                    thickness: 1,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-
                         ],
                       ),
                       if (authStore.isLoggedIn)

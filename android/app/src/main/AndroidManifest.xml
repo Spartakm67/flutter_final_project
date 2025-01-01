@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-feature android:name="android.hardware.telephony" />
+
     <application
         android:label="Майстерня млинців"
         android:name="${applicationName}"
@@ -29,7 +33,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_launcher" />
-93        <!-- Flutter метадані -->
+       <!-- Flutter метадані -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
