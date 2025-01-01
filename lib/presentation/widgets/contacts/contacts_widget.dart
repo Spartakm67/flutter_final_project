@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_final_project/presentation/widgets/contacts/interactive_gesture_detector.dart';
 
 class ContactsWidget extends StatefulWidget {
   const ContactsWidget({super.key});
@@ -74,132 +74,44 @@ class _ContactsWidgetState extends State<ContactsWidget> {
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Observer(
-                  builder: (_) => Column(
+                  builder: (_) => const Column(
                     children: [
-                      const Text(
+                      Text(
                         'КОНТАКТИ',
                         style: TextStyles.cartBottomText,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 30,
                       ),
                       Column(
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              final messenger = ScaffoldMessenger.of(context);
-                              final uri = Uri(scheme: 'tel', path: '+380633425372');
-                              final canLaunch = await canLaunchUrl(uri);
-                              if (canLaunch) {
-                                await launchUrl(uri);
-                              } else {
-                                messenger.showSnackBar(
-                                  const SnackBar(content: Text('Cannot launch phone dialer')),
-                                );
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors.transparent,
-                              child: const Row(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                // crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.phone, color: Colors.black),
-                                  SizedBox(width: 8),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '+380633425372',
-                                          style: TextStyles.cartBottomText,
-                                        ),
-                                        Divider(
-                                          thickness: 1,
-                                          color: Colors.grey,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          InteractiveGestureDetector(
+                            label: '+380633425372',
+                            actionUri: 'tel:+380633425372',
+                            icon: Icons.phone,
+                            errorMessage: 'Cannot open the phone dialer',
+                            textStyle: TextStyles.cartBottomText,
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 12,
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              final messenger = ScaffoldMessenger.of(context);
-                              final uri = Uri(
-                                scheme: 'mailto',
-                                path: 'mlintsi83@gmail.com',
-                                query: Uri.encodeQueryComponent('subject=Hello&body=Your message here'),
-                              );
-                              final canLaunch = await canLaunchUrl(uri);
-                              if (canLaunch) {
-                                await launchUrl(uri);
-                              } else {
-                                messenger.showSnackBar(
-                                  const SnackBar(content: Text('Cannot launch email client')),
-                                );
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors.transparent,
-                              child: const Row(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                // crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.email, color: Colors.black),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'mlintsi83@gmail.com',
-                                          style: TextStyles.cartBottomText,
-                                        ),
-                                        Divider(
-                                          thickness: 1,
-                                          color: Colors.grey,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          InteractiveGestureDetector(
+                            label: 'mlintsi83@gmail.com',
+                            actionUri: 'mailto:mlintsi83@gmail.com?subject=Hello&body=Your+message+here',
+                            icon: Icons.email,
+                            errorMessage: 'Cannot open the email client',
+                            textStyle: TextStyles.cartBottomText,
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 12,
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              final messenger = ScaffoldMessenger.of(context);
-                              final uri = Uri.parse('https://www.google.com/maps/search/?q=проспект+соборності,+7Б,+Київ');
-                              final canLaunch = await canLaunchUrl(uri);
-                              if (canLaunch) {
-                                await launchUrl(uri);
-                              } else {
-                                messenger.showSnackBar(
-                                  const SnackBar(content: Text('Cannot launch Google Maps')),
-                                );
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors.transparent,
-                              child: const Text(
-                                'проспект соборності, 7Б, Київ',
-                                style: TextStyles.cartBottomText,
-                              ),
-                            ),
+                          InteractiveGestureDetector(
+                            label: 'проспект соборності, 7Б, Київ',
+                            actionUri: 'https://www.google.com/maps/search/?q=проспект+соборності,+7Б,+Київ',
+                            icon: Icons.location_on,
+                            errorMessage: 'Cannot launch Google Maps',
+                            textStyle: TextStyles.cartBottomText,
                           ),
-
                         ],
                       ),
                     ],

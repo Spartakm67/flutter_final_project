@@ -98,10 +98,12 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                               Navigator.of(context).pushReplacement(
                                 PageRouteBuilder(
                                   opaque: false,
-                                  pageBuilder: (context, animation, secondaryAnimation) {
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) {
                                     return const UserAgreementWidget();
                                   },
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
                                     return FadeTransition(
                                       opacity: animation,
                                       child: child,
@@ -112,7 +114,8 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors.transparent, // Додаємо прозорий фон для покриття області
+                              color: Colors
+                                  .transparent, // Додаємо прозорий фон для покриття області
                               child: const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -136,10 +139,12 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                               Navigator.of(context).pushReplacement(
                                 PageRouteBuilder(
                                   opaque: false,
-                                  pageBuilder: (context, animation, secondaryAnimation) {
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) {
                                     return const ContactsWidget();
                                   },
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
                                     return FadeTransition(
                                       opacity: animation,
                                       child: child,
@@ -150,7 +155,8 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors.transparent, // Прозорий фон для покриття області
+                              color: Colors
+                                  .transparent, // Прозорий фон для покриття області
                               child: const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

@@ -40,17 +40,6 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
     super.dispose();
   }
 
-  // void _nextPage() {
-  //   setState(() {
-  //     _currentPage = (_currentPage + 1) % 6;
-  //   });
-  //   _controller.animateToPage(
-  //     _currentPage,
-  //     duration: const Duration(milliseconds: 500),
-  //     curve: Curves.easeInOut,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
