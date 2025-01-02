@@ -107,7 +107,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                           ),
                           InteractiveGestureDetector(
                             label: 'проспект соборності, 7Б, Київ',
-                            actionUri: 'https://www.google.com/maps/search/?q=проспект+соборності,+7Б,+Київ',
+                            actionUri: 'geo:0,0?q=проспект+соборності,+7Б,+Київ',
                             icon: Icons.location_on,
                             errorMessage: 'Cannot launch Google Maps',
                             textStyle: TextStyles.cartBottomText,

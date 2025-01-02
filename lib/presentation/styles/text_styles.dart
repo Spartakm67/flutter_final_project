@@ -62,18 +62,21 @@ class TextStyles {
     fontSize: 18,
     fontWeight: FontWeight.bold,
     color: Colors.blueGrey,
+    decoration: TextDecoration.none,
   );
 
   static const TextStyle spanPostText = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 12,
     color: Colors.black,
+    decoration: TextDecoration.none,
   );
 
   static const TextStyle spanBodyText = TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 12,
     color: Colors.blueGrey,
+    decoration: TextDecoration.none,
   );
 
   static const TextStyle spanTitleText = TextStyle(

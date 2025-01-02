@@ -10,7 +10,6 @@ import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.
 import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
-import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/burger_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/bottom_cart_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';

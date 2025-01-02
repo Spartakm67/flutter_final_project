@@ -11,6 +11,7 @@ class UserAgreementWidget extends StatefulWidget {
 class _UserAgreementWidgetState extends State<UserAgreementWidget> {
   final PageController _controller = PageController();
   int _currentPage = 0;
+  int page = 1;
   bool _isVisible = false;
 
   @override
@@ -111,52 +112,134 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                       controller: _controller,
                       onPageChanged: (index) {
                         setState(() {
-                          _currentPage =
-                              index;
+                          _currentPage = index;
                         });
                       },
                       children: <Widget>[
                         Container(
                           color: Colors.white60,
-                          child: const Center(
-                              child: Text('Page 1',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.black,),),),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Угода користувача\n ',
+                                      style: TextStyles.oderAppBarText,
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '''Текст цього документу є договором, публічною пропозицією ФОП Козловський Дмитро Володимирович (надалі “Продавець”, "Ми") укласти на вашу користь (надалі “Ви”, "Покупець") договір на умовах, що викладені нижче.
+                                Будь ласка, уважно ознайомтесь з положеннями цієї угоди, перш ніж використовувати наш мобільний додаток (надалі – додаток), адже з моменту прийняття її умов, ця пропозиція виступає юридично обов’язковим договором між нами (надалі разом — «Сторони»).
+                                maisternia-mlintsiv2.ps.me — Веб-сайт, тобто набір веб-сторінок, який доступний в Інтернеті під одним доменом за адресою https://maisternia-mlintsiv2.ps.me (надалі “Сайт”, “веб-сайт”). Цей набір включає в себе різні ресурси, такі як Контент, об'єкти інтелектуальної власності, іншу інформацію та матеріали. Метою веб-сайту є централізація інформації про товари та послуги Продавця та продаж товарів Покупцю дистанційним способом.
+                                ''',
+                                      style: TextStyles.spanBodyText,
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          'Предмет та порядок укладення Договору\n ',
+                                      style: TextStyles.oderAppBarText,
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '''Предметом цієї угоди є забезпечення Покупцеві можливості отримувати послуги, які доступні на веб-сайті, отримувати доступ до вмісту, розміщеного на веб-сайті, а також придбавати товари: готові страви, фрукти та овочі, хлібобулочні вироби, алкогольні та безалкогольні напої, молочні продукти, м'ясні та ковбасні вироби, кондитерські вироби, тютюнові вироби та предмети, пов’язані з їх вживанням (далі Товари) із каталогу веб-сайту для будь-яких цілей.
+                                Покупець виражає згоду на умови цього Договору та укладає цей Договір шляхом реєстрації на Сайті, додатковим підтвердженням згоди на умови цього договору є здійснення оплати.
+                                Підтверджуючи свою згоду з умовами цього Договору, покупець таким чином підтверджує, що ці умови не порушують його законних прав та інтересів.
+                                Якщо ви не погоджуєтеся з цією Угодою, ви зобов'язані припинити використання Сайту і всіх його сторінок і покинути Сайт.\n''',
+                                      style: TextStyles.spanPostText,
+                                    ),
+                                    TextSpan(
+                                      text: 'Реєстрація на Сайті\n ',
+                                      style: TextStyles.oderAppBarText,
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '''Для оформлення замовлення на сайті необхідно зареєструватися. Реєстрація відбувається через форму на сайті або за телефоном за допомогою оператора. Після реєстрації Покупцем створюється обліковий запис. Реєстрація є прийняттям цієї угоди в повному обсязі.''',
+                                      style: TextStyles.spanPostText,
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+
+//                                 Text('''
+// Угода користувача
+// Текст цього документу є договором, публічною пропозицією ФОП Козловський Дмитро Володимирович (надалі “Продавець”, "Ми") укласти на вашу користь (надалі “Ви”, "Покупець") договір на умовах, що викладені нижче.
+// Будь ласка, уважно ознайомтесь з положеннями цієї угоди, перш ніж використовувати наш мобільний додаток (надалі – додаток), адже з моменту прийняття її умов, ця пропозиція виступає юридично обов’язковим договором між нами (надалі разом — «Сторони»).
+// maisternia-mlintsiv2.ps.me — Веб-сайт, тобто набір веб-сторінок, який доступний в Інтернеті під одним доменом за адресою https://maisternia-mlintsiv2.ps.me (надалі “Сайт”, “веб-сайт”). Цей набір включає в себе різні ресурси, такі як Контент, об'єкти інтелектуальної власності, іншу інформацію та матеріали. Метою веб-сайту є централізація інформації про товари та послуги Продавця та продаж товарів Покупцю дистанційним способом.
+// Предмет та порядок укладення Договору
+// Предметом цієї угоди є забезпечення Покупцеві можливості отримувати послуги, які доступні на веб-сайті, отримувати доступ до вмісту, розміщеного на веб-сайті, а також придбавати товари: готові страви, фрукти та овочі, хлібобулочні вироби, алкогольні та безалкогольні напої, молочні продукти, м'ясні та ковбасні вироби, кондитерські вироби, тютюнові вироби та предмети, пов’язані з їх вживанням (далі Товари) із каталогу веб-сайту для будь-яких цілей.
+// Покупець виражає згоду на умови цього Договору та укладає цей Договір шляхом реєстрації на Сайті, додатковим підтвердженням згоди на умови цього договору є здійснення оплати.
+// Підтверджуючи свою згоду з умовами цього Договору, покупець таким чином підтверджує, що ці умови не порушують його законних прав та інтересів.
+// Якщо ви не погоджуєтеся з цією Угодою, ви зобов'язані припинити використання Сайту і всіх його сторінок і покинути Сайт.
+// Реєстрація на Сайті
+// Для оформлення замовлення на сайті необхідно зареєструватися. Реєстрація відбувається через форму на сайті або за телефоном за допомогою оператора. Після реєстрації Покупцем створюється обліковий запис. Реєстрація є прийняттям цієї угоди в повному обсязі.
+// ''',
+//                                     style: TextStyles.spanPostText,
+//                                   textAlign: TextAlign.justify,),
+                            ),
+                          ),
                         ),
                         Container(
                           color: Colors.green,
                           child: const Center(
-                              child: Text('Page 2',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.white,),),),
+                            child: Text(
+                              'Page 2',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                         Container(
                           color: Colors.blue,
                           child: const Center(
-                              child: Text('Page 3',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.white,),),),
+                            child: Text(
+                              'Page 3',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                         Container(
                           color: Colors.yellow,
                           child: const Center(
-                              child: Text('Page 4',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.white,),),),
+                            child: Text(
+                              'Page 4',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                         Container(
                           color: Colors.orange,
                           child: const Center(
-                              child: Text('Page 5',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.white,),),),
+                            child: Text(
+                              'Page 5',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                         Container(
                           color: Colors.purple,
                           child: const Center(
-                              child: Text('Page 6',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.white,),),),
+                            child: Text(
+                              'Page 6',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -168,6 +251,8 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                         onPressed: _previousPage,
                         child: const Text('Previous Page'),
                       ),
+                      Text('${page + _currentPage}',
+                          style: TextStyles.cartBottomText),
                       ElevatedButton(
                         onPressed: _nextPage,
                         child: const Text('Next Page'),

@@ -10,8 +10,6 @@ import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/burger_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/sms/code_option_dialog.dart';
-import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
-import 'package:flutter_final_project/presentation/widgets/contacts/user_agreement_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
