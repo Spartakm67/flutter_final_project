@@ -5,6 +5,7 @@ import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/delivery_option_container.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/alert_not_work.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/time_picker_field.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/point_picker_field.dart';
@@ -61,9 +62,14 @@ class _OrderWidgetState extends State<OrderWidget> {
         orderStore.validatePhoneNumber(phoneController.text);
 
         if (!orderStore.isPhoneNumberValid) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Невірний формат номера телефону')),
+          CustomSnackBar.show(
+            context: context,
+            message: 'Невірний формат номера телефону',
+            backgroundColor: Colors.redAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 3),
           );
+
         }
       }
     });

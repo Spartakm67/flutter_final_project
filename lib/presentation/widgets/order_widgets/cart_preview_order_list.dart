@@ -17,8 +17,8 @@ State<CartPreviewOrderList> createState() => _CartPreviewOrderListState();
 
 class _CartPreviewOrderListState extends State<CartPreviewOrderList> {
   late TextEditingController commentController;
-  CartStore? cartStore; // Nullable до ініціалізації
-  bool _isInitialized = false; // Флаг для уникнення повторної ініціалізації
+  CartStore? cartStore;
+  bool _isInitialized = false;
 
   @override
   void didChangeDependencies() {
@@ -27,7 +27,7 @@ class _CartPreviewOrderListState extends State<CartPreviewOrderList> {
       cartStore = Provider.of<CartStore>(context, listen: false);
       commentController =
           TextEditingController(text: cartStore?.comment ?? '');
-      _isInitialized = true; // Встановлюємо флаг, щоб уникнути повторного виклику
+      _isInitialized = true;
     }
   }
 
