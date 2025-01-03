@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_final_project/data/models/poster/incoming_order.dart';
 import 'package:flutter_final_project/data/models/hive/order_model_hive.dart';
 import 'package:flutter_final_project/services/poster_api/create_incoming_order.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_status_widget.dart';
 
 class OrderContainer extends StatefulWidget {
@@ -51,8 +52,6 @@ class _OrderContainerState extends State<OrderContainer> {
 
   @override
   Widget build(BuildContext context) {
-    // final cartStore = Provider.of<CartStore>(context, listen: false);
-    // final orderStore = Provider.of<OrderStore>(context, listen: false);
     return Center(
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0.0,
@@ -141,8 +140,7 @@ class _OrderContainerState extends State<OrderContainer> {
                     ElevatedButton(
                       onPressed: () async {
                         if (!mounted) return;
-                        await _handleOrder(); // Викликаємо асинхронну функцію
-
+                        await _handleOrder();
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -173,43 +171,69 @@ class _OrderContainerState extends State<OrderContainer> {
       ),
     );
   }
+
   Future<IncomingOrder> createIncomingOrderFromHive({
     required OrderModelHive orderModel,
     required ObservableMap<String, int> counters,
     required String comment,
+    required bool isDelivery,
+    required TimeOfDay selectedTime,
   }) async {
-    // Фільтруємо продукти з позитивною кількістю
-    final products = counters.entries
-        .where((entry) => entry.value > 0) // Перевіряємо, що кількість більша за 0
+        if (!orderStore.isPhoneNumberValid) {
+          CustomSnackBar.show(
+            context: context,
+            message: 'Невірний формат номера телефону',
+            backgroundColor: Colors.redAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 5),
+          );
+          throw Exception('Невірний формат номера телефону');
+        }
+
+        final products = counters.entries
+        .where((entry) => entry.value > 0)
         .map((entry) {
       return Product(
-        productId: entry.key, // ID товару
-        count: entry.value,  // Кількість товару
+        productId: entry.key,
+        count: entry.value,
       );
     }).toList();
 
-    // Перевірка, чи є хоча б один продукт
     if (products.isEmpty) {
       throw Exception('Order must contain at least one product with a positive quantity');
     }
+        final serviceMode = isDelivery ? 3 : 1;
+        final deliveryPrice = isDelivery ? 5000 : 0;
+
+        final now = DateTime.now();
+        final deliveryDateTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          selectedTime.hour,
+          selectedTime.minute,
+        );
+        final deliveryTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(deliveryDateTime);
 
     return IncomingOrder(
+      spotId: 1,
       point: orderModel.point,
       phone: orderModel.phone,
-      address: orderModel.address,
+      address: isDelivery ? orderModel.address : orderModel.point,
       products: products,
       comment: comment,
       paymentMethod: orderModel.paymentMethod,
+      serviceMode: serviceMode,
+      deliveryPrice: deliveryPrice,
+      deliveryTime: deliveryTime,
     );
   }
 
-
   Future<void> _handleOrder() async {
     final messenger = ScaffoldMessenger.of(context);
-    final navigator = Navigator.of(context); // Отримуємо посилання ДО асинхронного виклику
+    final navigator = Navigator.of(context);
 
     try {
-      // Отримуємо дані замовлення
       final orderModel = orderStore.currentOrder;
       final counters = cartStore.counters;
       final comment = cartStore.comment;
@@ -221,28 +245,31 @@ class _OrderContainerState extends State<OrderContainer> {
         return;
       }
 
-      // Створюємо IncomingOrder
       final incomingOrder = await createIncomingOrderFromHive(
         orderModel: orderModel,
         counters: counters,
         comment: comment ?? '',
+        isDelivery: orderStore.isDelivery,
+        selectedTime: orderStore.selectedTime,
       );
 
-      // Відправляємо замовлення через API
+      final jsonOrder = incomingOrder.toJson();
+      print('Отправленный запрос: $jsonOrder');
+
       await OrderApiService.sendOrder(incomingOrder);
-
-      // Перевіряємо, чи віджет ще у дереві
       if (!mounted) return;
-
-      // Відображення успішного повідомлення
-      messenger.showSnackBar(
-        const SnackBar(content: Text('Order sent successfully!')),
-      );
-
-      // Закриваємо сторінку
+      // messenger.showSnackBar(
+      //   const SnackBar(content: Text('Order sent successfully!')),
+      //);
+          CustomSnackBar.show(
+            context: context,
+            message: 'Order sent successfully!',
+            backgroundColor: Colors.greenAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 3),
+       );
       navigator.pop();
 
-      // Після успішного відправлення відкриваємо діалогове вікно
       if (mounted) {
         CustomDialog.show(
           context: context,
@@ -251,10 +278,16 @@ class _OrderContainerState extends State<OrderContainer> {
       }
     } catch (e) {
       if (!mounted) return;
-      messenger.showSnackBar(
-        SnackBar(content: Text('Failed to send order: $e')),
+      // messenger.showSnackBar(
+      //   SnackBar(content: Text('Failed to send order: $e')),
+      // );
+      CustomSnackBar.show(
+        context: context,
+        message: 'Failed to send order: $e',
+        backgroundColor: Colors.redAccent,
+        position: SnackBarPosition.top,
+        duration: const Duration(seconds: 5),
       );
     }
   }
-
 }

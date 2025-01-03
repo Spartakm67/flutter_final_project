@@ -364,7 +364,7 @@ class HomeScreenState extends State<HomeScreen>
                   CustomBurgerButton(
                     backgroundColor: Colors.white,
                     lineColor: Colors.black,
-                    borderColor: Colors.grey,
+                    // borderColor: Colors.grey,
                     borderRadius: 12.0,
                     onTap: () => showDialog(
                       context: context,

@@ -1,28 +1,41 @@
 class IncomingOrder {
-  final String point;
+  final int spotId;
+  final String? point;
   final String phone;
   final String? address;
   final List<Product> products;
   final String? comment;
   final String paymentMethod;
+  final int serviceMode;
+  final int deliveryPrice;
+  final String deliveryTime;
 
   IncomingOrder({
-    required this.point,
+    required this.spotId,
+    this.point,
     required this.phone,
     this.address,
     required this.products,
     this.comment,
     required this.paymentMethod,
+    required this.serviceMode,
+    required this.deliveryPrice,
+    required this.deliveryTime,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'spot_id': int.tryParse(point) ?? 1,
+      'spot_id': spotId,
       'phone': phone,
-      'address': address,
+      'client_address': address,
+      // 'address': address,
       'products': products.map((product) => product.toJson()).toList(),
       'comment': comment,
-      'payment_method': paymentMethod,
+      'fiscal_method': paymentMethod,
+      'service_mode': serviceMode,
+      // 'delivery_price': deliveryPrice,
+      'delivery_price': serviceMode == 3 ? deliveryPrice : 0,
+      'delivery_time': deliveryTime,
     };
   }
 }

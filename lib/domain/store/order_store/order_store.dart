@@ -60,7 +60,6 @@ abstract class OrderStoreBase with Store {
     updateOrder(paymentMethod: value ? "Готівкою" : "Карткою");
   }
 
-
   @action
   Future<void> saveOrder(OrderModelHive order) async {
     await orderBox?.put('currentOrder', order);
@@ -85,26 +84,57 @@ abstract class OrderStoreBase with Store {
       _selectedTime ?? TimeOfDay.fromDateTime(DateTime.now());
 
   List<TimeOfDay> availableTimes = List.generate(
-    23,
+    24, // 24 інтервали для врахування часу від 9:30 до 21:00 включно
         (index) {
       final now = DateTime.now();
 
-      int hours = 9 + (index ~/ 2);
-      int minutes = (index % 2 == 0) ? 0 : 30;
+      // Починаємо з 9:30, а не з 9:00
+      int hours = 9 + ((index + 1) ~/ 2);
+      int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
 
+      // Генерований час
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
 
-      if (now.hour >= 20 || now.hour < 9) {
-        if (hours < 20) {
+      // Логіка перевірки: обмеження за часом і умовою
+      if (now.hour >= 21 || now.hour < 9) {
+        // Враховуємо лише години до 20:00
+        if (hours < 21) {
+          return TimeOfDay(hour: hours, minute: minutes);
+        }
+      } else if (generatedTime.isAfter(now)) {
+        // Враховуємо лише майбутній час для проміжку 9:30–21:00
+        if (hours <= 21) {
           return TimeOfDay(hour: hours, minute: minutes);
         }
       }
-      else if (generatedTime.isAfter(now)) {
-        return TimeOfDay(hour: hours, minute: minutes);
-      }
+
+      // Повертаємо null, якщо час не відповідає умовам
       return null;
     },
   ).whereType<TimeOfDay>().toList();
+
+
+  // List<TimeOfDay> availableTimes = List.generate(
+  //   23,
+  //       (index) {
+  //     final now = DateTime.now();
+  //
+  //     int hours = 9 + (index ~/ 2);
+  //     int minutes = (index % 2 == 0) ? 0 : 30;
+  //
+  //     DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
+  //
+  //     if (now.hour >= 20 || now.hour < 9) {
+  //       if (hours < 20) {
+  //         return TimeOfDay(hour: hours, minute: minutes);
+  //       }
+  //     }
+  //     else if (generatedTime.isAfter(now)) {
+  //       return TimeOfDay(hour: hours, minute: minutes);
+  //     }
+  //     return null;
+  //   },
+  // ).whereType<TimeOfDay>().toList();
 
   List<TimeOfDay> availablePointTimes = List.generate(
     44,
