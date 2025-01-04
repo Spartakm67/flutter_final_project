@@ -27,13 +27,11 @@ class IncomingOrder {
     return {
       'spot_id': spotId,
       'phone': phone,
-      'client_address': address,
-      // 'address': address,
+      'address': address,
       'products': products.map((product) => product.toJson()).toList(),
       'comment': comment,
       'fiscal_method': paymentMethod,
       'service_mode': serviceMode,
-      // 'delivery_price': deliveryPrice,
       'delivery_price': serviceMode == 3 ? deliveryPrice : 0,
       'delivery_time': deliveryTime,
     };

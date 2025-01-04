@@ -84,31 +84,24 @@ abstract class OrderStoreBase with Store {
       _selectedTime ?? TimeOfDay.fromDateTime(DateTime.now());
 
   List<TimeOfDay> availableTimes = List.generate(
-    24, // 24 інтервали для врахування часу від 9:30 до 21:00 включно
+    24,
         (index) {
       final now = DateTime.now();
 
-      // Починаємо з 9:30, а не з 9:00
       int hours = 9 + ((index + 1) ~/ 2);
       int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
 
-      // Генерований час
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
 
-      // Логіка перевірки: обмеження за часом і умовою
       if (now.hour >= 21 || now.hour < 9) {
-        // Враховуємо лише години до 20:00
         if (hours < 21) {
           return TimeOfDay(hour: hours, minute: minutes);
         }
       } else if (generatedTime.isAfter(now)) {
-        // Враховуємо лише майбутній час для проміжку 9:30–21:00
         if (hours <= 21) {
           return TimeOfDay(hour: hours, minute: minutes);
         }
       }
-
-      // Повертаємо null, якщо час не відповідає умовам
       return null;
     },
   ).whereType<TimeOfDay>().toList();

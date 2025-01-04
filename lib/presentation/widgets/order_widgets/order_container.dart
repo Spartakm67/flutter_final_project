@@ -202,7 +202,7 @@ class _OrderContainerState extends State<OrderContainer> {
     if (products.isEmpty) {
       throw Exception('Order must contain at least one product with a positive quantity');
     }
-        final serviceMode = isDelivery ? 3 : 1;
+        final serviceMode = isDelivery ? 3 : 2;
         final deliveryPrice = isDelivery ? 5000 : 0;
 
         final now = DateTime.now();
@@ -256,31 +256,63 @@ class _OrderContainerState extends State<OrderContainer> {
       final jsonOrder = incomingOrder.toJson();
       print('Отправленный запрос: $jsonOrder');
 
-      await OrderApiService.sendOrder(incomingOrder);
+      final response = await OrderApiService.sendOrder(incomingOrder);
+
+      final Map<String, dynamic>? responseData = response['response'];
+      final orderId = responseData?['incoming_order_id']?.toString();
+      final checkId = responseData?['transaction_id']?.toString();
+
       if (!mounted) return;
-      // messenger.showSnackBar(
-      //   const SnackBar(content: Text('Order sent successfully!')),
-      //);
-          CustomSnackBar.show(
-            context: context,
-            message: 'Order sent successfully!',
-            backgroundColor: Colors.greenAccent,
-            position: SnackBarPosition.top,
-            duration: const Duration(seconds: 3),
-       );
+
+      if (orderId == null) {
+        CustomSnackBar.show(
+          context: context,
+          message: 'Замовлення відправлене, але ID замовлення не отримано!',
+          backgroundColor: Colors.orangeAccent,
+          position: SnackBarPosition.top,
+          duration: const Duration(seconds: 5),
+        );
+      } else {
+        CustomSnackBar.show(
+          context: context,
+          message: 'Замовлення відправлене успішно!',
+          backgroundColor: Colors.greenAccent,
+          position: SnackBarPosition.top,
+          duration: const Duration(seconds: 3),
+        );
+      }
+
+      if (checkId == null) {
+        CustomSnackBar.show(
+          context: context,
+          message: 'Замовлення відправлене, але № чеку не отримано!',
+          backgroundColor: Colors.orangeAccent,
+          position: SnackBarPosition.top,
+          duration: const Duration(seconds: 5),
+        );
+      } else {
+        CustomSnackBar.show(
+          context: context,
+          message: 'Замовлення відправлене успішно!',
+          backgroundColor: Colors.greenAccent,
+          position: SnackBarPosition.top,
+          duration: const Duration(seconds: 3),
+        );
+      }
+
+      await cartStore.clearCart();
+
       navigator.pop();
 
       if (mounted) {
         CustomDialog.show(
           context: context,
-          builder: (_) => const OrderStatusWidget(),
+          builder: (_) => OrderStatusWidget(orderId: orderId, checkId: checkId,),
         );
       }
     } catch (e) {
       if (!mounted) return;
-      // messenger.showSnackBar(
-      //   SnackBar(content: Text('Failed to send order: $e')),
-      // );
+
       CustomSnackBar.show(
         context: context,
         message: 'Failed to send order: $e',

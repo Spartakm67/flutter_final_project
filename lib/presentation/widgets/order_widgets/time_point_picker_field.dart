@@ -26,7 +26,7 @@ class TimePointPickerField extends StatelessWidget {
                   ),
                 ),
                 const Icon(Icons.keyboard_arrow_down,
-                    size: 24.0, color: Colors.black),
+                    size: 24.0, color: Colors.black,),
               ],
             ),
           ),
