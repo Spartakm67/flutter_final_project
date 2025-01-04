@@ -286,26 +286,3 @@ class _OrderWidgetState extends State<OrderWidget> {
 
 
 
-// void submitOrder() {
-//   if (!orderStore.isPhoneNumberValid) {
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text('Перевірте номер телефону перед відправкою замовлення')),
-//     );
-//     return;
-//   }
-//
-//   // Логіка для відправки замовлення
-//   sendOrderToServer();
-// }
-
-// validator: (value) {
-//   const phonePattern = r'^\+380\d{9}$';
-//   final regExp = RegExp(phonePattern);
-//
-//   if (value == null || value.isEmpty) {
-//     return 'Будь ласка, введіть номер телефону';
-//   } else if (!regExp.hasMatch(value)) {
-//     return 'Невірний формат. Введіть номер виду +380501111111';
-//   }
-//   return null;
-// },

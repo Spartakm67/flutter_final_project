@@ -105,9 +105,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                   ],
                 ),
               ),
-              // const Expanded(
-              //   child: OrderWidget(),
-              // ),
               Padding(
                 padding: const EdgeInsets.all(22.0),
                 child: Column(
@@ -116,7 +113,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                       builder: (_) => Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          // const Spacer(),
                           const Text(
                             'ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!',
                             style: TextStyles.cartBottomText,
@@ -147,11 +143,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                             style: TextStyles.cartText,
                             textAlign: TextAlign.center,
                           ),
-                          // if (orderStore.isDelivery)
-                          //   Text(
-                          //     'Доставлення: ${cartStore.deliveryPrice.toStringAsFixed(0)} грн.',
-                          //     style: TextStyles.cartBottomText,
-                          //   ),
                         ],
                       ),
                     ),

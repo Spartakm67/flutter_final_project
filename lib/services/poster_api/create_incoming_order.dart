@@ -17,7 +17,6 @@ class OrderApiService {
     );
 
     if (response.statusCode == 200) {
-      // return jsonDecode(response.body);
       final responseData = jsonDecode(response.body);
       return responseData;
     } else {

@@ -12,7 +12,7 @@ class AlertNotWork extends StatelessWidget {
     const end = TimeOfDay(hour: 9, minute: 0);
 
     DateTime startDateTime =
-    DateTime(now.year, now.month, now.day, start.hour, start.minute);
+        DateTime(now.year, now.month, now.day, start.hour, start.minute);
     DateTime endDateTimeTomorrow = DateTime(
       now.year,
       now.month,

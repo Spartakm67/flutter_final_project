@@ -179,6 +179,9 @@ class _OrderContainerState extends State<OrderContainer> {
     required bool isDelivery,
     required TimeOfDay selectedTime,
   }) async {
+
+    orderStore.validatePhoneNumber(orderModel.phone);
+
         if (!orderStore.isPhoneNumberValid) {
           CustomSnackBar.show(
             context: context,

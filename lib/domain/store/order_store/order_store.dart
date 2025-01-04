@@ -107,28 +107,6 @@ abstract class OrderStoreBase with Store {
   ).whereType<TimeOfDay>().toList();
 
 
-  // List<TimeOfDay> availableTimes = List.generate(
-  //   23,
-  //       (index) {
-  //     final now = DateTime.now();
-  //
-  //     int hours = 9 + (index ~/ 2);
-  //     int minutes = (index % 2 == 0) ? 0 : 30;
-  //
-  //     DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
-  //
-  //     if (now.hour >= 20 || now.hour < 9) {
-  //       if (hours < 20) {
-  //         return TimeOfDay(hour: hours, minute: minutes);
-  //       }
-  //     }
-  //     else if (generatedTime.isAfter(now)) {
-  //       return TimeOfDay(hour: hours, minute: minutes);
-  //     }
-  //     return null;
-  //   },
-  // ).whereType<TimeOfDay>().toList();
-
   List<TimeOfDay> availablePointTimes = List.generate(
     44,
         (index) {
