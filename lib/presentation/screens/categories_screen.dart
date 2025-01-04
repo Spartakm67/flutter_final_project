@@ -65,65 +65,67 @@ class CategoriesScreenState extends State<CategoriesScreen> {
             builder: (_) {
               return cartStore.totalItems > 0
                   ? GestureDetector(
-                      onTap: () {
-                        CustomDialog.show(
-                          context: context,
-                          builder: (_) => const CartPreviewContainer(),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.shopping_cart,
-                              size: 30,
-                              color: Colors.blueGrey,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              cartStore.totalItems.toString(),
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueGrey,
-                              ),
-                            ),
-                            if (authStore.isLoggedIn)
-                              IconButton(
-                                icon: const Icon(Icons.logout),
-                                onPressed: authStore.isLoading
-                                    ? null
-                                    : () async {
-                                        await authStore.signOut();
-                                        if (context.mounted) {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomeScreen(store: homeStore),
-                                            ),
-                                          );
-                                        }
-                                      },
-                              ),
-                            const SizedBox(width: 10),
-                            CustomBurgerButton(
-                              backgroundColor: Colors.white,
-                              lineColor: Colors.blueGrey,
-                              borderColor: Colors.grey,
-                              borderRadius: 12.0,
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => const BurgerWidget(),
-                              ),
-                            ),
-                          ],
+                onTap: () {
+                  CustomDialog.show(
+                    context: context,
+                    builder: (_) => const CartPreviewContainer(),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.shopping_cart,
+                        size: 30,
+                        color: Colors.blueGrey,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        cartStore.totalItems.toString(),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey,
                         ),
                       ),
-                    )
+                    ],
+                  ),
+                ),
+              )
                   : const SizedBox();
             },
+          ),
+          if (authStore.isLoggedIn)
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: authStore.isLoading
+                  ? null
+                  : () async {
+                await authStore.signOut();
+                if (context.mounted) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(store: homeStore),
+                    ),
+                  );
+                }
+              },
+            ),
+          // const SizedBox(width: 5),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: CustomBurgerButton(
+              backgroundColor: Colors.white,
+              lineColor: Colors.blueGrey,
+              borderColor: Colors.grey,
+              borderRadius: 12.0,
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => const BurgerWidget(),
+              ),
+            ),
           ),
         ],
       ),
