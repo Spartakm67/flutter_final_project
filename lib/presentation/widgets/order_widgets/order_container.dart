@@ -259,15 +259,15 @@ class _OrderContainerState extends State<OrderContainer> {
       final response = await OrderApiService.sendOrder(incomingOrder);
 
       final Map<String, dynamic>? responseData = response['response'];
-      final orderId = responseData?['incoming_order_id']?.toString();
+      final statusId = responseData?['status'];
       final checkId = responseData?['transaction_id']?.toString();
 
       if (!mounted) return;
 
-      if (orderId == null) {
+      if (statusId == null) {
         CustomSnackBar.show(
           context: context,
-          message: 'Замовлення відправлене, але ID замовлення не отримано!',
+          message: 'Замовлення відправлене, але ID статусу замовлення не отримано!',
           backgroundColor: Colors.orangeAccent,
           position: SnackBarPosition.top,
           duration: const Duration(seconds: 5),
@@ -307,7 +307,7 @@ class _OrderContainerState extends State<OrderContainer> {
       if (mounted) {
         CustomDialog.show(
           context: context,
-          builder: (_) => OrderStatusWidget(orderId: orderId, checkId: checkId,),
+          builder: (_) => OrderStatusWidget(statusId: statusId, checkId: checkId,),
         );
       }
     } catch (e) {

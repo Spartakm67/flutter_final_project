@@ -11,9 +11,9 @@ import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
 
 class OrderStatusWidget extends StatefulWidget {
-  final String? orderId;
+  final String? statusId;
   final String? checkId;
-  const OrderStatusWidget({super.key, this.orderId, this.checkId});
+  const OrderStatusWidget({super.key, this.statusId, this.checkId});
 
   @override
   State<OrderStatusWidget> createState() => _OrderStatusWidgetState();
@@ -125,18 +125,18 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                             height: 12,
                           ),
                           Text(
-                            widget.orderId != null
-                                ? 'Замовлення ID: ${widget.orderId}'
-                                : 'ID замовлення не отримано',
+                            widget.checkId != null
+                                ? 'Замовлення №: ${widget.checkId}'
+                                : '№ замовлення не отримано',
                             style: TextStyles.cartBottomText,
                           ),
                           const SizedBox(
                             height: 8,
                           ),
                           Text(
-                            widget.checkId != null
-                                ? 'Чек №: ${widget.checkId}'
-                                : '№ чеку не отримано',
+                            widget.statusId != null
+                                ? 'Замовлення прийняте'
+                                : 'ID замовлення не отримано',
                             style: TextStyles.cartBottomText,
                           ),
                           const SizedBox(
