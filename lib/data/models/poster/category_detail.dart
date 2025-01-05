@@ -46,7 +46,7 @@ class CategoryDetail {
   factory CategoryDetail.fromJson(Map<String, dynamic> json) {
     return CategoryDetail(
       categoryId: json['category_id'] as int,
-      categoryName: json['category_name'] as String? ?? 'Unknown', // Значення за замовчуванням
+      categoryName: json['category_name'] as String? ?? 'Unknown',
       categoryPhoto: json['category_photo'] as String?,
       categoryPhotoOrigin: json['category_photo_origin'] as String?,
       parentCategory: json['parent_category'] as int?,

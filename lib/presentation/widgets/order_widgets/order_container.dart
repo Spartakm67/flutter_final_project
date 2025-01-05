@@ -193,6 +193,17 @@ class _OrderContainerState extends State<OrderContainer> {
           throw Exception('Невірний формат номера телефону');
         }
 
+        if (isDelivery && (orderModel.address?.trim().isEmpty ?? true)) {
+          CustomSnackBar.show(
+            context: context,
+            message: 'Адреса для доставки не може бути порожньою',
+            backgroundColor: Colors.redAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 5),
+          );
+          throw Exception('Адреса для доставки не може бути порожньою');
+        }
+
         final products = counters.entries
         .where((entry) => entry.value > 0)
         .map((entry) {
@@ -203,7 +214,7 @@ class _OrderContainerState extends State<OrderContainer> {
     }).toList();
 
     if (products.isEmpty) {
-      throw Exception('Order must contain at least one product with a positive quantity');
+      throw Exception('Замовлення повинно містити хоча б один продукт');
     }
         final serviceMode = isDelivery ? 3 : 2;
         final deliveryPrice = isDelivery ? 5000 : 0;
@@ -262,6 +273,7 @@ class _OrderContainerState extends State<OrderContainer> {
       final response = await OrderApiService.sendOrder(incomingOrder);
 
       final Map<String, dynamic>? responseData = response['response'];
+      final orderId = responseData?['incoming_order_id']?.toString();
       final statusId = responseData?['status'];
       final checkId = responseData?['transaction_id']?.toString();
 
@@ -310,7 +322,7 @@ class _OrderContainerState extends State<OrderContainer> {
       if (mounted) {
         CustomDialog.show(
           context: context,
-          builder: (_) => OrderStatusWidget(statusId: statusId, checkId: checkId,),
+          builder: (_) => OrderStatusWidget(orderId: orderId, statusId: statusId, checkId: checkId,),
         );
       }
     } catch (e) {

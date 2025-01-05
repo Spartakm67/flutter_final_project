@@ -89,181 +89,186 @@ class _OrderWidgetState extends State<OrderWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Observer(
-          builder: (_) {
-            if (cartStore == null) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final items = cartStore!.cartItems;
-            if (items.isEmpty) {
-              return const Center(
-                child: Text(
-                  'Корзина пуста!',
-                  style: TextStyles.greetingsText,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Form(
+          key: _formKey,
+          child: Observer(
+            builder: (_) {
+              if (cartStore == null) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final items = cartStore!.cartItems;
+              if (items.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Корзина пуста!',
+                    style: TextStyles.greetingsText,
+                  ),
+                );
+              }
+              return Scrollbar(
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomContainer(
+                        backgroundColor: Colors.black.withAlpha(0),
+                        padding: EdgeInsets.zero,
+                        children: [
+                          TextFormField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              labelText: nameController.text.isEmpty ? 'Ім’я' : null,
+                              prefixIcon: const Icon(Icons.person),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                            ),
+                            onChanged: _onNameChanged,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Будь ласка, введіть ім’я';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: phoneController,
+                            focusNode: phoneFocusNode,
+                            decoration: InputDecoration(
+                              labelText: phoneController.text.isEmpty ? 'Номер телефону' : null,
+                              prefixIcon: const Icon(Icons.phone_android),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                              border: InputBorder.none,
+                            ),
+                            onChanged: (value) {
+                              if (!value.startsWith('+380')) {
+                                phoneController.text = '+380';
+                                phoneController.selection = TextSelection.fromPosition(
+                                  TextPosition(offset: phoneController.text.length),
+                                );
+                              } else {
+                                _onPhoneChanged(value);
+                              }
+                            },
+                            keyboardType: TextInputType.phone,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(_isDelivery ? 'Доставлення' : 'Самовивіз'),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          DeliveryOptionContainer(
+                            isSelected: _isDelivery,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12.0),
+                              bottomLeft: Radius.circular(12.0),
+                            ),
+                            onTap: () {
+                              orderStore.updateDelivery(true);
+                            },
+                            label: 'Доставлення',
+                            excludeRightBorder: true,
+                          ),
+                          DeliveryOptionContainer(
+                            isSelected: !_isDelivery,
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                            onTap: () {
+                              orderStore.updateDelivery(false);
+                            },
+                            label: 'Самовивіз',
+                            excludeLeftBorder: true,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      if (_isDelivery)
+                        const Text('Вкажіть адресу, під\'їзд, поверх, квартиру (офіс):'),
+                      const SizedBox(height: 8),
+                      CustomContainer(
+                        backgroundColor: Colors.black.withAlpha(0),
+                        padding: EdgeInsets.zero,
+                        children: [
+                          if (_isDelivery)
+                          TextFormField(
+                            controller: addressController,
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              labelText: addressController.text.isEmpty ? 'Вкажіть адресу' : null,
+                              prefixIcon: const Icon(Icons.location_on),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                            ),
+                            onChanged: _onAddressChanged,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Будь ласка, введіть адресу';
+                              }
+                              return null;
+                            },
+                          ),
+                          if (!_isDelivery)
+                          PointPickerField(orderStore: orderStore),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 1.0,
+                            height: 1.0,
+                          ),
+                          if (_isDelivery)
+                          TimePickerField(orderStore: orderStore),
+                          if (!_isDelivery)
+                            TimePointPickerField(orderStore: orderStore),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(_isCash ? 'Оплата готівкою' : 'Оплата карткою'),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          DeliveryOptionContainer(
+                            isSelected: _isCash,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12.0),
+                              bottomLeft: Radius.circular(12.0),
+                            ),
+                            onTap: () {
+                              orderStore.updatePaymentMethod(true);
+                            },
+                            label: 'Готівкою',
+                            excludeRightBorder: true,
+                          ),
+                          DeliveryOptionContainer(
+                            isSelected: !_isCash,
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                            onTap: () {
+                              orderStore.updatePaymentMethod(false);
+                            },
+                            label: 'Карткою',
+                            excludeLeftBorder: true,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const AlertNotWork(),
+                    ],
+                  ),
                 ),
               );
-            }
-            return Scrollbar(
-              thumbVisibility: true,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomContainer(
-                      backgroundColor: Colors.black.withAlpha(0),
-                      padding: EdgeInsets.zero,
-                      children: [
-                        TextFormField(
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            labelText: nameController.text.isEmpty ? 'Ім’я' : null,
-                            prefixIcon: const Icon(Icons.person),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                          ),
-                          onChanged: _onNameChanged,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Будь ласка, введіть ім’я';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: phoneController,
-                          focusNode: phoneFocusNode,
-                          decoration: InputDecoration(
-                            labelText: phoneController.text.isEmpty ? 'Номер телефону' : null,
-                            prefixIcon: const Icon(Icons.phone_android),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (value) {
-                            if (!value.startsWith('+380')) {
-                              phoneController.text = '+380';
-                              phoneController.selection = TextSelection.fromPosition(
-                                TextPosition(offset: phoneController.text.length),
-                              );
-                            } else {
-                              _onPhoneChanged(value);
-                            }
-                          },
-                          keyboardType: TextInputType.phone,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(_isDelivery ? 'Доставлення' : 'Самовивіз'),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        DeliveryOptionContainer(
-                          isSelected: _isDelivery,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0),
-                          ),
-                          onTap: () {
-                            orderStore.updateDelivery(true);
-                          },
-                          label: 'Доставлення',
-                          excludeRightBorder: true,
-                        ),
-                        DeliveryOptionContainer(
-                          isSelected: !_isDelivery,
-                          borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0),
-                          ),
-                          onTap: () {
-                            orderStore.updateDelivery(false);
-                          },
-                          label: 'Самовивіз',
-                          excludeLeftBorder: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    if (_isDelivery)
-                      const Text('Вкажіть адресу, під\'їзд, поверх, квартиру (офіс):'),
-                    const SizedBox(height: 8),
-                    CustomContainer(
-                      backgroundColor: Colors.black.withAlpha(0),
-                      padding: EdgeInsets.zero,
-                      children: [
-                        if (_isDelivery)
-                        TextFormField(
-                          controller: addressController,
-                          maxLines: null,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
-                            labelText: addressController.text.isEmpty ? 'Вкажіть адресу' : null,
-                            prefixIcon: const Icon(Icons.location_on),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                          ),
-                          onChanged: _onAddressChanged,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Будь ласка, введіть адресу';
-                            }
-                            return null;
-                          },
-                        ),
-                        if (!_isDelivery)
-                        PointPickerField(orderStore: orderStore),
-                        const Divider(
-                          color: Colors.grey,
-                          thickness: 1.0,
-                          height: 1.0,
-                        ),
-                        if (_isDelivery)
-                        TimePickerField(orderStore: orderStore),
-                        if (!_isDelivery)
-                          TimePointPickerField(orderStore: orderStore),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(_isCash ? 'Оплата готівкою' : 'Оплата карткою'),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        DeliveryOptionContainer(
-                          isSelected: _isCash,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0),
-                          ),
-                          onTap: () {
-                            orderStore.updatePaymentMethod(true);
-                          },
-                          label: 'Готівкою',
-                          excludeRightBorder: true,
-                        ),
-                        DeliveryOptionContainer(
-                          isSelected: !_isCash,
-                          borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0),
-                          ),
-                          onTap: () {
-                            orderStore.updatePaymentMethod(false);
-                          },
-                          label: 'Карткою',
-                          excludeLeftBorder: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    const AlertNotWork(),
-                  ],
-                ),
-              ),
-            );
-          },
+            },
+          ),
         ),
       ),
     );
