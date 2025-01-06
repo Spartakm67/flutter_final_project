@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
@@ -48,6 +49,10 @@ class _OrderContainerState extends State<OrderContainer> {
         Navigator.pop(context);
       }
     });
+  }
+
+  bool _isWorkingHours() {
+    return WorkingHoursHelper.isWorkingHours();
   }
 
   @override
@@ -244,7 +249,6 @@ class _OrderContainerState extends State<OrderContainer> {
   }
 
   Future<void> _handleOrder() async {
-    final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
 
     try {
@@ -253,8 +257,12 @@ class _OrderContainerState extends State<OrderContainer> {
       final comment = cartStore.comment;
 
       if (orderModel == null || counters.isEmpty) {
-        messenger.showSnackBar(
-          const SnackBar(content: Text('Order data or cart is missing')),
+          CustomSnackBar.show(
+          context: context,
+          message: 'Замовлення відсутнє!',
+          backgroundColor: Colors.orangeAccent,
+          position: SnackBarPosition.top,
+          duration: const Duration(seconds: 5),
         );
         return;
       }
@@ -273,56 +281,74 @@ class _OrderContainerState extends State<OrderContainer> {
       final response = await OrderApiService.sendOrder(incomingOrder);
 
       final Map<String, dynamic>? responseData = response['response'];
+      print('Респонс: $responseData');
       final orderId = responseData?['incoming_order_id']?.toString();
       final statusId = responseData?['status'];
       final checkId = responseData?['transaction_id']?.toString();
 
       if (!mounted) return;
 
-      if (statusId == null) {
-        CustomSnackBar.show(
-          context: context,
-          message: 'Замовлення відправлене, але ID статусу замовлення не отримано!',
-          backgroundColor: Colors.orangeAccent,
-          position: SnackBarPosition.top,
-          duration: const Duration(seconds: 5),
-        );
-      } else {
-        CustomSnackBar.show(
-          context: context,
-          message: 'Замовлення відправлене успішно!',
-          backgroundColor: Colors.greenAccent,
-          position: SnackBarPosition.top,
-          duration: const Duration(seconds: 3),
-        );
+      if (_isWorkingHours()) {
+        if (statusId == null) {
+          CustomSnackBar.show(
+            context: context,
+            message: 'Замовлення відправлене, але ID статусу замовлення не отримано!',
+            backgroundColor: Colors.orangeAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 5),
+          );
+        } else {
+          CustomSnackBar.show(
+            context: context,
+            message: 'Замовлення відправлене успішно!',
+            backgroundColor: Colors.greenAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 3),
+          );
+        }
+
+        if (checkId == null) {
+          CustomSnackBar.show(
+            context: context,
+            message: 'Замовлення відправлене, але № чеку не отримано!',
+            backgroundColor: Colors.orangeAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 5),
+          );
+        } else {
+          CustomSnackBar.show(
+            context: context,
+            message: 'Замовлення відправлене успішно!',
+            backgroundColor: Colors.greenAccent,
+            position: SnackBarPosition.top,
+            duration: const Duration(seconds: 3),
+          );
+        }
       }
-
-      if (checkId == null) {
-        CustomSnackBar.show(
-          context: context,
-          message: 'Замовлення відправлене, але № чеку не отримано!',
-          backgroundColor: Colors.orangeAccent,
-          position: SnackBarPosition.top,
-          duration: const Duration(seconds: 5),
-        );
-      } else {
-        CustomSnackBar.show(
-          context: context,
-          message: 'Замовлення відправлене успішно!',
-          backgroundColor: Colors.greenAccent,
-          position: SnackBarPosition.top,
-          duration: const Duration(seconds: 3),
-        );
-      }
-
-      await cartStore.clearCart();
-
       navigator.pop();
 
       if (mounted) {
         CustomDialog.show(
           context: context,
-          builder: (_) => OrderStatusWidget(orderId: orderId, statusId: statusId, checkId: checkId,),
+          builder: (_) => _isWorkingHours()
+              ? OrderStatusWidget(
+            orderId: orderId,
+            statusId: statusId,
+            checkId: checkId,
+            onCartClear: () async {
+              if ((statusId != null && checkId != null) || orderId != null) {
+                await cartStore.clearCart();
+              }
+            },
+          )
+              : OrderStatusWidget(
+            orderId: orderId,
+            onCartClear: () async {
+              if ((statusId != null && checkId != null) || orderId != null) {
+                await cartStore.clearCart();
+              }
+            },
+          ),
         );
       }
     } catch (e) {

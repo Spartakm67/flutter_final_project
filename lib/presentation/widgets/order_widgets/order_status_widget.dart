@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_final_project/services/get_item_text.dart';
+import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
@@ -15,9 +15,10 @@ class OrderStatusWidget extends StatefulWidget {
   final String? orderId;
   final int? statusId;
   final String? checkId;
+  final Future<void> Function()? onCartClear;
 
   const OrderStatusWidget(
-      {super.key, this.orderId, this.statusId, this.checkId,});
+      {super.key, this.orderId, this.statusId, this.checkId, this.onCartClear,});
 
   @override
   State<OrderStatusWidget> createState() => _OrderStatusWidgetState();
@@ -40,18 +41,20 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
     setState(() {
       _isVisible = false;
     });
-    Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () async {
       if (mounted) {
         Navigator.pop(context);
+
+        if (widget.onCartClear != null) {
+          await widget.onCartClear!();
+        }
+        // Navigator.pop(context);
       }
     });
   }
 
   bool _isWorkingHours() {
-    final now = DateTime.now();
-    final startOfWork = DateTime(now.year, now.month, now.day, 9, 0);
-    final endOfWork = DateTime(now.year, now.month, now.day, 20, 0);
-    return now.isAfter(startOfWork) && now.isBefore(endOfWork);
+    return WorkingHoursHelper.isWorkingHours();
   }
 
   @override
@@ -103,9 +106,12 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                             color: Colors.grey,
                           ),
                           iconSize: 32,
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.pop(context);
                             Navigator.pop(context);
+                            if (widget.onCartClear != null) {
+                              await widget.onCartClear!();
+                            }
                           },
                         ),
                       ],
@@ -131,27 +137,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                           const SizedBox(
                             height: 12,
                           ),
-                          // Text(
-                          //   widget.checkId != null
-                          //       ? 'Замовлення №: ${widget.checkId}'
-                          //       : '№ замовлення не отримано',
-                          //   style: TextStyles.cartBottomText,
-                          // ),
-                          // const SizedBox(
-                          //   height: 8,
-                          // ),
-                          // Text(
-                          //   widget.statusId != null
-                          //       ? (widget.statusId == 0
-                          //           ? 'Замовлення в обробці'
-                          //           : widget.statusId == 1
-                          //               ? 'Замовлення прийняте'
-                          //               : widget.statusId == 7
-                          //                   ? 'Замовлення відхилене'
-                          //                   : 'Невідомий статус')
-                          //       : 'Статус замовлення не отримано',
-                          //   style: TextStyles.cartBottomText,
-                          // ),
                           _isWorkingHours()
                               ? Column(
                             children: [
@@ -172,6 +157,12 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                     ? 'Замовлення відхилене'
                                     : 'Невідомий статус')
                                     : 'Статус замовлення не отримано',
+                                style: TextStyles.cartBottomText,
+                              ),
+                              Text(
+                                widget.orderId != null
+                                    ? 'OrderId №: ${widget.orderId}'
+                                    : 'OrderId відсутній',
                                 style: TextStyles.cartBottomText,
                               ),
                             ],
@@ -195,11 +186,14 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         CustomDialog.show(
                           context: context,
                           builder: (_) => HomeScreen(store: homeStore),
                         );
+                        if (widget.onCartClear != null) {
+                          await widget.onCartClear!();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -231,3 +225,26 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
     );
   }
 }
+
+
+// Text(
+//   widget.checkId != null
+//       ? 'Замовлення №: ${widget.checkId}'
+//       : '№ замовлення не отримано',
+//   style: TextStyles.cartBottomText,
+// ),
+// const SizedBox(
+//   height: 8,
+// ),
+// Text(
+//   widget.statusId != null
+//       ? (widget.statusId == 0
+//           ? 'Замовлення в обробці'
+//           : widget.statusId == 1
+//               ? 'Замовлення прийняте'
+//               : widget.statusId == 7
+//                   ? 'Замовлення відхилене'
+//                   : 'Невідомий статус')
+//       : 'Статус замовлення не отримано',
+//   style: TextStyles.cartBottomText,
+// ),
