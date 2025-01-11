@@ -343,6 +343,8 @@ class _OrderContainerState extends State<OrderContainer> {
           )
               : OrderStatusWidget(
             orderId: orderId,
+            statusId: statusId,
+            checkId: checkId,
             onCartClear: () async {
               if ((statusId != null && checkId != null) || orderId != null) {
                 await cartStore.clearCart();

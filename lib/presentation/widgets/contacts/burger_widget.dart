@@ -84,7 +84,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                 child: Observer(
                   builder: (_) => Column(
                     children: [
-                      const Text(
+                       Text(
                         'МАЙСТЕРНЯ МЛИНЦІВ',
                         style: TextStyles.cartBottomText,
                       ),
@@ -103,7 +103,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                                     return const UserAgreementWidget();
                                   },
                                   transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
+                                      secondaryAnimation, child,) {
                                     return FadeTransition(
                                       opacity: animation,
                                       child: child,
@@ -116,14 +116,14 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               color: Colors
                                   .transparent, // Додаємо прозорий фон для покриття області
-                              child: const Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     'Угода користувача',
                                     style: TextStyles.cartBottomText,
                                   ),
-                                  Divider(
+                                  const Divider(
                                     thickness: 1,
                                     color: Colors.grey,
                                   ),
@@ -144,7 +144,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                                     return const ContactsWidget();
                                   },
                                   transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
+                                      secondaryAnimation, child,) {
                                     return FadeTransition(
                                       opacity: animation,
                                       child: child,
@@ -157,14 +157,14 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               color: Colors
                                   .transparent, // Прозорий фон для покриття області
-                              child: const Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     'Контакти',
                                     style: TextStyles.cartBottomText,
                                   ),
-                                  Divider(
+                                  const Divider(
                                     thickness: 1,
                                     color: Colors.grey,
                                   ),
@@ -178,7 +178,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Вийти',
                               style: TextStyles.cartBottomText,
                             ),

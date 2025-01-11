@@ -17,8 +17,13 @@ class OrderStatusWidget extends StatefulWidget {
   final String? checkId;
   final Future<void> Function()? onCartClear;
 
-  const OrderStatusWidget(
-      {super.key, this.orderId, this.statusId, this.checkId, this.onCartClear,});
+  const OrderStatusWidget({
+    super.key,
+    this.orderId,
+    this.statusId,
+    this.checkId,
+    this.onCartClear,
+  });
 
   @override
   State<OrderStatusWidget> createState() => _OrderStatusWidgetState();
@@ -48,7 +53,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
         if (widget.onCartClear != null) {
           await widget.onCartClear!();
         }
-        // Navigator.pop(context);
       }
     });
   }
@@ -130,7 +134,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                       builder: (_) => Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const Text(
+                          Text(
                             'ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!',
                             style: TextStyles.cartBottomText,
                           ),
@@ -139,40 +143,62 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                           ),
                           _isWorkingHours()
                               ? Column(
-                            children: [
-                              Text(
-                                widget.checkId != null
-                                    ? 'Замовлення №: ${widget.checkId}'
-                                    : '№ замовлення не отримано',
-                                style: TextStyles.cartBottomText,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                widget.statusId != null
-                                    ? (widget.statusId == 0
-                                    ? 'Замовлення в обробці'
-                                    : widget.statusId == 1
-                                    ? 'Замовлення прийняте'
-                                    : widget.statusId == 7
-                                    ? 'Замовлення відхилене'
-                                    : 'Невідомий статус')
-                                    : 'Статус замовлення не отримано',
-                                style: TextStyles.cartBottomText,
-                              ),
-                              Text(
-                                widget.orderId != null
-                                    ? 'OrderId №: ${widget.orderId}'
-                                    : 'OrderId відсутній',
-                                style: TextStyles.cartBottomText,
-                              ),
-                            ],
-                          )
-                              : Text(
-                            widget.orderId != null
-                                ? 'Замовлення №: ${widget.orderId}'
-                                : 'Замовлення не прийняте, будь-ласка спробуйте завтра після 9:00',
-                            style: TextStyles.cartBottomText,
-                          ),
+                                  children: [
+                                    Text(
+                                      widget.checkId != null
+                                          ? 'Замовлення №: ${widget.checkId}'
+                                          : '№ замовлення не отримано',
+                                      style: TextStyles.cartBottomText,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      widget.statusId != null
+                                          ? (widget.statusId == 0
+                                              ? 'Замовлення в обробці'
+                                              : widget.statusId == 1
+                                                  ? 'Замовлення прийняте'
+                                                  : widget.statusId == 7
+                                                      ? 'Замовлення відхилене'
+                                                      : 'Невідомий статус')
+                                          : 'Статус замовлення не отримано',
+                                      style: TextStyles.cartBottomText,
+                                    ),
+                                    Text(
+                                      widget.orderId != null
+                                          ? 'OrderId №: ${widget.orderId}'
+                                          : 'OrderId відсутній',
+                                      style: TextStyles.cartBottomText,
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Text(
+                                      widget.checkId != null
+                                          ? 'Замовлення №: ${widget.checkId}'
+                                          : '№ замовлення не отримано',
+                                      style: TextStyles.cartBottomText,
+                                    ),
+                                    Text(
+                                      widget.orderId != null
+                                          ? 'OrderId: ${widget.orderId}'
+                                          : 'Замовлення не прийняте, будь-ласка спробуйте завтра після 9:00',
+                                      style: TextStyles.cartBottomText,
+                                    ),
+                                    Text(
+                                      widget.statusId != null
+                                          ? (widget.statusId == 0
+                                              ? 'Замовлення в обробці'
+                                              : widget.statusId == 1
+                                                  ? 'Замовлення прийняте'
+                                                  : widget.statusId == 7
+                                                      ? 'Замовлення відхилене'
+                                                      : 'Невідомий статус')
+                                          : 'Статус замовлення не отримано',
+                                      style: TextStyles.cartBottomText,
+                                    ),
+                                  ],
+                                ),
                           const SizedBox(
                             height: 8,
                           ),
@@ -225,7 +251,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
     );
   }
 }
-
 
 // Text(
 //   widget.checkId != null

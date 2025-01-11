@@ -8,10 +8,15 @@ class TextStyles {
     color: Colors.white,
   );
 
-  static const TextStyle greetingsText = TextStyle(
+  static const TextStyle numberText = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Colors.blueGrey,
+  );
+
+  static final greetingsText = GoogleFonts.roboto(
     fontSize: 26,
     color: Colors.deepOrange,
-    // fontStyle: FontStyle.italic,
     fontWeight: FontWeight.bold,
   );
 
@@ -38,7 +43,7 @@ class TextStyles {
     decoration: TextDecoration.none,
   );
 
-  static const TextStyle cartBottomText = TextStyle(
+  static final TextStyle cartBottomText = GoogleFonts.openSans(
     color: Colors.blueGrey,
     fontSize: 20,
     fontWeight: FontWeight.bold,

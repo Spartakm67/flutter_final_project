@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/interactive_gesture_detector.dart';
 
 class ContactsWidget extends StatefulWidget {
@@ -74,13 +75,13 @@ class _ContactsWidgetState extends State<ContactsWidget> {
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Observer(
-                  builder: (_) => const Column(
+                  builder: (_) => Column(
                     children: [
                       Text(
                         'КОНТАКТИ',
                         style: TextStyles.cartBottomText,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Column(
@@ -92,7 +93,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                             errorMessage: 'Cannot open the phone dialer',
                             textStyle: TextStyles.cartBottomText,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           InteractiveGestureDetector(
@@ -102,7 +103,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                             errorMessage: 'Cannot open the email client',
                             textStyle: TextStyles.cartBottomText,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           InteractiveGestureDetector(

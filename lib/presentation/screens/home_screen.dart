@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
+import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/home_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
@@ -38,7 +39,6 @@ class HomeScreenState extends State<HomeScreen>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-
     _alignAnimation = Tween<Alignment>(
       begin: const Alignment(0.0, 7.0),
       end: Alignment.bottomCenter,
@@ -48,7 +48,6 @@ class HomeScreenState extends State<HomeScreen>
         curve: Curves.easeInOut,
       ),
     );
-
     _animationController.forward();
     phoneController = TextEditingController();
   }
@@ -62,6 +61,7 @@ class HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final orderStore = Provider.of<OrderStore>(context);
     final authStore = Provider.of<AuthStore>(context);
     final cartStore = Provider.of<CartStore>(context);
 
@@ -97,7 +97,7 @@ class HomeScreenState extends State<HomeScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Text(
+                             Text(
                               'Майстерня Млинців \n Ласкаво просимо!',
                               textAlign: TextAlign.center,
                               style: TextStyles.greetingsText,
@@ -148,7 +148,7 @@ class HomeScreenState extends State<HomeScreen>
                                       controller: phoneController,
                                       onChanged: authStore.setPhoneNumber,
                                       keyboardType: TextInputType.phone,
-                                      autofocus: true,
+                                      // autofocus: true,
                                       decoration: InputDecoration(
                                         hintText: 'Мобільний номер',
                                         hintStyle: TextStyles.hintText,
@@ -176,6 +176,9 @@ class HomeScreenState extends State<HomeScreen>
                                           );
                                           return;
                                         }
+                                        final formattedPhoneNumber = '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
+                                        orderStore.updateOrder(phone: formattedPhoneNumber);
+
                                         showDialog(
                                           context: context,
                                           builder: (_) => CodeOptionDialog(
@@ -364,7 +367,6 @@ class HomeScreenState extends State<HomeScreen>
                   CustomBurgerButton(
                     backgroundColor: Colors.white,
                     lineColor: Colors.black,
-                    // borderColor: Colors.grey,
                     borderRadius: 12.0,
                     onTap: () => showDialog(
                       context: context,

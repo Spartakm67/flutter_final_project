@@ -56,7 +56,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
     final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Категорії',
           style: TextStyles.greetingsText,
         ),
@@ -83,11 +83,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                       const SizedBox(width: 4),
                       Text(
                         cartStore.totalItems.toString(),
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey,
-                        ),
+                        style: TextStyles.numberText,
                       ),
                     ],
                   ),

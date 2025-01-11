@@ -104,7 +104,7 @@ class _OrderWidgetState extends State<OrderWidget> {
               }
               final items = cartStore!.cartItems;
               if (items.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
                     'Корзина пуста!',
                     style: TextStyles.greetingsText,

@@ -50,7 +50,7 @@ class _CartPreviewOrderListState extends State<CartPreviewOrderList> {
             final itemsLength = items.length;
 
             if (items.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
                   'Корзина пуста!',
                   style: TextStyles.greetingsText,
