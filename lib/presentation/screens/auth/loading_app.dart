@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-// class LoadingApp extends StatelessWidget {
-//   const LoadingApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         body: Center(
-//           child: CircularProgressIndicator(),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class LoadingApp extends StatelessWidget {
   const LoadingApp({super.key});
 
@@ -27,6 +11,7 @@ class LoadingApp extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: CustomLoadingIndicator(),
+          //child: CircularProgressIndicator(),
         ),
       ),
     );

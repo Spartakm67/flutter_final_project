@@ -142,27 +142,30 @@ class _OrderContainerState extends State<OrderContainer> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (!mounted) return;
-                        await _handleOrder();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 40,
+                    Visibility(
+                        visible: cartStore.cartItems.isNotEmpty,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (!mounted) return;
+                          await _handleOrder();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 40,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          backgroundColor: Colors.black.withAlpha(200),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        backgroundColor: Colors.black.withAlpha(200),
-                      ),
-                      child: Observer(
-                        builder: (_) => Text(
-                          'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
+                        child: Observer(
+                          builder: (_) => Text(
+                            'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -188,24 +191,10 @@ class _OrderContainerState extends State<OrderContainer> {
     orderStore.validatePhoneNumber(orderModel.phone);
 
         if (!orderStore.isPhoneNumberValid) {
-          CustomSnackBar.show(
-            context: context,
-            message: 'Невірний формат номера телефону',
-            backgroundColor: Colors.redAccent,
-            position: SnackBarPosition.top,
-            duration: const Duration(seconds: 5),
-          );
           throw Exception('Невірний формат номера телефону');
         }
 
         if (isDelivery && (orderModel.address?.trim().isEmpty ?? true)) {
-          CustomSnackBar.show(
-            context: context,
-            message: 'Адреса для доставки не може бути порожньою',
-            backgroundColor: Colors.redAccent,
-            position: SnackBarPosition.top,
-            duration: const Duration(seconds: 5),
-          );
           throw Exception('Адреса для доставки не може бути порожньою');
         }
 
@@ -355,10 +344,10 @@ class _OrderContainerState extends State<OrderContainer> {
       }
     } catch (e) {
       if (!mounted) return;
-
+      String errorMessage = e.toString().replaceFirst('Exception: ', '');
       CustomSnackBar.show(
         context: context,
-        message: 'Failed to send order: $e',
+        message: 'Замовлення не відправлене: $errorMessage',
         backgroundColor: Colors.redAccent,
         position: SnackBarPosition.top,
         duration: const Duration(seconds: 5),

@@ -83,29 +83,6 @@ abstract class OrderStoreBase with Store {
   TimeOfDay get selectedTime =>
       _selectedTime ?? TimeOfDay.fromDateTime(DateTime.now());
 
-  // List<TimeOfDay> availableTimes = List.generate(
-  //   24,
-  //       (index) {
-  //     final now = DateTime.now();
-  //
-  //     int hours = 9 + ((index + 1) ~/ 2);
-  //     int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
-  //
-  //     DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
-  //
-  //     if (now.hour >= 21 || now.hour < 9) {
-  //       if (hours < 21) {
-  //         return TimeOfDay(hour: hours, minute: minutes);
-  //       }
-  //     } else if (generatedTime.isAfter(now)) {
-  //       if (hours <= 21) {
-  //         return TimeOfDay(hour: hours, minute: minutes);
-  //       }
-  //     }
-  //     return null;
-  //   },
-  // ).whereType<TimeOfDay>().toList();
-
   List<TimeOfDay> availableTimes = List.generate(
     22 * 2, // Для інтервалів кожні 30 хвилин
         (index) {
@@ -135,8 +112,6 @@ abstract class OrderStoreBase with Store {
       return null;
     },
   ).whereType<TimeOfDay>().toList();
-
-
 
   List<TimeOfDay> availablePointTimes = List.generate(
     44,
@@ -173,10 +148,16 @@ abstract class OrderStoreBase with Store {
   ];
 
   @observable
-  String _selectedPoint = 'Майстерня млинців';
+  String _selectedPoint = '';
 
   @computed
   String get selectedPoint => _selectedPoint;
+
+  OrderStoreBase() {
+    if (availablePoints.isNotEmpty) {
+      _selectedPoint = availablePoints[0];
+    }
+  }
 
   @action
   void selectPoint(String point) {
