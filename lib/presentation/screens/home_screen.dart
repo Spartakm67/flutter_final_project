@@ -84,7 +84,7 @@ class HomeScreenState extends State<HomeScreen>
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.75,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
+                      color: const Color.fromRGBO(255, 255, 255, 0.8),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
