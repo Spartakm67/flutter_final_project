@@ -154,6 +154,11 @@ abstract class OrderStoreBase with Store {
   String get selectedPoint => _selectedPoint;
 
   OrderStoreBase() {
+    _initializeDefaultPoint();
+    }
+
+  @action
+  void _initializeDefaultPoint() {
     if (availablePoints.isNotEmpty) {
       _selectedPoint = availablePoints[0];
     }

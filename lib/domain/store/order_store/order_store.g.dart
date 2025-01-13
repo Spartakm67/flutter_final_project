@@ -219,6 +219,17 @@ mixin _$OrderStore on OrderStoreBase, Store {
   }
 
   @override
+  void _initializeDefaultPoint() {
+    final _$actionInfo = _$OrderStoreBaseActionController.startAction(
+        name: 'OrderStoreBase._initializeDefaultPoint');
+    try {
+      return super._initializeDefaultPoint();
+    } finally {
+      _$OrderStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void selectPoint(String point) {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
         name: 'OrderStoreBase.selectPoint');

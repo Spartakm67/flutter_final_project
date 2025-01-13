@@ -71,7 +71,7 @@ class LoadingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..strokeWidth = 4
+      ..strokeWidth = 6
       ..style = PaintingStyle.stroke;
 
     final center = Offset(size.width / 2, size.height / 2);
