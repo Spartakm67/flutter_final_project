@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_app_bar.dart';
+import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,19 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
   @override
   Widget build(BuildContext context) {
     final authStore = Provider.of<AuthStore>(context);
+
+    authStore.showErrorMessage = (message) {
+      if (context.mounted) {
+        CustomSnackBar.show(
+          context: context,
+          message: message,
+          backgroundColor: Colors.orangeAccent,
+          position: SnackBarPosition.top,
+          duration: const Duration(seconds: 5),
+        );
+      }
+    };
+
     return Scaffold(
       appBar: CustomAppBar(
         title: _isLogin ? 'Login / Авторизація' : 'Sign Up / Реєстрація',
@@ -96,6 +110,37 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                     final email = _emailController.text;
                     final password = _passwordController.text;
 
+                    if (email.isEmpty) {
+                      CustomSnackBar.show(
+                        context: context,
+                        message: 'Поле Email не може бути порожнім.',
+                        backgroundColor: Colors.redAccent,
+                        position: SnackBarPosition.top,
+                        duration: const Duration(seconds: 3),
+                      );
+                      return;
+                    }
+                    if (password.isEmpty) {
+                      CustomSnackBar.show(
+                        context: context,
+                        message: 'Поле Password не може бути порожнім.',
+                        backgroundColor: Colors.redAccent,
+                        position: SnackBarPosition.top,
+                        duration: const Duration(seconds: 3),
+                      );
+                      return;
+                    }
+                    if (password.length < 6) {
+                      CustomSnackBar.show(
+                        context: context,
+                        message: 'Пароль має бути довшим за 6 символів.',
+                        backgroundColor: Colors.redAccent,
+                        position: SnackBarPosition.top,
+                        duration: const Duration(seconds: 3),
+                      );
+                      return;
+                    }
+
                     if (_isLogin) {
                       await authStore.signInWithEmail(email, password);
                       if (authStore.errorMessage == null &&
@@ -125,7 +170,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                   },
                   child: authStore.isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : Text(_isLogin ? 'Login' : 'Sign Up'),
+                      : Text(_isLogin ? 'Log in' : 'Sign Up'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -134,8 +179,8 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                   },
                   child: Text(
                     _isLogin
-                        ? 'Create an account'
-                        : 'Already have an account? Log in',
+                        ? 'Створіть новий екаунт'
+                        : 'Вже маєте екаунт? Log in',
                   ),
                 ),
                 TextButton(
@@ -143,22 +188,12 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                     final email = _emailController.text.trim();
 
                     if (email.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter your email')),
-                      );
+                      authStore.showErrorMessage?.call('Please enter your email');
                       return;
                     }
 
-                    final scaffoldMessenger = ScaffoldMessenger.of(context);
-
                     FocusScope.of(context).unfocus();
                     await authStore.resetPassword(email);
-
-                    if (authStore.errorMessage != null) {
-                      scaffoldMessenger.showSnackBar(
-                        SnackBar(content: Text(authStore.errorMessage!)),
-                      );
-                    }
                   },
                   child: const Text('Forgot Password?'),
                 ),

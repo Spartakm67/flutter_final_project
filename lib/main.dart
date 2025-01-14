@@ -15,7 +15,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -63,7 +62,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+      return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Final Project',
       theme: ThemeData(

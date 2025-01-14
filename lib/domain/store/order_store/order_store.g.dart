@@ -104,6 +104,22 @@ mixin _$OrderStore on OrderStoreBase, Store {
     });
   }
 
+  late final _$availablePointsAtom =
+      Atom(name: 'OrderStoreBase.availablePoints', context: context);
+
+  @override
+  List<String> get availablePoints {
+    _$availablePointsAtom.reportRead();
+    return super.availablePoints;
+  }
+
+  @override
+  set availablePoints(List<String> value) {
+    _$availablePointsAtom.reportWrite(value, super.availablePoints, () {
+      super.availablePoints = value;
+    });
+  }
+
   late final _$_selectedPointAtom =
       Atom(name: 'OrderStoreBase._selectedPoint', context: context);
 
@@ -258,6 +274,7 @@ isDelivery: ${isDelivery},
 isCash: ${isCash},
 orderBox: ${orderBox},
 currentOrder: ${currentOrder},
+availablePoints: ${availablePoints},
 isPhoneNumberValid: ${isPhoneNumberValid},
 selectedTime: ${selectedTime},
 selectedPoint: ${selectedPoint}

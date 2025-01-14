@@ -97,7 +97,7 @@ class HomeScreenState extends State<HomeScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                             Text(
+                            Text(
                               'Майстерня Млинців \n Ласкаво просимо!',
                               textAlign: TextAlign.center,
                               style: TextStyles.greetingsText,
@@ -176,8 +176,10 @@ class HomeScreenState extends State<HomeScreen>
                                           );
                                           return;
                                         }
-                                        final formattedPhoneNumber = '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
-                                        orderStore.updateOrder(phone: formattedPhoneNumber);
+                                        final formattedPhoneNumber =
+                                            '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
+                                        orderStore.updateOrder(
+                                            phone: formattedPhoneNumber);
 
                                         showDialog(
                                           context: context,
@@ -217,11 +219,17 @@ class HomeScreenState extends State<HomeScreen>
                                 'label': 'Google',
                                 'iconStyle': TextStyles.hintText,
                                 'onPressed': () async {
+                                  print('Початок авторизації');
                                   final result =
                                       await authStore.signInWithGoogle();
-                                  if (result) {
+                                  print('Авторизація завершена: $result');
+                                  if (result && authStore.isLoggedIn) {
+                                    print("AuthStore.isLoggedIn: ${authStore.isLoggedIn}");
+                                    print("AuthStore.isLoading: ${authStore.isLoading}");
+                                    print("Context mounted: ${context.mounted}");
                                     WidgetsBinding.instance
                                         .addPostFrameCallback((_) {
+                                      print('Перехід до CategoriesScreen');
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -229,6 +237,7 @@ class HomeScreenState extends State<HomeScreen>
                                               const CategoriesScreen(),
                                         ),
                                       );
+                                      print("After Navigator.pushReplacement");
                                     });
                                   } else if (authStore.errorMessage != null) {
                                     WidgetsBinding.instance

@@ -22,7 +22,9 @@ class PointPickerField extends StatelessWidget {
                 const SizedBox(width: 12.0),
                 Expanded(
                   child: Text(
-                    orderStore.selectedPoint,
+                    orderStore.selectedPoint.isNotEmpty
+                        ? orderStore.selectedPoint
+                        : 'Виберіть заклад',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 ),

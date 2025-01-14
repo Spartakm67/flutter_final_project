@@ -142,6 +142,7 @@ abstract class OrderStoreBase with Store {
     updateOrder(time: time);
   }
 
+  @observable
   List<String> availablePoints = [
     'Майстерня млинців (просп. Соборності 7Б, Київ)',
     'Наступний заклад у стадії відкриття',

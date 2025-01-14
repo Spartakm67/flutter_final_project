@@ -40,6 +40,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       productStore = Provider.of<ProductStore>(context, listen: false);
+      print('CategoriesScreen initState...');
     });
   }
 

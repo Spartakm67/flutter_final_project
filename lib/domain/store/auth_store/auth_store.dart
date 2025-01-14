@@ -36,6 +36,8 @@ abstract class AuthStoreBase with Store {
 
   int? _resendToken;
 
+  void Function(String message)? showErrorMessage;
+
   @action
   void setPhoneNumber(String value) {
     phoneNumber = value.trim();
@@ -118,7 +120,6 @@ abstract class AuthStoreBase with Store {
     }
   }
 
-
   @action
   Future<void> signUpWithEmail(String email, String password) async {
     isLoading = true;
@@ -136,7 +137,15 @@ abstract class AuthStoreBase with Store {
       );
       await saveInitialUserData(userModel);
     } catch (e) {
+      // if (e is FirebaseAuthException) {
+      //   errorMessage = getCustomErrorMessage(e.code);
+      //   showErrorMessage?.call(errorMessage!);
+      // } else {
+      //   errorMessage = 'Невідома помилка: ${e.toString()}';
+      //   showErrorMessage?.call(errorMessage!);
+      // }
       errorMessage = 'Failed to register: ${e.toString()}';
+      showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
@@ -155,7 +164,15 @@ abstract class AuthStoreBase with Store {
       currentUser = userCredential.user;
       isLoggedIn = true;
     } catch (e) {
-      errorMessage = 'Failed to sign in: ${e.toString()}';
+      if (e is FirebaseAuthException) {
+        errorMessage = getCustomErrorMessage(e.code);
+        showErrorMessage?.call(errorMessage!);
+      } else {
+        errorMessage = 'Невідома помилка: ${e.toString()}';
+        showErrorMessage?.call(errorMessage!);
+      }
+      // errorMessage = ' ${e.toString()}';
+      // showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
@@ -171,6 +188,7 @@ abstract class AuthStoreBase with Store {
       errorMessage = 'Password reset email sent. Check your inbox.';
     } catch (e) {
       errorMessage = 'Failed to send reset email: ${e.toString()}';
+      showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
@@ -188,6 +206,7 @@ abstract class AuthStoreBase with Store {
       isLoggedIn = false;
     } catch (e) {
       errorMessage = 'Failed to sign out: ${e.toString()}';
+      showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
@@ -299,5 +318,28 @@ abstract class AuthStoreBase with Store {
     Future.delayed(const Duration(seconds: 3), () {
       errorMessage = null;
     });
+  }
+
+  String getCustomErrorMessage(String firebaseErrorCode) {
+    switch (firebaseErrorCode) {
+      case 'invalid-credential':
+        return 'Поля email та/або password мають не коректні значення. Будь ласка, перевірте введені дані.';
+      case 'invalid-email':
+        return 'Невірний формат email. Будь ласка, перевірте введені дані.';
+      case 'user-not-found':
+        return 'Користувача з таким email не знайдено.';
+      case 'wrong-password':
+        return 'Невірний пароль. Спробуйте ще раз.';
+      case 'email-already-in-use':
+        return 'Ця email-адреса вже використовується іншим обліковим записом.';
+      case 'weak-password':
+        return 'Пароль занадто слабкий. Використовуйте більше 6 символів.';
+      case 'too-many-requests':
+        return 'Забагато невдалих спроб. Будь ласка, спробуйте пізніше.';
+      case 'network-request-failed':
+        return 'Помилка мережі. Перевірте своє інтернет-з’єднання.';
+      default:
+        return 'Сталася помилка. Спробуйте ще раз.';
+    }
   }
 }
