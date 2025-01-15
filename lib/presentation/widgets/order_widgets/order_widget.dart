@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
+import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/delivery_option_container.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
@@ -24,9 +27,11 @@ class _OrderWidgetState extends State<OrderWidget> {
   late TextEditingController phoneController;
   late TextEditingController addressController;
 
+  late AuthStore authStore;
   late OrderStore orderStore;
   CartStore? cartStore;
   bool _isInitialized = false;
+  Timer? _debounce;
 
   @override
   void didChangeDependencies() {
@@ -34,6 +39,7 @@ class _OrderWidgetState extends State<OrderWidget> {
     if (!_isInitialized) {
       cartStore = Provider.of<CartStore>(context, listen: false);
       orderStore = Provider.of<OrderStore>(context, listen: false);
+      authStore = Provider.of<AuthStore>(context, listen: false);
       nameController = TextEditingController();
       phoneController = TextEditingController();
       addressController = TextEditingController();
@@ -273,19 +279,71 @@ class _OrderWidgetState extends State<OrderWidget> {
       ),
     );
   }
-  void _onNameChanged(String value) {
-    orderStore.updateOrder(name: value.trim());
+  void _onPhoneChanged(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      orderStore.updateOrder(phone: value.trim());
+
+      if (authStore.currentUser != null) {
+        final userId = authStore.currentUser!.uid;
+
+        final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+        final userData = userDoc.data();
+        if (userData != null && userData['phoneNumber'] != value.trim()) {
+          await authStore.updateUserData(userId, {'phoneNumber': value.trim()});
+        }
+      }
+    });
   }
 
-  void _onPhoneChanged(String value) {
-    orderStore.updateOrder(phone: value.trim());
+  void _onNameChanged(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      orderStore.updateOrder(name: value.trim());
+
+      if (authStore.currentUser != null) {
+        final userId = authStore.currentUser!.uid;
+
+        final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+        final userData = userDoc.data();
+        if (userData != null && userData['name'] != value.trim()) {
+          await authStore.updateUserData(userId, {'name': value.trim()});
+        }
+      }
+    });
   }
 
   void _onAddressChanged(String value) {
     if (_isDelivery) {
-      orderStore.updateOrder(address: value.trim());
+      if (_debounce?.isActive ?? false) _debounce!.cancel();
+      _debounce = Timer(const Duration(milliseconds: 500), () async {
+        orderStore.updateOrder(address: value.trim());
+
+        if (authStore.currentUser != null) {
+          final userId = authStore.currentUser!.uid;
+
+          final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+          final userData = userDoc.data();
+          if (userData != null && userData['address'] != value.trim()) {
+            await authStore.updateUserData(userId, {'address': value.trim()});
+          }
+        }
+      });
     }
   }
+// void _onNameChanged(String value) {
+//   orderStore.updateOrder(name: value.trim());
+// }
+
+// void _onPhoneChanged(String value) {
+//   orderStore.updateOrder(phone: value.trim());
+// }
+
+// void _onAddressChanged(String value) {
+  //   if (_isDelivery) {
+  //     orderStore.updateOrder(address: value.trim());
+  //   }
+  // }
 }
 
 
