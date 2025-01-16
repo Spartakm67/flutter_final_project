@@ -9,8 +9,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
+import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/data/models/poster/incoming_order.dart';
 import 'package:flutter_final_project/data/models/hive/order_model_hive.dart';
 import 'package:flutter_final_project/services/poster_api/create_incoming_order.dart';
@@ -30,6 +32,7 @@ class _OrderContainerState extends State<OrderContainer> {
   late CartStore cartStore;
   late OrderStore orderStore;
   late AuthStore authStore;
+  late HomeScreenStore homeStore;
 
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _OrderContainerState extends State<OrderContainer> {
     cartStore = Provider.of<CartStore>(context, listen: false);
     orderStore = Provider.of<OrderStore>(context, listen: false);
     authStore = Provider.of<AuthStore>(context, listen: false);
+    homeStore = Provider.of<HomeScreenStore>(context, listen: false);
 
     Future.delayed(Duration.zero, () {
       setState(() {
@@ -54,6 +58,13 @@ class _OrderContainerState extends State<OrderContainer> {
         Navigator.pop(context);
       }
     });
+  }
+
+  void _authRedirection() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen(store: homeStore)),
+    );
   }
 
   bool _isWorkingHours() {
@@ -114,8 +125,24 @@ class _OrderContainerState extends State<OrderContainer> {
                       ],
                     ),
                     const SizedBox(
-                      height: 8,
+                      height: 4,
                     ),
+                    if (!authStore.isLoggedIn)
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.login,
+                              color: Colors.blue,
+                            ),
+                            onPressed: _authRedirection,
+                          ),
+                          Text(
+                            'Авторизуйтеся для оформлення',
+                            style: TextStyles.habitKeyText,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -271,6 +298,17 @@ class _OrderContainerState extends State<OrderContainer> {
   Future<void> _handleOrder() async {
     final navigator = Navigator.of(context);
 
+    if (!authStore.isLoggedIn) {
+      _authRedirection();
+      CustomSnackBar.show(
+        context: context,
+        message: 'Авторизуйтеся для оформлення',
+        backgroundColor: Colors.orangeAccent,
+        position: SnackBarPosition.top,
+        duration: const Duration(seconds: 5),
+      );
+    }
+
     try {
       final orderModel = orderStore.currentOrder;
       final counters = cartStore.counters;
@@ -412,5 +450,4 @@ class _OrderContainerState extends State<OrderContainer> {
       }
     }
   }
-
 }
