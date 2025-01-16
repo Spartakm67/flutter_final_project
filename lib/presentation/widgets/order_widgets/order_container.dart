@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
@@ -26,12 +29,14 @@ class _OrderContainerState extends State<OrderContainer> {
   bool _isVisible = false;
   late CartStore cartStore;
   late OrderStore orderStore;
+  late AuthStore authStore;
 
   @override
   void initState() {
     super.initState();
     cartStore = Provider.of<CartStore>(context, listen: false);
     orderStore = Provider.of<OrderStore>(context, listen: false);
+    authStore = Provider.of<AuthStore>(context, listen: false);
 
     Future.delayed(Duration.zero, () {
       setState(() {
@@ -187,15 +192,41 @@ class _OrderContainerState extends State<OrderContainer> {
     required bool isDelivery,
     required TimeOfDay selectedTime,
   }) async {
-
+    await _updateUserDataIfNeeded(orderModel);
     orderStore.validatePhoneNumber(orderModel.phone);
 
         if (!orderStore.isPhoneNumberValid) {
           throw Exception('Невірний формат номера телефону');
         }
 
+        if (orderModel.name == null || orderModel.name.trim().isEmpty) {
+          throw Exception('Ім’я не може бути порожнім');
+        }
+        if (orderModel.name.length < 2) {
+          throw Exception('Ім’я повинно містити принаймні 2 символи.');
+        }
+
+        final nameRegExp = RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ\s]+$');
+        if (!nameRegExp.hasMatch(orderModel.name)) {
+        throw Exception(
+        'Ім’я може містити лише літери та пробіли.',);
+        }
+
         if (isDelivery && (orderModel.address?.trim().isEmpty ?? true)) {
           throw Exception('Адреса для доставки не може бути порожньою');
+        }
+        if (orderModel.address!.trim().length < 5) {
+          throw Exception('Адреса повинна містити принаймні 5 символів.');
+        }
+        if (orderModel.address!.trim().length > 100) {
+          throw Exception('Адреса не може перевищувати 100 символів.');
+        }
+
+        final addressRegExp =
+        RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s,.\-/\\]+$');
+        if (!addressRegExp.hasMatch(orderModel.address!)) {
+          throw Exception(
+              'Адреса може містити лише літери, цифри, пробіли, коми, крапки, дефіси, а також "/" або "\\".',);
         }
 
         final products = counters.entries
@@ -354,4 +385,32 @@ class _OrderContainerState extends State<OrderContainer> {
       );
     }
   }
+
+  Future<void> _updateUserDataIfNeeded(OrderModelHive orderModel) async {
+    if (authStore.currentUser != null) {
+      final userId = authStore.currentUser!.uid;
+
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      final userData = userDoc.data();
+
+      final updates = <String, dynamic>{};
+      if (userData != null) {
+        if (userData['phoneNumber'] != orderModel.phone.trim()) {
+          updates['phoneNumber'] = orderModel.phone.trim();
+        }
+        if (userData['name'] != orderModel.name.trim()) {
+          updates['name'] = orderModel.name.trim();
+        }
+        if (orderModel.address != null &&
+            userData['address'] != orderModel.address!.trim()) {
+          updates['address'] = orderModel.address!.trim();
+        }
+
+        if (updates.isNotEmpty) {
+          await authStore.updateUserData(userId, updates);
+        }
+      }
+    }
+  }
+
 }

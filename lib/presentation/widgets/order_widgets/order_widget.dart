@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -31,7 +29,6 @@ class _OrderWidgetState extends State<OrderWidget> {
   late OrderStore orderStore;
   CartStore? cartStore;
   bool _isInitialized = false;
-  Timer? _debounce;
 
   @override
   void didChangeDependencies() {
@@ -279,71 +276,20 @@ class _OrderWidgetState extends State<OrderWidget> {
       ),
     );
   }
-  void _onPhoneChanged(String value) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
-      orderStore.updateOrder(phone: value.trim());
 
-      if (authStore.currentUser != null) {
-        final userId = authStore.currentUser!.uid;
+void _onNameChanged(String value) {
+  orderStore.updateOrder(name: value.trim());
+}
 
-        final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-        final userData = userDoc.data();
-        if (userData != null && userData['phoneNumber'] != value.trim()) {
-          await authStore.updateUserData(userId, {'phoneNumber': value.trim()});
-        }
-      }
-    });
-  }
+void _onPhoneChanged(String value) {
+  orderStore.updateOrder(phone: value.trim());
+}
 
-  void _onNameChanged(String value) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
-      orderStore.updateOrder(name: value.trim());
-
-      if (authStore.currentUser != null) {
-        final userId = authStore.currentUser!.uid;
-
-        final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-        final userData = userDoc.data();
-        if (userData != null && userData['name'] != value.trim()) {
-          await authStore.updateUserData(userId, {'name': value.trim()});
-        }
-      }
-    });
-  }
-
-  void _onAddressChanged(String value) {
+void _onAddressChanged(String value) {
     if (_isDelivery) {
-      if (_debounce?.isActive ?? false) _debounce!.cancel();
-      _debounce = Timer(const Duration(milliseconds: 500), () async {
-        orderStore.updateOrder(address: value.trim());
-
-        if (authStore.currentUser != null) {
-          final userId = authStore.currentUser!.uid;
-
-          final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-          final userData = userDoc.data();
-          if (userData != null && userData['address'] != value.trim()) {
-            await authStore.updateUserData(userId, {'address': value.trim()});
-          }
-        }
-      });
+      orderStore.updateOrder(address: value.trim());
     }
   }
-// void _onNameChanged(String value) {
-//   orderStore.updateOrder(name: value.trim());
-// }
-
-// void _onPhoneChanged(String value) {
-//   orderStore.updateOrder(phone: value.trim());
-// }
-
-// void _onAddressChanged(String value) {
-  //   if (_isDelivery) {
-  //     orderStore.updateOrder(address: value.trim());
-  //   }
-  // }
 }
 
 

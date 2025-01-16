@@ -137,15 +137,15 @@ abstract class AuthStoreBase with Store {
       );
       await saveInitialUserData(userModel);
     } catch (e) {
-      // if (e is FirebaseAuthException) {
-      //   errorMessage = getCustomErrorMessage(e.code);
-      //   showErrorMessage?.call(errorMessage!);
-      // } else {
-      //   errorMessage = 'Невідома помилка: ${e.toString()}';
-      //   showErrorMessage?.call(errorMessage!);
-      // }
-      errorMessage = 'Failed to register: ${e.toString()}';
-      showErrorMessage?.call(errorMessage!);
+      if (e is FirebaseAuthException) {
+        errorMessage = getCustomErrorMessage(e.code);
+        showErrorMessage?.call(errorMessage!);
+      } else {
+        errorMessage = 'Невідома помилка: ${e.toString()}';
+        showErrorMessage?.call(errorMessage!);
+      }
+      // errorMessage = 'Failed to register: ${e.toString()}';
+      // showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
