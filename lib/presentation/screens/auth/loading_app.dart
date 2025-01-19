@@ -77,13 +77,9 @@ class LoadingPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - 4;
 
-    // Draw background circle
-    // paint.color = Color.fromRGBO(128, 0, 128, 0.2); // Deep Purple with 20% opacity
     paint.color = Color.fromRGBO(255, 255, 0, 0.2);
     canvas.drawCircle(center, radius, paint);
 
-    // Draw animated arc
-    // paint.color = Color.fromRGBO(128, 0, 128, 1); // Deep Purple
     paint.color = Color.fromRGBO(0, 0, 255, 1);
     final startAngle = -math.pi / 2;
     final sweepAngle = 2 * math.pi * progress;
