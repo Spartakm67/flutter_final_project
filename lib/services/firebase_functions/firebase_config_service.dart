@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FirebaseConfigService {
-  static const String endpoint =
-      'https://us-central1-pancake-workshop-app.cloudfunctions.net/getFirebaseConfig';
+  static String endpoint =
+  dotenv.env['ENDPOINT']!;
 
   static Future<Map<String, dynamic>> fetchFirebaseConfig() async {
     final response = await http.get(Uri.parse(endpoint));

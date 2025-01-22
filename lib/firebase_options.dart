@@ -24,7 +24,7 @@ class DefaultFirebaseOptions {
 
   static Future<void> loadFirebaseConfig() async {
     final String endpoint =
-        'https://us-central1-pancake-workshop-app.cloudfunctions.net/getFirebaseConfig';
+    dotenv.env['ENDPOINT']!;
 
     try {
       final response = await http.get(Uri.parse(endpoint));

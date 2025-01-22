@@ -129,17 +129,24 @@ class _OrderContainerState extends State<OrderContainer> {
                     ),
                     if (!authStore.isLoggedIn)
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IconButton(
+                            iconSize: 30.0,
                             icon: const Icon(
                               Icons.login,
-                              color: Colors.blue,
+                              color: Colors.redAccent,
                             ),
                             onPressed: _authRedirection,
                           ),
-                          Text(
-                            'Авторизуйтеся для оформлення',
-                            style: TextStyles.habitKeyText,
+                          const SizedBox(width: 8,),
+                          Expanded(
+                            child: Text(
+                              'Авторизуйтеся для оформлення замовлення',
+                              style: TextStyles.alertKeyText,
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
+                            ),
                           ),
                         ],
                       ),

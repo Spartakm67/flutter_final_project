@@ -70,6 +70,13 @@ class TextStyles {
     decoration: TextDecoration.none,
   );
 
+  static final TextStyle alertKeyText = GoogleFonts.roboto(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Colors.redAccent,
+    decoration: TextDecoration.none,
+  );
+
   static const TextStyle spanPostText = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 12,
