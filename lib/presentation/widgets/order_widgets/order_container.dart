@@ -314,6 +314,7 @@ class _OrderContainerState extends State<OrderContainer> {
         position: SnackBarPosition.top,
         duration: const Duration(seconds: 5),
       );
+      return;
     }
 
     try {
