@@ -156,7 +156,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               color: Colors
-                                  .transparent, // Прозорий фон для покриття області
+                                  .transparent,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -174,6 +174,18 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 14,),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Робочі години: 9:00 - 20:00',
+                          style: TextStyles.cartBottomText,
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      const SizedBox(height: 14,),
                       if (authStore.isLoggedIn)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,

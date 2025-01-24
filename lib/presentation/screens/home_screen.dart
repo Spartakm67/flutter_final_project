@@ -179,7 +179,7 @@ class HomeScreenState extends State<HomeScreen>
                                         final formattedPhoneNumber =
                                             '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
                                         orderStore.updateOrder(
-                                            phone: formattedPhoneNumber);
+                                            phone: formattedPhoneNumber,);
 
                                         showDialog(
                                           context: context,
@@ -219,17 +219,17 @@ class HomeScreenState extends State<HomeScreen>
                                 'label': 'Google',
                                 'iconStyle': TextStyles.hintText,
                                 'onPressed': () async {
-                                  print('Початок авторизації');
+                                  // print('Початок авторизації');
                                   final result =
                                       await authStore.signInWithGoogle();
-                                  print('Авторизація завершена: $result');
+                                  // print('Авторизація завершена: $result');
                                   if (result && authStore.isLoggedIn) {
-                                    print("AuthStore.isLoggedIn: ${authStore.isLoggedIn}");
-                                    print("AuthStore.isLoading: ${authStore.isLoading}");
-                                    print("Context mounted: ${context.mounted}");
+                                    // print("AuthStore.isLoggedIn: ${authStore.isLoggedIn}");
+                                    // print("AuthStore.isLoading: ${authStore.isLoading}");
+                                    // print("Context mounted: ${context.mounted}");
                                     WidgetsBinding.instance
                                         .addPostFrameCallback((_) {
-                                      print('Перехід до CategoriesScreen');
+                                      // print('Перехід до CategoriesScreen');
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -237,7 +237,7 @@ class HomeScreenState extends State<HomeScreen>
                                               const CategoriesScreen(),
                                         ),
                                       );
-                                      print("After Navigator.pushReplacement");
+                                      // print("After Navigator.pushReplacement");
                                     });
                                   } else if (authStore.errorMessage != null) {
                                     WidgetsBinding.instance
@@ -357,6 +357,13 @@ class HomeScreenState extends State<HomeScreen>
                                 },
                                 text: 'Пропустити та перейти до меню',
                               ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Робочі години: 9:00 - 20:00',
+                              style: TextStyles.authWelcomeText,
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
                             ),
                           ],
                         ),

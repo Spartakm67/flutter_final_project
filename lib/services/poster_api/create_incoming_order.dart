@@ -12,7 +12,7 @@ class OrderApiService {
       final String token = firebaseConfig['poster']['token'];
 
       final url = Uri.parse('$baseUrl/api/incomingOrders.createIncomingOrder?token=$token');
-      print('URL: $url');
+      // print('URL: $url');
 
       final response = await http.post(
         url,
@@ -21,7 +21,7 @@ class OrderApiService {
       );
 
       if (response.statusCode == 200) {
-        print('Response body: ${response.body}');
+        // print('Response body: ${response.body}');
         final responseData = jsonDecode(response.body);
         return responseData;
       } else {
