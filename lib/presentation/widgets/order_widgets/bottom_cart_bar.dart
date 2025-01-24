@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
+import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class BottomCartBar extends StatelessWidget {
   final int totalItems;
@@ -19,7 +20,7 @@ class BottomCartBar extends StatelessWidget {
       duration: const Duration(milliseconds: 300),
       height: totalItems > 0 ? null : 0.0,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Colors.black.withOpacity(0.7),
+      color: Color(0xB3000000),
       child: totalItems > 0
           ? Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,28 +31,29 @@ class BottomCartBar extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 "$totalItems",
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyles.appBarText,
               ),
               const SizedBox(width: 4),
               Text(
                 GetItemText.getItemText(totalItems),
-                style: const TextStyle(fontSize: 22, color: Colors.white),
+                style: TextStyles.appBarText,
               ),
             ],
           ),
+          const SizedBox(width: 4),
           Text(
             "${totalPrice.toStringAsFixed(0)} грн",
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyles.appBarText,
           ),
           ElevatedButton(
             onPressed: onOrder,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              backgroundColor: Colors.black.withOpacity(0.1),
+              backgroundColor: Color(0x1A000000),
             ),
-            child: const Text(
+            child: Text(
               "Замовити >",
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyles.cartBarText,
             ),
           ),
         ],

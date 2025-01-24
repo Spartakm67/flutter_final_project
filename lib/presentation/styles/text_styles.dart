@@ -1,122 +1,152 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_final_project/main.dart';
+
+const double smallScreenWidth = 400;
+const double screenMultiplier = 0.8;
 
 class TextStyles {
-  static const TextStyle appBarText = TextStyle(
-    fontSize: 22,
+  static final appBarText = TextStyle(
+    // fontSize: 22,
+    fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
-  static const TextStyle numberText = TextStyle(
-    fontSize: 22,
+  static final TextStyle numberText = TextStyle(
+    // fontSize: 22,
+    fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.blueGrey,
   );
 
   static final greetingsText = GoogleFonts.roboto(
-    fontSize: 26,
+    // fontSize: 26,
+    fontSize: screenWidth >= smallScreenWidth ? 26 : (26 * screenMultiplier),
     color: Colors.deepOrange,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle authWelcomeText = TextStyle(
-    fontSize: 18,
+  static final authWelcomeText = TextStyle(
+    // fontSize: 18,
+    fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.grey,
   );
 
-  static const TextStyle authText = TextStyle(
-    fontSize: 18,
+  static final authText = TextStyle(
+    // fontSize: 18,
+    fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.black,
   );
 
-  static const TextStyle hintText = TextStyle(
+  static final hintText = TextStyle(
     color: Colors.grey,
-    fontSize: 16,
+    // fontSize: 16,
+    fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
   );
 
-  static const TextStyle cartText = TextStyle(
+  static final cartText = TextStyle(
     color: Colors.blueGrey,
-    fontSize: 16,
+    // fontSize: 16,
+    fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
     decoration: TextDecoration.none,
   );
 
   static final TextStyle cartBottomText = GoogleFonts.openSans(
     color: Colors.blueGrey,
-    fontSize: 20,
+    // fontSize: 20,
+    fontSize: screenWidth >= smallScreenWidth ? 20 : (20 * screenMultiplier),
     fontWeight: FontWeight.bold,
     decoration: TextDecoration.none,
   );
 
-  static const TextStyle oderAppBarText = TextStyle(
-    fontSize: 22,
+  static final TextStyle cartBarText = GoogleFonts.openSans(
+    color: Colors.white,
+    // fontSize: 20,
+    fontSize: screenWidth >= smallScreenWidth ? 20 : (20 * screenMultiplier),
+    fontWeight: FontWeight.bold,
+  );
+
+  static final TextStyle oderAppBarText = TextStyle(
+    // fontSize: 22,
+    fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.grey,
     decoration: TextDecoration.none,
   );
 
-  static const TextStyle spanKeyText = TextStyle(
+  static final spanKeyText = TextStyle(
     fontWeight: FontWeight.normal,
-    fontSize: 16,
+    // fontSize: 16,
+    fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
     color: Colors.grey,
   );
 
   static final TextStyle habitKeyText = GoogleFonts.roboto(
-    fontSize: 18,
+    // fontSize: 18,
+    fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.blueGrey,
     decoration: TextDecoration.none,
   );
 
   static final TextStyle alertKeyText = GoogleFonts.roboto(
-    fontSize: 22,
+    // fontSize: 22,
+    fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.redAccent,
     decoration: TextDecoration.none,
   );
 
-  static const TextStyle spanPostText = TextStyle(
+  static final spanPostText = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 12,
+    // fontSize: 12,
+    fontSize: screenWidth >= smallScreenWidth ? 12 : (12 * screenMultiplier),
     color: Colors.black,
     decoration: TextDecoration.none,
   );
 
-  static const TextStyle spanBodyText = TextStyle(
+  static final TextStyle spanBodyText = TextStyle(
     fontWeight: FontWeight.normal,
-    fontSize: 12,
+    // fontSize: 12,
+    fontSize: screenWidth >= smallScreenWidth ? 12 : (12 * screenMultiplier),
     color: Colors.blueGrey,
     decoration: TextDecoration.none,
   );
 
-  static const TextStyle spanTitleText = TextStyle(
+  static final TextStyle spanTitleText = TextStyle(
     fontWeight: FontWeight.normal,
-    fontSize: 16,
+    // fontSize: 16,
+    fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
     color: Colors.indigo,
   );
 
-  static const TextStyle spanEmailText = TextStyle(
-    fontSize: 12,
+  static final TextStyle spanEmailText = TextStyle(
+    // fontSize: 12,
+    fontSize: screenWidth >= smallScreenWidth ? 12 : (12 * screenMultiplier),
     color: Colors.blue,
     decoration: TextDecoration.underline,
   );
 
-  static const TextStyle homeButtonText = TextStyle(
+  static final TextStyle homeButtonText = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 18,
+    // fontSize: 18,
+    fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     color: Colors.black87,
   );
 
-  static const TextStyle categoriesText = TextStyle(
+  static final TextStyle categoriesText = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 22,
+    // fontSize: 22,
+    fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     color: Color(0xFF52545C),
   );
 
-  static const TextStyle buttonText = TextStyle(
-    fontSize: 18,
+  static final TextStyle buttonText = TextStyle(
+    // fontSize: 18,
+    fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     color: Colors.indigo,
     fontStyle: FontStyle.italic,
     fontWeight: FontWeight.bold,
@@ -139,14 +169,16 @@ class TextStyles {
     ),
   );
 
-  static const TextStyle defaultText = TextStyle(
-    fontSize: 20,
+  static final TextStyle defaultText = TextStyle(
+    // fontSize: 20,
+    fontSize: screenWidth >= smallScreenWidth ? 20 : (20 * screenMultiplier),
     color: Colors.blueAccent,
     fontStyle: FontStyle.italic,
   );
 
-  static const TextStyle userText = TextStyle(
-    fontSize: 14,
+  static final TextStyle userText = TextStyle(
+    // fontSize: 14,
+    fontSize: screenWidth >= smallScreenWidth ? 14 : (14 * screenMultiplier),
     color: Colors.blueAccent,
     fontStyle: FontStyle.italic,
     fontWeight: FontWeight.bold,
@@ -163,9 +195,13 @@ class TextStyles {
 
   static TextStyle authIconStyle(Color color) {
     return TextStyle(
-      fontSize: 28,
+      // fontSize: 28,
+      fontSize: screenWidth >= smallScreenWidth ? 28 : (28 * screenMultiplier),
       fontWeight: FontWeight.normal,
       color: color,
     );
   }
 }
+
+
+

@@ -107,7 +107,7 @@ class _OrderContainerState extends State<OrderContainer> {
                           iconSize: 32,
                           onPressed: _closeWidget,
                         ),
-                        const Text(
+                        Text(
                           'Замовлення',
                           style: TextStyles.oderAppBarText,
                         ),
@@ -201,10 +201,7 @@ class _OrderContainerState extends State<OrderContainer> {
                         child: Observer(
                           builder: (_) => Text(
                             'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
+                            style: TextStyles.cartBarText,
                           ),
                         ),
                       ),

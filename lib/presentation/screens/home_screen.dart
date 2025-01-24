@@ -103,7 +103,7 @@ class HomeScreenState extends State<HomeScreen>
                               style: TextStyles.greetingsText,
                             ),
                             const SizedBox(height: 8),
-                            const Text(
+                            Text(
                               'Для оформлення замовлення введіть:',
                               textAlign: TextAlign.center,
                               style: TextStyles.authWelcomeText,
@@ -135,7 +135,7 @@ class HomeScreenState extends State<HomeScreen>
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        const Text(
+                                        Text(
                                           '+380',
                                           style: TextStyles.authText,
                                         ),
@@ -197,7 +197,7 @@ class HomeScreenState extends State<HomeScreen>
                                         );
                                       }
                                     },
-                                    child: const Text(
+                                    child: Text(
                                       'SMS',
                                       style: TextStyles.authText,
                                     ),
@@ -206,7 +206,7 @@ class HomeScreenState extends State<HomeScreen>
                               ),
                             ),
                             const SizedBox(height: 8),
-                            const Text(
+                            Text(
                               'або авторизуйтеся за допомогою:',
                               textAlign: TextAlign.center,
                               style: TextStyles.authWelcomeText,

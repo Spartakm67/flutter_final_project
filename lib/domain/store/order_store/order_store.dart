@@ -194,6 +194,7 @@ abstract class OrderStoreBase with Store {
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
       if (now.hour >= endHour || now.hour < startHour) {
         generatedTime = generatedTime.add(const Duration(days: 1));
+        print('Час замовлення: $generatedTime');
       }
 
       // Якщо зараз у робочий час
@@ -201,6 +202,7 @@ abstract class OrderStoreBase with Store {
         // Додати інтервали від поточного часу до 21:00
         if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+          // return generatedTime;
         }
       }
       // Якщо зараз не робочий час
@@ -208,6 +210,7 @@ abstract class OrderStoreBase with Store {
         // Додати всі інтервали для наступного дня з 9:30 до 20:00
         if (hours >= startHour && hours <= endHour) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+          // return generatedTime;
         }
       }
       return null;

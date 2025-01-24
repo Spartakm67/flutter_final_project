@@ -113,7 +113,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                               padding: const EdgeInsets.all(10.0),
                               child: SingleChildScrollView(
                                 child: RichText(
-                                  text: const TextSpan(
+                                  text: TextSpan(
                                     children: [
                                       TextSpan(
                                         text: 'Угода користувача\n ',
@@ -171,7 +171,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                               padding: const EdgeInsets.all(10.0),
                               child: SingleChildScrollView(
                                 child: RichText(
-                                  text: const TextSpan(
+                                  text: TextSpan(
                                     children: [
                                       TextSpan(
                                         text:
@@ -217,7 +217,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                               padding: const EdgeInsets.all(10.0),
                               child: SingleChildScrollView(
                                 child: RichText(
-                                  text: const TextSpan(
+                                  text: TextSpan(
                                     children: [
                                       TextSpan(
                                         text:
@@ -278,7 +278,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                               padding: const EdgeInsets.all(10.0),
                               child: SingleChildScrollView(
                                 child: RichText(
-                                  text: const TextSpan(
+                                  text: TextSpan(
                                     children: [
                                       TextSpan(
                                         text: 'Відповідальність\n ',
@@ -331,7 +331,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                             padding: const EdgeInsets.all(10.0),
                             child: SingleChildScrollView(
                               child: RichText(
-                                text: const TextSpan(
+                                text: TextSpan(
                                   children: [
                                     TextSpan(
                                       text: 'Інші положення\n ',

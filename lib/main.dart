@@ -12,11 +12,22 @@ import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/screens/auth/loading_app.dart';
 import 'package:flutter_final_project/presentation/screens/auth/error_app.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/services.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+double screenWidth = 0;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final mediaQuery = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first);
+  screenWidth = mediaQuery.size.width;
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   runApp(const LoadingApp());
 

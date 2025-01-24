@@ -85,7 +85,7 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                     ),
                     CustomContainer(
                       backgroundColor: Colors.black.withAlpha(30),
-                      children: const [
+                      children: [
                         Text(
                         'Вартість доставлення 50 грн.\nДоставимо безкоштовно при замовленні від 250 грн.',
                         style: TextStyles.cartText,

@@ -164,7 +164,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(_isDelivery ? 'Доставлення' : 'Самовивіз'),
+                      Text(_isDelivery ? 'Доставка' : 'Самовивіз'),
                       const SizedBox(height: 8),
                       Row(
                         children: [
@@ -177,7 +177,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             onTap: () {
                               orderStore.updateDelivery(true);
                             },
-                            label: 'Доставлення',
+                            label: 'Доставка',
                             excludeRightBorder: true,
                           ),
                           DeliveryOptionContainer(

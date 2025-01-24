@@ -100,7 +100,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                           iconSize: 32,
                           onPressed: _closeWidget,
                         ),
-                        const Text(
+                         Text(
                           'Статус замовлення',
                           style: TextStyles.oderAppBarText,
                         ),
@@ -210,7 +210,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                           const SizedBox(
                             height: 8,
                           ),
-                          const Text(
+                          Text(
                             'За потреби ми зателефонуємо вам, щоб уточнити деталі.\n',
                             style: TextStyles.cartText,
                             textAlign: TextAlign.center,
@@ -240,12 +240,9 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                         backgroundColor: Colors.black.withAlpha(200),
                       ),
                       child: Observer(
-                        builder: (_) => const Text(
+                        builder: (_) => Text(
                           'Повернутися у додаток',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                          style: TextStyles.cartBarText,
                         ),
                       ),
                     ),

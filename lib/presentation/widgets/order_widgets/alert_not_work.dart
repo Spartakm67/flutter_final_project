@@ -32,7 +32,7 @@ class AlertNotWork extends StatelessWidget {
           if (isClosedToday && now.isBefore(endDateTimeTomorrow))
             CustomContainer(
               backgroundColor: Colors.black.withAlpha(30),
-              children: const [
+              children: [
                 Text(
                   'Зараз наш заклад не працює.\nЗробіть замовлення, а ми приготуємо його завтра після 9:00.',
                   style: TextStyles.cartText,
@@ -43,7 +43,7 @@ class AlertNotWork extends StatelessWidget {
           if (isClosedTomorrow)
             CustomContainer(
               backgroundColor: Colors.black.withAlpha(30),
-              children: const [
+              children: [
                 Text(
                   'Зараз наш заклад не працює.\nЗробіть замовлення, а ми приготуємо його після 9:00.',
                   style: TextStyles.cartText,
