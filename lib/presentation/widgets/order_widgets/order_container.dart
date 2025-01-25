@@ -273,13 +273,16 @@ class _OrderContainerState extends State<OrderContainer> {
       throw Exception('Замовлення повинно містити хоча б один продукт');
     }
         final serviceMode = isDelivery ? 3 : 2;
-        final deliveryPrice = isDelivery ? 5000 : 0;
+        final deliveryPrice = isDelivery ? cartStore.deliveryPrice.toInt()*100 : 0;
 
         final now = DateTime.now();
-        final deliveryDateTime = DateTime(
-          now.year,
-          now.month,
-          now.day,
+        final isOutOfWorkingHours = now.hour >= 20 && now.hour < 24;
+        final deliveryDate = isOutOfWorkingHours ? now.add(Duration(days: 1)) : now;
+
+    final deliveryDateTime = DateTime(
+          deliveryDate.year,
+          deliveryDate.month,
+          deliveryDate.day,
           selectedTime.hour,
           selectedTime.minute,
         );

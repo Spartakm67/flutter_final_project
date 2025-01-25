@@ -8,7 +8,7 @@ class AlertNotWork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    const start = TimeOfDay(hour: 19, minute: 30);
+    const start = TimeOfDay(hour: 20, minute: 00);
     const end = TimeOfDay(hour: 9, minute: 0);
 
     DateTime startDateTime =
