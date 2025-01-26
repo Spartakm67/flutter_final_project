@@ -95,7 +95,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                 PageRouteBuilder(
                                   opaque: false,
                                   pageBuilder:
@@ -136,7 +136,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                 PageRouteBuilder(
                                   opaque: false,
                                   pageBuilder:
@@ -178,7 +178,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Робочі години: 9:00 - 20:00',
+                          'Робочі години: 9:00 - 20:00,\nбез вихідних',
                           style: TextStyles.cartBottomText,
                           softWrap: true,
                           overflow: TextOverflow.visible,

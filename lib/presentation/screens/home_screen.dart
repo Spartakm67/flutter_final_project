@@ -360,7 +360,8 @@ class HomeScreenState extends State<HomeScreen>
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'Робочі години: 9:00 - 20:00',
+                              'Робочі години: 9:00 - 20:00\n Без вихідних',
+                              textAlign: TextAlign.center,
                               style: TextStyles.authWelcomeText,
                               softWrap: true,
                               overflow: TextOverflow.visible,

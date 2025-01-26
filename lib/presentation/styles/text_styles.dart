@@ -2,40 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_final_project/main.dart';
 
-const double smallScreenWidth = 400;
+const double smallScreenWidth = 380;
 const double screenMultiplier = 0.8;
 
 class TextStyles {
   static final appBarText = TextStyle(
-    // fontSize: 22,
+
     fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
   static final TextStyle numberText = TextStyle(
-    // fontSize: 22,
     fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.blueGrey,
   );
 
   static final greetingsText = GoogleFonts.roboto(
-    // fontSize: 26,
     fontSize: screenWidth >= smallScreenWidth ? 26 : (26 * screenMultiplier),
     color: Colors.deepOrange,
     fontWeight: FontWeight.bold,
   );
 
   static final authWelcomeText = TextStyle(
-    // fontSize: 18,
     fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.grey,
   );
 
   static final authText = TextStyle(
-    // fontSize: 18,
     fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.black,
@@ -43,20 +39,17 @@ class TextStyles {
 
   static final hintText = TextStyle(
     color: Colors.grey,
-    // fontSize: 16,
     fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
   );
 
   static final cartText = TextStyle(
     color: Colors.blueGrey,
-    // fontSize: 16,
     fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
     decoration: TextDecoration.none,
   );
 
   static final TextStyle cartBottomText = GoogleFonts.openSans(
     color: Colors.blueGrey,
-    // fontSize: 20,
     fontSize: screenWidth >= smallScreenWidth ? 20 : (20 * screenMultiplier),
     fontWeight: FontWeight.bold,
     decoration: TextDecoration.none,
@@ -64,13 +57,17 @@ class TextStyles {
 
   static final TextStyle cartBarText = GoogleFonts.openSans(
     color: Colors.white,
-    // fontSize: 20,
     fontSize: screenWidth >= smallScreenWidth ? 20 : (20 * screenMultiplier),
     fontWeight: FontWeight.bold,
   );
 
+  static final TextStyle cartBarThinText = GoogleFonts.openSans(
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
+   );
+
   static final TextStyle oderAppBarText = TextStyle(
-    // fontSize: 22,
     fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.grey,
@@ -79,13 +76,11 @@ class TextStyles {
 
   static final spanKeyText = TextStyle(
     fontWeight: FontWeight.normal,
-    // fontSize: 16,
     fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
     color: Colors.grey,
   );
 
   static final TextStyle habitKeyText = GoogleFonts.roboto(
-    // fontSize: 18,
     fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.blueGrey,
@@ -93,7 +88,6 @@ class TextStyles {
   );
 
   static final TextStyle alertKeyText = GoogleFonts.roboto(
-    // fontSize: 22,
     fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.redAccent,
@@ -102,7 +96,6 @@ class TextStyles {
 
   static final spanPostText = TextStyle(
     fontWeight: FontWeight.bold,
-    // fontSize: 12,
     fontSize: screenWidth >= smallScreenWidth ? 12 : (12 * screenMultiplier),
     color: Colors.black,
     decoration: TextDecoration.none,
@@ -110,7 +103,6 @@ class TextStyles {
 
   static final TextStyle spanBodyText = TextStyle(
     fontWeight: FontWeight.normal,
-    // fontSize: 12,
     fontSize: screenWidth >= smallScreenWidth ? 12 : (12 * screenMultiplier),
     color: Colors.blueGrey,
     decoration: TextDecoration.none,
@@ -118,13 +110,11 @@ class TextStyles {
 
   static final TextStyle spanTitleText = TextStyle(
     fontWeight: FontWeight.normal,
-    // fontSize: 16,
     fontSize: screenWidth >= smallScreenWidth ? 16 : (16 * screenMultiplier),
     color: Colors.indigo,
   );
 
   static final TextStyle spanEmailText = TextStyle(
-    // fontSize: 12,
     fontSize: screenWidth >= smallScreenWidth ? 12 : (12 * screenMultiplier),
     color: Colors.blue,
     decoration: TextDecoration.underline,
@@ -132,20 +122,17 @@ class TextStyles {
 
   static final TextStyle homeButtonText = TextStyle(
     fontWeight: FontWeight.bold,
-    // fontSize: 18,
     fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     color: Colors.black87,
   );
 
   static final TextStyle categoriesText = TextStyle(
     fontWeight: FontWeight.bold,
-    // fontSize: 22,
     fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     color: Color(0xFF52545C),
   );
 
   static final TextStyle buttonText = TextStyle(
-    // fontSize: 18,
     fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
     color: Colors.indigo,
     fontStyle: FontStyle.italic,
@@ -170,14 +157,12 @@ class TextStyles {
   );
 
   static final TextStyle defaultText = TextStyle(
-    // fontSize: 20,
     fontSize: screenWidth >= smallScreenWidth ? 20 : (20 * screenMultiplier),
     color: Colors.blueAccent,
     fontStyle: FontStyle.italic,
   );
 
   static final TextStyle userText = TextStyle(
-    // fontSize: 14,
     fontSize: screenWidth >= smallScreenWidth ? 14 : (14 * screenMultiplier),
     color: Colors.blueAccent,
     fontStyle: FontStyle.italic,
@@ -195,7 +180,6 @@ class TextStyles {
 
   static TextStyle authIconStyle(Color color) {
     return TextStyle(
-      // fontSize: 28,
       fontSize: screenWidth >= smallScreenWidth ? 28 : (28 * screenMultiplier),
       fontWeight: FontWeight.normal,
       color: color,

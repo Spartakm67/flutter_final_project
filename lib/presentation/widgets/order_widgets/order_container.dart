@@ -201,7 +201,7 @@ class _OrderContainerState extends State<OrderContainer> {
                         child: Observer(
                           builder: (_) => Text(
                             'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
-                            style: TextStyles.cartBarText,
+                            style: TextStyles.cartBarThinText,
                           ),
                         ),
                       ),
@@ -347,7 +347,7 @@ class _OrderContainerState extends State<OrderContainer> {
       final response = await OrderApiService.sendOrder(incomingOrder);
 
       final Map<String, dynamic>? responseData = response['response'];
-      print('Респонс: $responseData');
+      print('Респонс сервер: $responseData');
       final orderId = responseData?['incoming_order_id']?.toString();
       final statusId = responseData?['status'];
       final checkId = responseData?['transaction_id']?.toString();

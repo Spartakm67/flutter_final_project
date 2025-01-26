@@ -89,6 +89,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                               iconSize: 32,
                               onPressed: () {
                                 Navigator.pop(context);
+                                Navigator.pop(context);
                               },
                             ),
                           ],

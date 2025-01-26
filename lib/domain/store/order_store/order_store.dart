@@ -83,59 +83,6 @@ abstract class OrderStoreBase with Store {
   TimeOfDay get selectedTime =>
       _selectedTime ?? TimeOfDay.fromDateTime(DateTime.now());
 
-  // List<TimeOfDay> availableTimes = List.generate(
-  //   22 * 2, // Для інтервалів кожні 30 хвилин
-  //       (index) {
-  //     final now = DateTime.now();
-  //     const int startHour = 9; // Початок робочого часу
-  //     const int endHour = 20; // Кінець робочого часу
-  //     const int extendedEndHour = 21; // Кінець додаткових інтервалів
-  //
-  //     final int hours = startHour + ((index + 1) ~/ 2);
-  //     final int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
-  //     final generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
-  //
-  //     // Якщо зараз у робочий час
-  //     if (now.hour >= startHour && now.hour < endHour) {
-  //       // Додати інтервали від поточного часу до 21:00
-  //       if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
-  //         return TimeOfDay(hour: hours, minute: minutes);
-  //       }
-  //     }
-  //     // Якщо зараз не робочий час
-  //     else if (now.hour >= endHour || now.hour < startHour) {
-  //       // Додати всі інтервали для наступного дня з 9:30 до 20:00
-  //       if (hours >= startHour && hours <= endHour) {
-  //         return TimeOfDay(hour: hours, minute: minutes);
-  //       }
-  //     }
-  //     return null;
-  //   },
-  // ).whereType<TimeOfDay>().toList();
-  //
-  // List<TimeOfDay> availablePointTimes = List.generate(
-  //   44,
-  //       (index) {
-  //     final now = DateTime.now();
-  //
-  //     int totalMinutes = 9 * 60 + 15 + index * 15;
-  //     int hours = totalMinutes ~/ 60;
-  //     int minutes = totalMinutes % 60;
-  //
-  //     DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
-  //
-  //     if (now.hour >= 20 || now.hour < 9) {
-  //       if (hours < 20) {
-  //         return TimeOfDay(hour: hours, minute: minutes);
-  //       }
-  //     }
-  //     else if (generatedTime.isAfter(now)) {
-  //       return TimeOfDay(hour: hours, minute: minutes);
-  //     }
-  //     return null;
-  //   },
-  // ).whereType<TimeOfDay>().toList();
-
   @action
   void selectTime(TimeOfDay time) {
     _selectedTime = time;
@@ -194,7 +141,6 @@ abstract class OrderStoreBase with Store {
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
       if (now.hour >= endHour || now.hour < startHour) {
         generatedTime = generatedTime.add(const Duration(days: 1));
-        print('Час замовлення: $generatedTime');
       }
 
       // Якщо зараз у робочий час
@@ -202,7 +148,6 @@ abstract class OrderStoreBase with Store {
         // Додати інтервали від поточного часу до 21:00
         if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
-          // return generatedTime;
         }
       }
       // Якщо зараз не робочий час
@@ -210,7 +155,6 @@ abstract class OrderStoreBase with Store {
         // Додати всі інтервали для наступного дня з 9:30 до 20:00
         if (hours >= startHour && hours <= endHour) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
-          // return generatedTime;
         }
       }
       return null;
@@ -249,8 +193,58 @@ abstract class OrderStoreBase with Store {
       return null;
     },
   ).whereType<TimeOfDay>().toList();
-
-
 }
 
+// List<TimeOfDay> availableTimes = List.generate(
+//   22 * 2, // Для інтервалів кожні 30 хвилин
+//       (index) {
+//     final now = DateTime.now();
+//     const int startHour = 9; // Початок робочого часу
+//     const int endHour = 20; // Кінець робочого часу
+//     const int extendedEndHour = 21; // Кінець додаткових інтервалів
+//
+//     final int hours = startHour + ((index + 1) ~/ 2);
+//     final int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
+//     final generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
+//
+//     // Якщо зараз у робочий час
+//     if (now.hour >= startHour && now.hour < endHour) {
+//       // Додати інтервали від поточного часу до 21:00
+//       if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
+//         return TimeOfDay(hour: hours, minute: minutes);
+//       }
+//     }
+//     // Якщо зараз не робочий час
+//     else if (now.hour >= endHour || now.hour < startHour) {
+//       // Додати всі інтервали для наступного дня з 9:30 до 20:00
+//       if (hours >= startHour && hours <= endHour) {
+//         return TimeOfDay(hour: hours, minute: minutes);
+//       }
+//     }
+//     return null;
+//   },
+// ).whereType<TimeOfDay>().toList();
+//
+// List<TimeOfDay> availablePointTimes = List.generate(
+//   44,
+//       (index) {
+//     final now = DateTime.now();
+//
+//     int totalMinutes = 9 * 60 + 15 + index * 15;
+//     int hours = totalMinutes ~/ 60;
+//     int minutes = totalMinutes % 60;
+//
+//     DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
+//
+//     if (now.hour >= 20 || now.hour < 9) {
+//       if (hours < 20) {
+//         return TimeOfDay(hour: hours, minute: minutes);
+//       }
+//     }
+//     else if (generatedTime.isAfter(now)) {
+//       return TimeOfDay(hour: hours, minute: minutes);
+//     }
+//     return null;
+//   },
+// ).whereType<TimeOfDay>().toList();
 

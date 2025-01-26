@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/interactive_gesture_detector.dart';
 
 class ContactsWidget extends StatefulWidget {
@@ -43,7 +42,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
         duration: const Duration(milliseconds: 300),
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.9,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -59,15 +58,26 @@ class _ContactsWidgetState extends State<ContactsWidget> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.grey,
+                      ),
+                      iconSize: 32,
+                      onPressed: _closeWidget,
+                    ),
                     IconButton(
                       icon: const Icon(
                         Icons.close,
                         color: Colors.grey,
                       ),
                       iconSize: 32,
-                      onPressed: _closeWidget,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),
