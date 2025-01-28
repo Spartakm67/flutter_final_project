@@ -234,7 +234,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(_isCash ? 'Оплата готівкою' : 'Оплата карткою'),
+                      Text(_isCash ? 'Оплата готівкою' : 'Оплата карткою при отриманні'),
                       const SizedBox(height: 8),
                       Row(
                         children: [

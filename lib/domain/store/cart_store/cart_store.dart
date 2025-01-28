@@ -176,7 +176,7 @@ abstract class CartStoreBase with Store {
     if (!orderStore.isDelivery) {
       return 0.0;
     }
-    return totalCombinedOrderPrice >= 250 ? 0.0 : 50.0;
+    return totalCombinedOrderPrice >= 350 ? 0.0 : 50.0;
   }
 
   @computed

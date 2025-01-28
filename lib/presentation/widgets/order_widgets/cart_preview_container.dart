@@ -87,7 +87,7 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                       backgroundColor: Colors.black.withAlpha(30),
                       children: [
                         Text(
-                        'Вартість доставлення 50 грн.\nДоставимо безкоштовно при замовленні від 250 грн.',
+                        'Вартість доставлення 50 грн.\nДоставимо безкоштовно при замовленні від 350 грн.',
                         style: TextStyles.cartText,
                         textAlign: TextAlign.center,
                       ),],
