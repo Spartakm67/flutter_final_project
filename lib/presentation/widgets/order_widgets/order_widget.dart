@@ -72,7 +72,6 @@ class _OrderWidgetState extends State<OrderWidget> {
             position: SnackBarPosition.top,
             duration: const Duration(seconds: 3),
           );
-
         }
       }
     });

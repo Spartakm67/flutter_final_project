@@ -13,7 +13,6 @@ import 'package:flutter_final_project/presentation/screens/auth/loading_app.dart
 import 'package:flutter_final_project/presentation/screens/auth/error_app.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/services.dart';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
