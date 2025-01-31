@@ -31,6 +31,9 @@ abstract class CartStoreBase with Store {
   late Box<ProductCounterHive> productHiveBox;
 
   @observable
+  late Box<Map> lastOrderBox;
+
+  @observable
   String? comment;
 
   @observable
@@ -44,6 +47,7 @@ abstract class CartStoreBase with Store {
     hiveBox = await Hive.openBox<Map>('cart');
     commentsBox = await Hive.openBox<String>('comments');
     productHiveBox = await Hive.openBox<ProductCounterHive>('cartProducts');
+    lastOrderBox = await Hive.openBox<Map>('last_order');
     loadCartFromHive();
     loadCommentFromHive();
   }
@@ -116,6 +120,7 @@ abstract class CartStoreBase with Store {
 
   @action
   Future<void> clearCart() async {
+    await saveLastOrder();
     counters.clear();
     cartItems.clear();
     await hiveBox.delete('items');
@@ -184,6 +189,19 @@ abstract class CartStoreBase with Store {
     return totalCombinedOrderPrice + deliveryPrice;
   }
 
+  @action
+  Future<void> saveLastOrder() async {
+    final lastOrder = {
+      'items': counters.map((key, value) => MapEntry(key, value)),
+      'cartItems': cartItems.map((item) => item.toMap()).toList(),
+      'comment': comment ?? '',
+      'totalPrice': totalCombinedOrderPrice,
+      'deliveryPrice': deliveryPrice,
+      'finalPrice': finalOrderPrice,
+    };
+
+    await lastOrderBox.put('order', lastOrder);
+  }
 
   @action
   Future<void> completeOrder() async {

@@ -7,6 +7,7 @@ import 'package:flutter_final_project/domain/store/home_store/home_screen_store.
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/user_agreement_widget.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/last_order_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
 
 class BurgerWidget extends StatefulWidget {
@@ -115,7 +116,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               color: Colors
-                                  .transparent, // Додаємо прозорий фон для покриття області
+                                  .transparent, //прозорий фон для покриття області
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -162,6 +163,47 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                                 children: [
                                   Text(
                                     'Контакти',
+                                    style: TextStyles.cartBottomText,
+                                  ),
+                                  const Divider(
+                                    thickness: 1,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  opaque: false,
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) {
+                                    return const LastOrderWidget();
+                                  },
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child,) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              color: Colors
+                                  .transparent,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Попереднє замовлення',
                                     style: TextStyles.cartBottomText,
                                   ),
                                   const Divider(

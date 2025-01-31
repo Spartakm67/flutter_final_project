@@ -23,4 +23,23 @@ class ProductCounterHive extends HiveObject {
     required this.price,
     this.photo,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'productId': productId,
+      'productName': productName,
+      'price': price,
+      'photo': photo,
+    };
+  }
+
+  factory ProductCounterHive.fromMap(Map<String, dynamic> map) {
+    return ProductCounterHive(
+      productId: map['productId'],
+      productName: map['productName'],
+      price: map['price'],
+      photo: map['photo'],
+    );
+  }
 }
+

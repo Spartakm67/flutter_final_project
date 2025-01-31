@@ -117,6 +117,26 @@ mixin _$CartStore on CartStoreBase, Store {
     });
   }
 
+  late final _$lastOrderBoxAtom =
+      Atom(name: 'CartStoreBase.lastOrderBox', context: context);
+
+  @override
+  Box<Map<dynamic, dynamic>> get lastOrderBox {
+    _$lastOrderBoxAtom.reportRead();
+    return super.lastOrderBox;
+  }
+
+  bool _lastOrderBoxIsInitialized = false;
+
+  @override
+  set lastOrderBox(Box<Map<dynamic, dynamic>> value) {
+    _$lastOrderBoxAtom.reportWrite(
+        value, _lastOrderBoxIsInitialized ? super.lastOrderBox : null, () {
+      super.lastOrderBox = value;
+      _lastOrderBoxIsInitialized = true;
+    });
+  }
+
   late final _$commentAtom =
       Atom(name: 'CartStoreBase.comment', context: context);
 
@@ -211,6 +231,14 @@ mixin _$CartStore on CartStoreBase, Store {
     return _$resetCartAsyncAction.run(() => super.resetCart());
   }
 
+  late final _$saveLastOrderAsyncAction =
+      AsyncAction('CartStoreBase.saveLastOrder', context: context);
+
+  @override
+  Future<void> saveLastOrder() {
+    return _$saveLastOrderAsyncAction.run(() => super.saveLastOrder());
+  }
+
   late final _$completeOrderAsyncAction =
       AsyncAction('CartStoreBase.completeOrder', context: context);
 
@@ -251,6 +279,7 @@ counters: ${counters},
 cartItems: ${cartItems},
 hiveBox: ${hiveBox},
 productHiveBox: ${productHiveBox},
+lastOrderBox: ${lastOrderBox},
 comment: ${comment},
 commentsBox: ${commentsBox},
 products: ${products},
