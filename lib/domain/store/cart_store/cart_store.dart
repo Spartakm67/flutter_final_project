@@ -44,12 +44,14 @@ abstract class CartStoreBase with Store {
 
   @action
   Future<void> initHive() async {
+
     hiveBox = await Hive.openBox<Map>('cart');
     commentsBox = await Hive.openBox<String>('comments');
     productHiveBox = await Hive.openBox<ProductCounterHive>('cartProducts');
     lastOrderBox = await Hive.openBox<Map>('last_order');
     loadCartFromHive();
     loadCommentFromHive();
+    // await lastOrderBox.clear();
   }
 
   @action
@@ -126,6 +128,7 @@ abstract class CartStoreBase with Store {
     await hiveBox.delete('items');
     await hiveBox.delete('totalPrice');
     await productHiveBox.clear();
+    await lastOrderBox.clear();
   }
 
   Product _getProduct(String productId) {

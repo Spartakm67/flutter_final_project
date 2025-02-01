@@ -11,6 +11,7 @@ class LastOrderWidget extends StatefulWidget {
 
 class LastOrderWidgetState extends State<LastOrderWidget> {
   Map<String, int>? lastOrderItems;
+  List<Map<String, dynamic>>? lastOrderProducts;
   String? lastComment;
   double? totalPrice, deliveryPrice, finalPrice;
 
@@ -25,12 +26,42 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
     final lastOrder = lastOrderBox.get('order');
 
     if (lastOrder != null) {
+      print('lastOrder: $lastOrder');
+
       setState(() {
-        lastOrderItems = Map<String, int>.from(lastOrder['items']);
+        lastOrderItems = Map<String, int>.from(lastOrder['items'] ?? {});
+
+        // Обробка cartItems з перевіркою на відсутність фото
+        lastOrderProducts = lastOrder['cartItems'] != null
+            ? (lastOrder['cartItems'] as List<dynamic>?)
+            ?.map((item) {
+          print('Before modification: $item'); // Лог до перетворення
+          if (item is Map<String, dynamic>) {
+            // Якщо фото відсутнє, зберігаємо значення null
+            if (item['photo'] == null || item['photo']!.isEmpty) {
+              item['photo'] = null; // Підставляємо null замість дефолтного фото
+              print('Продукт без фото: ${item['productName']}');
+            }
+
+            // Якщо productId вже є рядком, перетворення не потрібно
+            if (item['productId'] is! String) {
+              item['productId'] = item['productId'].toString();
+            }
+            print('After modification: $item'); // Лог після перетворення
+            return item;
+          }
+          return null;
+        })
+            .whereType<Map<String, dynamic>>()
+            .toList()
+            : []; // Якщо cartItems null, то повертаємо порожній список
+
+        print('lastOrderProducts: $lastOrderProducts');
+
         lastComment = lastOrder['comment'];
-        totalPrice = lastOrder['totalPrice'];
-        deliveryPrice = lastOrder['deliveryPrice'];
-        finalPrice = lastOrder['finalPrice'];
+        totalPrice = (lastOrder['totalPrice'] as num?)?.toDouble();
+        deliveryPrice = (lastOrder['deliveryPrice'] as num?)?.toDouble();
+        finalPrice = (lastOrder['finalPrice'] as num?)?.toDouble();
       });
     }
   }
@@ -38,15 +69,20 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Попереднє замовлення', style: TextStyles.cartBottomText,)),
+      appBar: AppBar(
+        title: Text('Попереднє замовлення', style: TextStyles.cartBottomText),
+      ),
       body: lastOrderItems == null
-          ? Center(child: Text('Немає попереднього замовлення', style: TextStyles.greetingsText, ))
+          ? Center(
+        child: Text('Немає попереднього замовлення',
+            style: TextStyles.greetingsText),
+      )
           : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Загальна сума: ${totalPrice?.toStringAsFixed(2)} грн',
+            Text('Вартість продуктів: ${totalPrice?.toStringAsFixed(2)} грн',
                 style: Theme.of(context).textTheme.titleMedium),
             Text('Доставка: ${deliveryPrice?.toStringAsFixed(2)} грн',
                 style: Theme.of(context).textTheme.titleMedium),
@@ -60,18 +96,32 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
               ),
             const SizedBox(height: 10),
             Expanded(
-              child: ListView.builder(
-                itemCount: lastOrderItems!.length,
-                itemBuilder: (context, index) {
-                  String productId = lastOrderItems!.keys.elementAt(index);
-                  int quantity = lastOrderItems![productId]!;
+              child: lastOrderProducts == null || lastOrderProducts!.isEmpty
+                  ? Center(
+                child: Text(
+                  'Немає товарів у замовленні',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              )
+                  : ListView(
+                children: lastOrderProducts!.map<Widget>((item) {
+                  int productId = int.tryParse(item['productId'].toString()) ?? 0;
+                  int? quantity = lastOrderItems?[productId.toString()]; // Ключ у lastOrderItems - String
+
+                  print('Перевірка продукту: ID=$productId, Назва=${item['productName']}, Кількість=$quantity');
+
+                  if (quantity == null || quantity == 0) return const SizedBox(); // Пропускаємо товари з нульовою кількістю
+
                   return ListTile(
-                    title: Text('Продукт: $productId'),
+                    // leading: buildProductImage(item['photo']),
+                    title: Text(item['productName'] ?? 'Невідомий товар'),
                     subtitle: Text('Кількість: $quantity'),
                   );
-                },
+                }).toList(),
               ),
             ),
+
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -87,7 +137,16 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
       ),
     );
   }
+
+  // Widget buildProductImage(String? photoUrl) {
+  //   if (photoUrl == null) {
+  //     return const Icon(Icons.image, size: 50, color: Colors.grey);
+  //   }
+  //   return Image.network(photoUrl, width: 50, height: 50, fit: BoxFit.cover);
+  // }
 }
+
+
 
 
 // ElevatedButton(

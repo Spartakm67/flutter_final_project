@@ -125,11 +125,12 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () {
-                        CustomDialog.show(
+                      onPressed: () async {
+                          CustomDialog.show(
                           context: context,
                           builder: (_) => const OrderContainer(),
                         );
+                        await cartStore.saveLastOrder();
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
