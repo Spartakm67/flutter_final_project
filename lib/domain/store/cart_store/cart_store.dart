@@ -128,7 +128,6 @@ abstract class CartStoreBase with Store {
     await hiveBox.delete('items');
     await hiveBox.delete('totalPrice');
     await productHiveBox.clear();
-    await lastOrderBox.clear();
   }
 
   Product _getProduct(String productId) {
