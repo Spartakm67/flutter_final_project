@@ -236,11 +236,4 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
             ),
     );
   }
-
-  // Widget buildProductImage(String? photoUrl) {
-  //   if (photoUrl == null) {
-  //     return const Icon(Icons.image, size: 50, color: Colors.grey);
-  //   }
-  //   return Image.network(photoUrl, width: 50, height: 50, fit: BoxFit.cover);
-  // }
 }

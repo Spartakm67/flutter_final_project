@@ -7,6 +7,7 @@ import 'package:flutter_final_project/domain/store/home_store/home_screen_store.
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/user_agreement_widget.dart';
+import 'package:flutter_final_project/presentation/widgets/contacts/custom_contact_item.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/last_order_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/contacts_widget.dart';
 
@@ -94,125 +95,26 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                       ),
                       Column(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) {
-                                    return const UserAgreementWidget();
-                                  },
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child,) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors
-                                  .transparent, //прозорий фон для покриття області
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Угода користувача',
-                                    style: TextStyles.cartBottomText,
-                                  ),
-                                  const Divider(
-                                    thickness: 1,
-                                    color: Colors.grey,
-                                  ),
-                                ],
-                              ),
-                            ),
+                          CustomContactItem(
+                            title: 'Угода користувача',
+                            textStyle: TextStyles.cartBottomText,
+                            destination: UserAgreementWidget(),
                           ),
                           const SizedBox(
                             height: 12,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) {
-                                    return const ContactsWidget();
-                                  },
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child,) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors
-                                  .transparent,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Контакти',
-                                    style: TextStyles.cartBottomText,
-                                  ),
-                                  const Divider(
-                                    thickness: 1,
-                                    color: Colors.grey,
-                                  ),
-                                ],
-                              ),
-                            ),
+                          CustomContactItem(
+                            title: 'Контакти',
+                            textStyle: TextStyles.cartBottomText,
+                            destination: ContactsWidget(),
                           ),
                           const SizedBox(
                             height: 12,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) {
-                                    return const LastOrderWidget();
-                                  },
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child,) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors
-                                  .transparent,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Попереднє замовлення',
-                                    style: TextStyles.cartBottomText,
-                                  ),
-                                  const Divider(
-                                    thickness: 1,
-                                    color: Colors.grey,
-                                  ),
-                                ],
-                              ),
-                            ),
+                          CustomContactItem(
+                            title: 'Попереднє замовлення',
+                            textStyle: TextStyles.cartBottomText,
+                            destination: LastOrderWidget(),
                           ),
                         ],
                       ),
