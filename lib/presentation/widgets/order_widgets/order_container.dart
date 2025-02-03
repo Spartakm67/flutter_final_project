@@ -28,6 +28,7 @@ class OrderContainer extends StatefulWidget {
 }
 
 class _OrderContainerState extends State<OrderContainer> {
+  bool _isLoading = false;
   bool _isVisible = false;
   late CartStore cartStore;
   late OrderStore orderStore;
@@ -182,9 +183,11 @@ class _OrderContainerState extends State<OrderContainer> {
                     ),
                     const SizedBox(height: 16),
                     Visibility(
-                        visible: cartStore.cartItems.isNotEmpty,
+                      visible: cartStore.cartItems.isNotEmpty,
                       child: ElevatedButton(
-                        onPressed: () async {
+                        onPressed: _isLoading
+                            ? null
+                            : () async {
                           if (!mounted) return;
                           await _handleOrder();
                         },
@@ -198,14 +201,34 @@ class _OrderContainerState extends State<OrderContainer> {
                           ),
                           backgroundColor: Colors.black.withAlpha(200),
                         ),
-                        child: Observer(
+                        child: _isLoading
+                            ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Відправка...',
+                              style: TextStyles.cartBarThinText,
+                            ),
+                          ],
+                        )
+                            : Observer(
                           builder: (_) => Text(
                             'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
                             style: TextStyles.cartBarThinText,
                           ),
                         ),
                       ),
-                    ),
+                    )
+
                   ],
                 ),
               ),
@@ -303,6 +326,11 @@ class _OrderContainerState extends State<OrderContainer> {
   }
 
   Future<void> _handleOrder() async {
+    if (_isLoading) return; // Уникаємо повторних натискань
+
+    setState(() {
+      _isLoading = true;
+    });
     final navigator = Navigator.of(context);
 
     if (!authStore.isLoggedIn) {
@@ -314,6 +342,9 @@ class _OrderContainerState extends State<OrderContainer> {
         position: SnackBarPosition.top,
         duration: const Duration(seconds: 5),
       );
+      setState(() {
+        _isLoading = false;
+      });
       return;
     }
 
@@ -358,7 +389,7 @@ class _OrderContainerState extends State<OrderContainer> {
         if (statusId == null) {
           CustomSnackBar.show(
             context: context,
-            message: 'Замовлення відправлене, але ID статусу замовлення не отримано!',
+            message: 'Замовлення не відправлене, ID статусу замовлення не отримано!',
             backgroundColor: Colors.orangeAccent,
             position: SnackBarPosition.top,
             duration: const Duration(seconds: 5),
@@ -376,7 +407,7 @@ class _OrderContainerState extends State<OrderContainer> {
         if (checkId == null) {
           CustomSnackBar.show(
             context: context,
-            message: 'Замовлення відправлене, але № чеку не отримано!',
+            message: 'Замовлення не відправлене, № чеку не отримано!',
             backgroundColor: Colors.orangeAccent,
             position: SnackBarPosition.top,
             duration: const Duration(seconds: 5),
@@ -396,18 +427,7 @@ class _OrderContainerState extends State<OrderContainer> {
       if (mounted) {
         CustomDialog.show(
           context: context,
-          builder: (_) => _isWorkingHours()
-              ? OrderStatusWidget(
-            orderId: orderId,
-            statusId: statusId,
-            checkId: checkId,
-            onCartClear: () async {
-              if ((statusId != null && checkId != null) || orderId != null) {
-                await cartStore.clearCart();
-              }
-            },
-          )
-              : OrderStatusWidget(
+          builder: (_) => OrderStatusWidget(
             orderId: orderId,
             statusId: statusId,
             checkId: checkId,
@@ -429,6 +449,12 @@ class _OrderContainerState extends State<OrderContainer> {
         position: SnackBarPosition.top,
         duration: const Duration(seconds: 5),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
