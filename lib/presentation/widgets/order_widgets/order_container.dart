@@ -227,8 +227,7 @@ class _OrderContainerState extends State<OrderContainer> {
                           ),
                         ),
                       ),
-                    )
-
+                    ),
                   ],
                 ),
               ),
@@ -268,6 +267,9 @@ class _OrderContainerState extends State<OrderContainer> {
 
         if (isDelivery && (orderModel.address?.trim().isEmpty ?? true)) {
           throw Exception('Адреса для доставки не може бути порожньою');
+        }
+        if (!isDelivery && (orderModel.point.trim().isEmpty)) {
+        throw Exception('Будь-ласка виберіть адресу для самовивозу');
         }
         if (orderModel.address!.trim().length < 5) {
           throw Exception('Адреса повинна містити принаймні 5 символів.');

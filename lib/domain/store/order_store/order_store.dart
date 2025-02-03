@@ -123,7 +123,7 @@ abstract class OrderStoreBase with Store {
 
   @action
   void validatePhoneNumber(String phone) {
-    isPhoneNumberValid = RegExp(r'^\+380\d{9}$').hasMatch(phone);
+    isPhoneNumberValid = RegExp(r'^\+380[3-9]\d{8}$').hasMatch(phone);
   }
 
   List<TimeOfDay> availableTimes = List.generate(
