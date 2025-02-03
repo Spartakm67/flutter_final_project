@@ -86,7 +86,7 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
     }
   }
 
-  void _repeatOrder(CartStore cartStore) {
+  void _repeatOrder(BuildContext context, CartStore cartStore) {
     if (lastOrderItems == null || lastOrderProducts == null) return;
 
     cartStore.counters = ObservableMap.of(lastOrderItems!);
@@ -96,11 +96,14 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
     cartStore.comment = lastComment ?? '';
     cartStore.saveCartToHive();
 
+    Navigator.pop(context);
+
     CustomDialog.show(
       context: context,
       builder: (_) => const CartPreviewContainer(),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +156,7 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
                           ? Center(
                               child: Text(
                                 'Немає товарів у замовленні',
-                                style: TextStyles.greetingsText
+                                style: TextStyles.greetingsText,
                               ),
                             )
                           : ListView(
@@ -224,7 +227,7 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
                             ),
                             backgroundColor: Colors.black.withAlpha(100),
                           ),
-                          onPressed: () => _repeatOrder(cartStore),
+                          onPressed: () => _repeatOrder(context, cartStore),
                           child: const Text('Перейти до оформлення',
                             style: TextStyle(fontSize: 18, color: Colors.white,),),
                         ),
