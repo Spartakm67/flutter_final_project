@@ -31,19 +31,19 @@ class BottomCartBar extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 "$totalItems",
-                style: TextStyles.appBarText,
+                style: TextStyles.cartBarBtnText,
               ),
               const SizedBox(width: 4),
               Text(
                 GetItemText.getItemText(totalItems),
-                style: TextStyles.appBarText,
+                style: TextStyles.cartBarBtnText,
               ),
             ],
           ),
           const SizedBox(width: 4),
           Text(
             "${totalPrice.toStringAsFixed(0)} грн",
-            style: TextStyles.appBarText,
+            style: TextStyles.cartBarBtnText,
           ),
           ElevatedButton(
             onPressed: onOrder,
@@ -53,7 +53,7 @@ class BottomCartBar extends StatelessWidget {
             ),
             child: Text(
               "Замовити >",
-              style: TextStyles.cartBarText,
+              style: TextStyles.cartBarBtnText,
             ),
           ),
         ],

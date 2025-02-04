@@ -243,7 +243,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                       child: Observer(
                         builder: (_) => Text(
                           'Повернутися у додаток',
-                          style: TextStyles.cartBarText,
+                          style: TextStyles.cartBarBtnText,
                         ),
                       ),
                     ),

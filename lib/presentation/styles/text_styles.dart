@@ -61,6 +61,12 @@ class TextStyles {
     fontWeight: FontWeight.bold,
   );
 
+  static final TextStyle cartBarBtnText = GoogleFonts.openSans(
+    color: Colors.white,
+    fontSize: screenWidth >= smallScreenWidth ? 20 : (20 * screenMultiplier),
+    fontWeight: FontWeight.normal,
+  );
+
   static final TextStyle cartBarThinText = GoogleFonts.openSans(
     color: Colors.white,
     fontWeight: FontWeight.bold,
@@ -187,5 +193,5 @@ class TextStyles {
   }
 }
 
-
+//6Ld0yMwqAAAAAAtE70bxBM9irDBiXuWE0_N5wjIw
 

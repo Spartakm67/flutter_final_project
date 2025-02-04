@@ -193,7 +193,7 @@ class _AuthEmailScreenState extends State<AuthEmailScreen> {
                     }
 
                     FocusScope.of(context).unfocus();
-                    await authStore.resetPassword(email);
+                    await authStore.resetReCapPassword(email);
                   },
                   child: const Text('Forgot Password?'),
                 ),

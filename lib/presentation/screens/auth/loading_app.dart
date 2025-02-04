@@ -77,10 +77,10 @@ class LoadingPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - 4;
 
-    paint.color = Color.fromRGBO(255, 255, 0, 0.2);
+    paint.color = Color.fromRGBO(255, 255, 0, 1.0);
     canvas.drawCircle(center, radius, paint);
 
-    paint.color = Color.fromRGBO(0, 0, 255, 1);
+    paint.color = Color.fromRGBO(0, 191, 255, 1.0);
     final startAngle = -math.pi / 2;
     final sweepAngle = 2 * math.pi * progress;
     canvas.drawArc(

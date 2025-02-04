@@ -164,6 +164,15 @@ mixin _$AuthStore on AuthStoreBase, Store {
     return _$resetPasswordAsyncAction.run(() => super.resetPassword(email));
   }
 
+  late final _$resetReCapPasswordAsyncAction =
+      AsyncAction('AuthStoreBase.resetReCapPassword', context: context);
+
+  @override
+  Future<void> resetReCapPassword(String email) {
+    return _$resetReCapPasswordAsyncAction
+        .run(() => super.resetReCapPassword(email));
+  }
+
   late final _$signOutAsyncAction =
       AsyncAction('AuthStoreBase.signOut', context: context);
 
@@ -231,7 +240,7 @@ mixin _$AuthStore on AuthStoreBase, Store {
   @override
   void setPhoneNumber(String value) {
     final _$actionInfo = _$AuthStoreBaseActionController.startAction(
-        name: 'AuthStoreBase.setPhoneNumber',);
+        name: 'AuthStoreBase.setPhoneNumber');
     try {
       return super.setPhoneNumber(value);
     } finally {
@@ -242,7 +251,7 @@ mixin _$AuthStore on AuthStoreBase, Store {
   @override
   bool isPhoneNumberValid(String number) {
     final _$actionInfo = _$AuthStoreBaseActionController.startAction(
-        name: 'AuthStoreBase.isPhoneNumberValid',);
+        name: 'AuthStoreBase.isPhoneNumberValid');
     try {
       return super.isPhoneNumberValid(number);
     } finally {
@@ -253,7 +262,7 @@ mixin _$AuthStore on AuthStoreBase, Store {
   @override
   void clearErrorMessageAfterDelay() {
     final _$actionInfo = _$AuthStoreBaseActionController.startAction(
-        name: 'AuthStoreBase.clearErrorMessageAfterDelay',);
+        name: 'AuthStoreBase.clearErrorMessageAfterDelay');
     try {
       return super.clearErrorMessageAfterDelay();
     } finally {

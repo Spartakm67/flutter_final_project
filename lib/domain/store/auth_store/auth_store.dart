@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_final_project/data/models/firebase/firebase_user_model.dart';
 
+
 part 'auth_store.g.dart';
 
 class AuthStore = AuthStoreBase with _$AuthStore;
@@ -183,6 +184,7 @@ abstract class AuthStoreBase with Store {
   Future<void> resetPassword(String email) async {
     isLoading = true;
     errorMessage = null;
+
     try {
       await _auth.sendPasswordResetEmail(email: email);
       errorMessage = 'Password reset email sent. Check your inbox.';
@@ -191,6 +193,28 @@ abstract class AuthStoreBase with Store {
       showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
     } finally {
+      isLoading = false;
+    }
+  }
+
+  @action
+  Future<void> resetReCapPassword(String email) async {
+    isLoading = true;
+    errorMessage = null;
+
+    try {
+      await _auth.sendPasswordResetEmail(email: email, actionCodeSettings: ActionCodeSettings(
+        url: 'https://flutterfinalproject.page.link/reset-password',
+        handleCodeInApp: true,
+        androidPackageName: 'com.example.flutter_final_project',
+        androidMinimumVersion: '21',
+      ),);
+      errorMessage = 'Password reset email sent. Check your inbox.';
+    } catch (e) {
+      errorMessage = 'Failed to send reset email: ${e.toString()}';
+      showErrorMessage?.call(errorMessage!);
+      clearErrorMessageAfterDelay();
+    }finally {
       isLoading = false;
     }
   }
