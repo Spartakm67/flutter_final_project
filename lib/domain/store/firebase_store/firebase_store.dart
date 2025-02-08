@@ -33,7 +33,7 @@ abstract class FirebaseStoreBase with Store {
       FirebaseAuth.instance.setLanguageCode(locale.isNotEmpty ? locale : 'en');
 
       await FirebaseAppCheck.instance.activate(
-        webProvider: ReCaptchaV3Provider(dotenv.env['RECAPTCHA_KEY'] ?? ''),
+        // webProvider: ReCaptchaV3Provider(dotenv.env['RECAPTCHA_KEY'] ?? ''),
         // androidProvider: AndroidProvider.playIntegrity,
         androidProvider: AndroidProvider.debug,
         // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose

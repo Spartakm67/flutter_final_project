@@ -1,14 +1,20 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="TODO"
+    android:versionName="TODO">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.telephony" />
+    <uses-feature android:name="android.hardware.telephony"
+        android:required="false"
+        tools:targetApi="eclair" />
 
     <application
         android:label="Майстерня млинців"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:enableOnBackInvokedCallback="true">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="tiramisu">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -39,9 +45,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.version"-->
-<!--            android:value="@integer/google_play_services_version" />-->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
     <!-- Дозвіл для інтентів -->
@@ -54,49 +60,57 @@
 </manifest>
 
 
-    <!--<manifest xmlns:android="http://schemas.android.com/apk/res/android">-->
-<!--    <application-->
-<!--        android:label="Майстерня млинців"-->
-<!--        android:name="${applicationName}"-->
-<!--        android:icon="@mipmap/ic_launcher"-->
-<!--        android:enableOnBackInvokedCallback="true">-->
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="true"-->
-<!--            android:launchMode="singleTop"-->
-<!--            android:taskAffinity=""-->
-<!--            android:theme="@style/LaunchTheme"-->
-<!--            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"-->
-<!--            android:hardwareAccelerated="true"-->
-<!--            android:windowSoftInputMode="adjustResize">-->
-<!--            &lt;!&ndash; Specifies an Android theme to apply to this Activity as soon as-->
-<!--                 the Android process has started. This theme is visible to the user-->
-<!--                 while the Flutter UI initializes. After that, this theme continues-->
-<!--                 to determine the Window background behind the Flutter UI. &ndash;&gt;-->
-<!--            <meta-data-->
-<!--                android:name="io.flutter.embedding.android.NormalTheme"-->
-<!--                android:resource="@style/NormalTheme"-->
-<!--                />-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN"/>-->
-<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-<!--        &lt;!&ndash; Don't delete the meta-data below.-->
-<!--             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="flutterEmbedding"-->
-<!--            android:value="2" />-->
-<!--    </application>-->
-<!--    &lt;!&ndash; Required to query activities that can process text, see:-->
-<!--         https://developer.android.com/training/package-visibility and-->
-<!--         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.-->
+<!--<manifest xmlns:android="http://schemas.android.com/apk/res/android">-->
 
-<!--         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. &ndash;&gt;-->
-<!--    <queries>-->
-<!--        <intent>-->
-<!--            <action android:name="android.intent.action.PROCESS_TEXT"/>-->
-<!--            <data android:mimeType="text/plain"/>-->
-<!--        </intent>-->
-<!--    </queries>-->
+<!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
+<!--<uses-permission android:name="android.permission.INTERNET" />-->
+<!--<uses-feature android:name="android.hardware.telephony" />-->
+
+<!--<application-->
+<!--    android:label="Майстерня млинців"-->
+<!--    android:name="${applicationName}"-->
+<!--    android:icon="@mipmap/ic_launcher"-->
+<!--    android:enableOnBackInvokedCallback="true">-->
+<!--    <activity-->
+<!--        android:name=".MainActivity"-->
+<!--        android:exported="true"-->
+<!--        android:launchMode="singleTop"-->
+<!--        android:taskAffinity=""-->
+<!--        android:theme="@style/LaunchTheme"-->
+<!--        android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"-->
+<!--        android:hardwareAccelerated="true"-->
+<!--        android:windowSoftInputMode="adjustResize">-->
+<!--        <meta-data-->
+<!--            android:name="io.flutter.embedding.android.NormalTheme"-->
+<!--            android:resource="@style/NormalTheme" />-->
+<!--        <intent-filter>-->
+<!--            <action android:name="android.intent.action.MAIN"/>-->
+<!--            <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </intent-filter>-->
+<!--    </activity>-->
+
+<!--    &lt;!&ndash; Firebase метадані &ndash;&gt;-->
+<!--    <meta-data-->
+<!--        android:name="com.google.firebase.analytics.APP_ID"-->
+<!--        android:value="@string/google_app_id" />-->
+<!--    <meta-data-->
+<!--        android:name="com.google.firebase.messaging.default_notification_icon"-->
+<!--        android:resource="@mipmap/ic_launcher"-->
+<!--        />-->
+<!--    &lt;!&ndash; Flutter метадані &ndash;&gt;-->
+<!--    <meta-data-->
+<!--        android:name="flutterEmbedding"-->
+<!--        android:value="2" />-->
+<!--    &lt;!&ndash;        <meta-data&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:name="com.google.android.gms.version"&ndash;&gt;-->
+<!--    &lt;!&ndash;            android:value="@integer/google_play_services_version" />&ndash;&gt;-->
+<!--</application>-->
+
+<!--&lt;!&ndash; Дозвіл для інтентів &ndash;&gt;-->
+<!--<queries>-->
+<!--    <intent>-->
+<!--        <action android:name="android.intent.action.PROCESS_TEXT"/>-->
+<!--        <data android:mimeType="text/plain"/>-->
+<!--    </intent>-->
+<!--</queries>-->
 <!--</manifest>-->

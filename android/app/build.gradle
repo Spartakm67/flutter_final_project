@@ -55,6 +55,6 @@ dependencies {
     // Add the dependencies for the App Check libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
-    implementation 'com.google.android.recaptcha:recaptcha:18.7.0-beta01'
+    implementation 'com.google.android.recaptcha:recaptcha:18.7.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 }
