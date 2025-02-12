@@ -63,6 +63,7 @@ dependencies:
   intl: ^0.20.1
   flutter_firebase_recaptcha: ^1.0.2
   flutter_inappwebview: ^5.8.0
+#  recaptcha_enterprise_flutter: ^18.6.1
 
 dev_dependencies:
   flutter_test:

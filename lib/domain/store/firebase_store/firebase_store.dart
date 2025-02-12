@@ -34,8 +34,8 @@ abstract class FirebaseStoreBase with Store {
 
       await FirebaseAppCheck.instance.activate(
         // webProvider: ReCaptchaV3Provider(dotenv.env['RECAPTCHA_KEY'] ?? ''),
-        // androidProvider: AndroidProvider.playIntegrity,
-        androidProvider: AndroidProvider.debug,
+        androidProvider: AndroidProvider.playIntegrity,
+        // androidProvider: AndroidProvider.debug,
         // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose
         // your preferred provider. Choose from:
         // 1. Debug provider
