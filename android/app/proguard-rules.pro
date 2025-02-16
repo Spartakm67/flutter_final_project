@@ -13,7 +13,18 @@
 -keep class android.webkit.** { *; }
 
 # Збереження методів із анотацією @JavascriptInterface
--keepclassmembers class * {
-    @android.webkit.JavascriptInterface *;
-}
+#-keepclassmembers class * {
+#    @android.webkit.JavascriptInterface *;
+#}
+-dontwarn android.window.**
 
+
+# Збереження Play Core API
+-keep class com.google.android.play.** { *; }
+
+# Flutter Play Store Split Application
+-keep class io.flutter.embedding.engine.deferredcomponents.** { *; }
+
+# Play Core Tasks API
+-keep class com.google.android.play.core.tasks.** { *; }
+-keep class com.google.android.play.core.splitinstall.** { *; }
