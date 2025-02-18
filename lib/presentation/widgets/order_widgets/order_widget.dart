@@ -195,7 +195,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                       ),
                       const SizedBox(height: 8),
                       if (_isDelivery)
-                        const Text('Вкажіть адресу, під\'їзд, поверх, квартиру (офіс):'),
+                        const Text('Вкажіть адресу, під\'їзд, поверх, квартиру (офіс) та виберіть час:'),
                       const SizedBox(height: 8),
                       CustomContainer(
                         backgroundColor: Colors.black.withAlpha(0),
