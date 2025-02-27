@@ -1,4 +1,4 @@
-package com.example.flutter_final_project
+package com.spartakm.pancake
 
 import io.flutter.embedding.android.FlutterActivity
 
