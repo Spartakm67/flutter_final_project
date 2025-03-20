@@ -71,7 +71,6 @@ class InteractiveGestureDetector extends StatelessWidget {
     if (actionUri.startsWith('tel:') || actionUri.startsWith('mailto:')) {
       uri = actionUri;
     }
-    // Якщо це посилання для карт (geo:), застосовуємо спеціальну логіку.
     else if (actionUri.startsWith('geo:')) {
       if (Platform.isIOS) {
         // Якщо на iOS встановлено Google Maps, використовуємо його,
