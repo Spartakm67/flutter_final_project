@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
@@ -65,13 +66,41 @@ class InteractiveGestureDetector extends StatelessWidget {
   }
 
   Future<void> _handleTap(BuildContext context) async {
-    final uri = Uri.parse(actionUri);
-    final bool canLaunchUri = await canLaunchUrl(uri);
+    String uri;
+
+    if (actionUri.startsWith('tel:') || actionUri.startsWith('mailto:')) {
+      uri = actionUri;
+    }
+    // Якщо це посилання для карт (geo:), застосовуємо спеціальну логіку.
+    else if (actionUri.startsWith('geo:')) {
+      if (Platform.isIOS) {
+        // Якщо на iOS встановлено Google Maps, використовуємо його,
+        // інакше - Apple Maps.
+        if (await canLaunchUrl(Uri.parse('comgooglemaps://'))) {
+          // Замінюємо схему geo на Google Maps.
+          final query = actionUri.split('?q=').last;
+          uri = 'comgooglemaps://?q=$query';
+        } else {
+          final query = actionUri.split('?q=').last;
+          uri = 'http://maps.apple.com/?q=$query';
+        }
+      } else {
+        // На Android використовуємо стандартний geo: URI.
+        uri = actionUri;
+      }
+    }
+    // Якщо інший тип посилання, використовуємо його без змін.
+    else {
+      uri = actionUri;
+    }
+
+    final parsedUri = Uri.parse(uri);
+    final bool canLaunchUri = await canLaunchUrl(parsedUri);
 
     if (!context.mounted) return;
 
     if (canLaunchUri) {
-      await launchUrl(uri);
+      await launchUrl(parsedUri);
     } else {
       CustomSnackBar.show(
         context: context,
@@ -84,3 +113,21 @@ class InteractiveGestureDetector extends StatelessWidget {
   }
 }
 
+// Future<void> _handleTap(BuildContext context) async {
+//   final uri = Uri.parse(actionUri);
+//   final bool canLaunchUri = await canLaunchUrl(uri);
+//
+//   if (!context.mounted) return;
+//
+//   if (canLaunchUri) {
+//     await launchUrl(uri);
+//   } else {
+//     CustomSnackBar.show(
+//       context: context,
+//       message: errorMessage,
+//       backgroundColor: Colors.redAccent,
+//       position: SnackBarPosition.top,
+//       duration: const Duration(seconds: 3),
+//     );
+//   }
+// }
