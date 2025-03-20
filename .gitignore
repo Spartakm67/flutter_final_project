@@ -50,3 +50,6 @@ ios/Runner/GoogleService-Info.plist
 key.properties
 
 **/*.jks
+
+package-lock.json
+

@@ -29,7 +29,7 @@ class ScrollToTopButton extends StatelessWidget {
 
               scrollStore.resetScroll();
             },
-            backgroundColor: Colors.black.withOpacity(0.5),
+            backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
             child: const Icon(Icons.arrow_upward, color: Colors.white),
           ),
         );

@@ -333,7 +333,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 },
               ),
               Positioned(
-                bottom: 100,
+                bottom: 110,
                 left: 0,
                 right: 0,
                 child: Observer(
