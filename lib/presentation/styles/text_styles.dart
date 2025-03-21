@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_final_project/main.dart';
 
-const double smallScreenWidth = 380;
+const double smallScreenWidth = 400;
 const double screenMultiplier = 0.8;
 
 class TextStyles {
@@ -32,7 +32,7 @@ class TextStyles {
   );
 
   static final authText = TextStyle(
-    fontSize: screenWidth >= smallScreenWidth ? 18 : (18 * screenMultiplier),
+    fontSize: screenWidth >= smallScreenWidth ? 18 : (20 * screenMultiplier),
     fontWeight: FontWeight.bold,
     color: Colors.black,
   );

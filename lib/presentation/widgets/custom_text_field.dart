@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -51,8 +52,12 @@ class CustomTextField extends StatelessWidget {
         fontSize: 16,
         color: Colors.black,
       ),
-      maxLines: null,
+      // maxLines: null,
+      // keyboardType: TextInputType.multiline,
+      // onChanged: onChanged,
+      maxLines: Platform.isIOS ? 1 : null, // iOS – один рядок, Android – динамічне збільшення
       keyboardType: TextInputType.multiline,
+      textInputAction: Platform.isIOS ? TextInputAction.done : TextInputAction.newline, // iOS – закриває клавіатуру, Android – додає новий рядок
       onChanged: onChanged,
     );
   }

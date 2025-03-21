@@ -41,6 +41,7 @@ class _CartPreviewOrderListState extends State<CartPreviewOrderList> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           FocusScope.of(context).unfocus();
         },
