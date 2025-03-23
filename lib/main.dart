@@ -17,6 +17,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 double screenWidth = 0;
+double screenHeight = 0;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

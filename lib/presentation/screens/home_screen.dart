@@ -218,17 +218,11 @@ class HomeScreenState extends State<HomeScreen>
                                 'label': 'Google',
                                 'iconStyle': TextStyles.hintText,
                                 'onPressed': () async {
-                                  // print('Початок авторизації');
                                   final result =
                                       await authStore.signInWithGoogle();
-                                  // print('Авторизація завершена: $result');
                                   if (result && authStore.isLoggedIn) {
-                                    // print("AuthStore.isLoggedIn: ${authStore.isLoggedIn}");
-                                    // print("AuthStore.isLoading: ${authStore.isLoading}");
-                                    // print("Context mounted: ${context.mounted}");
                                     WidgetsBinding.instance
                                         .addPostFrameCallback((_) {
-                                      // print('Перехід до CategoriesScreen');
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -236,7 +230,6 @@ class HomeScreenState extends State<HomeScreen>
                                               const CategoriesScreen(),
                                         ),
                                       );
-                                      // print("After Navigator.pushReplacement");
                                     });
                                   } else if (authStore.errorMessage != null) {
                                     WidgetsBinding.instance
