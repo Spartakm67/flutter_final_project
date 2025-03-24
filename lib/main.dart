@@ -24,6 +24,7 @@ void main() async {
 
   final mediaQuery = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first);
   screenWidth = mediaQuery.size.width;
+  screenHeight = mediaQuery.size.height;
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

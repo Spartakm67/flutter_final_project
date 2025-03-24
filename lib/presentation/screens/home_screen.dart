@@ -11,11 +11,10 @@ import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/burger_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/sms/otp_verification_dialog.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
-import 'package:flutter_final_project/presentation/screens/auth/auth_email_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_final_project/main.dart';
 
 class HomeScreen extends StatefulWidget {
   final HomeScreenStore store;
@@ -82,7 +81,7 @@ class HomeScreenState extends State<HomeScreen>
                 return Align(
                   alignment: _alignAnimation.value,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.75,
+                    height: MediaQuery.of(context).size.height * 0.65,
                     decoration: BoxDecoration(
                       color: const Color.fromRGBO(255, 255, 255, 0.8),
                       borderRadius: const BorderRadius.only(
@@ -97,6 +96,7 @@ class HomeScreenState extends State<HomeScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            SizedBox(height: screenHeight * 0.015),
                             Text(
                               'Майстерня Млинців \n Ласкаво просимо!',
                               textAlign: TextAlign.center,
@@ -159,180 +159,58 @@ class HomeScreenState extends State<HomeScreen>
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      if (authStore.phoneNumber == null || authStore.phoneNumber!.trim().isEmpty) {
-                                        CustomSnackBar.show(
-                                          context: context,
-                                          message: 'Будь ласка, введіть номер телефону!',
-                                          backgroundColor: Colors.redAccent,
-                                          position: SnackBarPosition.top,
-                                        );
-                                        return;
-                                      }
-
-                                      if (!authStore.isPhoneNumberValid(authStore.phoneNumber!)) {
-                                        CustomSnackBar.show(
-                                          context: context,
-                                          message: 'Номер телефону має містити 9 цифр!',
-                                          backgroundColor: Colors.redAccent,
-                                          position: SnackBarPosition.top,
-                                        );
-                                        return;
-                                      }
-
-                                      final formattedPhoneNumber = '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
-                                      orderStore.updateOrder(phone: formattedPhoneNumber);
-
-                                      await _handleSendOTP(context, viaWhatsApp: false, authStore: authStore);
-
-                                      if (context.mounted) {
-                                        Navigator.pop(context);
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) => OTPVerificationDialog(authStore: authStore),
-                                        );
-                                      }
-                                    },
-                                    child: Text(
-                                      'SMS',
-                                      style: TextStyles.authText,
-                                    ),
-                                  ),
-
+                                  // const SizedBox(width: 8),
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 20),
+                            HomeButton(
+                              onPressed: () async {
+                                if (authStore.phoneNumber == null || authStore.phoneNumber!.trim().isEmpty) {
+                                  CustomSnackBar.show(
+                                    context: context,
+                                    message: 'Будь ласка, введіть номер телефону!',
+                                    backgroundColor: Colors.redAccent,
+                                    position: SnackBarPosition.top,
+                                  );
+                                  return;
+                                }
+
+                                if (!authStore.isPhoneNumberValid(authStore.phoneNumber!)) {
+                                  CustomSnackBar.show(
+                                    context: context,
+                                    message: 'Номер телефону має містити 9 цифр!',
+                                    backgroundColor: Colors.redAccent,
+                                    position: SnackBarPosition.top,
+                                  );
+                                  return;
+                                }
+
+                                final formattedPhoneNumber = '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
+                                orderStore.updateOrder(phone: formattedPhoneNumber);
+
+                                await _handleSendOTP(context, viaWhatsApp: false, authStore: authStore);
+
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => OTPVerificationDialog(authStore: authStore),
+                                  );
+                                }
+                              },
+                              text: 'Надіслати код підтвердження',
+                              backgroundColor: Colors.deepOrangeAccent, // Колір кнопки
+                              textColor: Colors.white,
+                            ),
+
+                            const SizedBox(height: 16),
                             Text(
-                              'або авторизуйтеся за допомогою:',
+                              'Робочі години: 9:00 - 20:00\n Без вихідних',
                               textAlign: TextAlign.center,
                               style: TextStyles.authWelcomeText,
-                            ),
-                            const SizedBox(height: 8),
-                            ...[
-                              {
-                                'icon': FontAwesomeIcons.google,
-                                'imagePath': 'assets/images/google_logo.webp',
-                                'label': 'Google',
-                                'iconStyle': TextStyles.hintText,
-                                'onPressed': () async {
-                                  final result =
-                                      await authStore.signInWithGoogle();
-                                  if (result && authStore.isLoggedIn) {
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((_) {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const CategoriesScreen(),
-                                        ),
-                                      );
-                                    });
-                                  } else if (authStore.errorMessage != null) {
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((_) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content:
-                                              Text(authStore.errorMessage!),
-                                        ),
-                                      );
-                                    });
-                                  }
-                                },
-                              },
-                              {
-                                'icon': FontAwesomeIcons.apple,
-                                'label': 'Apple',
-                                'iconStyle':
-                                    TextStyles.authIconStyle(Colors.black),
-                                'onPressed': () {
-                                  print('Авторизація через Apple');
-                                },
-                              },
-                              {
-                                'icon': FontAwesomeIcons.facebook,
-                                'label': 'Facebook',
-                                'iconStyle':
-                                    TextStyles.authIconStyle(Colors.blue),
-                                'onPressed': () {
-                                  print('Авторизація через Facebook');
-                                },
-                              },
-                              {
-                                'icon': Icons.email,
-                                'label': 'Електронна пошта',
-                                'iconStyle':
-                                    TextStyles.authIconStyle(Colors.orange),
-                                'onPressed': () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return const AuthEmailScreen();
-                                      },
-                                    ),
-                                  );
-                                },
-                              },
-                            ].map(
-                              (auth) {
-                                return Card(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  elevation: 4,
-                                  child: InkWell(
-                                    onTap: auth['onPressed'] as VoidCallback,
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 12,
-                                        horizontal: 16,
-                                      ),
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              auth['imagePath'] != null
-                                                  ? Image.asset(
-                                                      auth['imagePath']
-                                                          as String,
-                                                      width: 24,
-                                                      height: 24,
-                                                    )
-                                                  : Icon(
-                                                      auth['icon'] as IconData,
-                                                      size: (auth['iconStyle']
-                                                                  as TextStyle)
-                                                              .fontSize ??
-                                                          24,
-                                                      color: (auth['iconStyle']
-                                                              as TextStyle)
-                                                          .color,
-                                                    ),
-                                            ],
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              auth['label'] as String,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyles.authText,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
                             ),
                             const SizedBox(height: 16),
                             FittedBox(
@@ -349,14 +227,6 @@ class HomeScreenState extends State<HomeScreen>
                                 },
                                 text: 'Пропустити та перейти до меню',
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'Робочі години: 9:00 - 20:00\n Без вихідних',
-                              textAlign: TextAlign.center,
-                              style: TextStyles.authWelcomeText,
-                              softWrap: true,
-                              overflow: TextOverflow.visible,
                             ),
                           ],
                         ),
