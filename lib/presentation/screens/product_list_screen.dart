@@ -183,7 +183,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 Text(
                                   product.productName,
                                   style: TextStyles.categoriesText,
-                                  // style: Theme.of(context).textTheme.headline2,
                                 ),
                                 const SizedBox(height: 4),
                                 RichText(

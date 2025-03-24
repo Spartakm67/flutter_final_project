@@ -22,12 +22,10 @@ abstract class FirebaseStoreBase with Store {
   Future<void> initialize() async {
     try {
       await DefaultFirebaseOptions.loadFirebaseConfig();
-      print("Firebase config loaded");
 
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      print("Firebase initialized");
 
       final locale = Platform.localeName;
       FirebaseAuth.instance.setLanguageCode(locale.isNotEmpty ? locale : 'en');
@@ -49,7 +47,6 @@ abstract class FirebaseStoreBase with Store {
     } catch (e) {
       errorMessage = 'Failed to initialize Firebase: $e';
       isInitialized = false;
-      print('Initialization error: $e');
     }
   }
 }

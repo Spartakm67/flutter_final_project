@@ -84,11 +84,12 @@ class ProductDetailScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      backgroundColor: Colors.black.withOpacity(0.5),
+                      backgroundColor: Colors.black.withAlpha((0.5 * 255).toInt()),
                     ),
                     child: Text(
                       'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
                       style: const TextStyle(fontSize: 18, color: Colors.white,),
+                      textAlign: TextAlign.center,
                     ),
                   );
                 },

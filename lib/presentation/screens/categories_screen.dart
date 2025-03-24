@@ -41,7 +41,6 @@ class CategoriesScreenState extends State<CategoriesScreen> {
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       productStore = Provider.of<ProductStore>(context, listen: false);
-      print('CategoriesScreen initState...');
     });
   }
 
@@ -58,6 +57,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
     final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: !authStore.isLoggedIn,
         title: Text(
           'Категорії',
           style: TextStyles.greetingsText,

@@ -81,7 +81,7 @@ class HomeScreenState extends State<HomeScreen>
                 return Align(
                   alignment: _alignAnimation.value,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.65,
+                    height: MediaQuery.of(context).size.height * 0.7,
                     decoration: BoxDecoration(
                       color: const Color.fromRGBO(255, 255, 255, 0.8),
                       borderRadius: const BorderRadius.only(
@@ -148,6 +148,7 @@ class HomeScreenState extends State<HomeScreen>
                                       controller: phoneController,
                                       onChanged: authStore.setPhoneNumber,
                                       keyboardType: TextInputType.phone,
+                                      style: TextStyles.authText,
                                       // autofocus: true,
                                       decoration: InputDecoration(
                                         hintText: 'Мобільний номер',

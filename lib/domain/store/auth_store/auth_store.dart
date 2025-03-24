@@ -145,8 +145,6 @@ abstract class AuthStoreBase with Store {
         errorMessage = 'Невідома помилка: ${e.toString()}';
         showErrorMessage?.call(errorMessage!);
       }
-      // errorMessage = 'Failed to register: ${e.toString()}';
-      // showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
