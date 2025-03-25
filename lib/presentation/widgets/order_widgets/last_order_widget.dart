@@ -35,48 +35,30 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
     final lastOrder = lastOrderBox.get('order');
 
     if (lastOrder != null) {
-      print('lastOrder: $lastOrder');
-
       setState(() {
         lastOrderItems = Map<String, int>.from(lastOrder['items'] ?? {});
-
-        print('cartItems before processing: ${lastOrder['cartItems']}');
 
         lastOrderProducts = lastOrder['cartItems'] != null
             ? (lastOrder['cartItems'] as List<dynamic>)
                 .map((item) {
-                  print('Processing item: $item');
-                  print(
-                    'Item type before conversion: ${item.runtimeType}',
-                  ); // Додано лог типу
-
-                  // Явно конвертуємо в Map<String, dynamic>
                   final Map<String, dynamic> itemMap =
                       Map<String, dynamic>.from(item);
-                  print(
-                    'Item type after conversion: ${itemMap.runtimeType}',
-                  ); // Перевіримо тип після конвертації
 
                   if (itemMap['photo'] == null ||
                       (itemMap['photo'] is String &&
                           itemMap['photo'].trim().isEmpty)) {
                     itemMap['photo'] = '';
-                    print('Updated photo: null');
                   }
 
                   if (itemMap['productId'] is! String) {
                     itemMap['productId'] = itemMap['productId'].toString();
-                    print('Updated productId: ${itemMap['productId']}');
                   }
 
-                  print('After modification: $itemMap');
                   return itemMap;
                 })
                 .cast<Map<String, dynamic>>()
                 .toList()
             : [];
-
-        print('lastOrderProducts after processing: $lastOrderProducts');
 
         lastComment = lastOrder['comment'];
         totalPrice = (lastOrder['totalPrice'] as num?)?.toDouble();
@@ -103,7 +85,6 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
       builder: (_) => const CartPreviewContainer(),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -161,23 +142,18 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
                             )
                           : ListView(
                               children: lastOrderProducts!.map<Widget>((item) {
-                                int productId =
-                                    int.tryParse(item['productId'].toString()) ??
-                                        0;
-                                int? quantity = lastOrderItems?[productId
-                                    .toString()]; // Ключ у lastOrderItems - String
-
-                                print(
-                                  'Перевірка продукту: ID=$productId, Назва=${item['productName']}, Кількість=$quantity',
-                                );
+                                int productId = int.tryParse(
+                                      item['productId'].toString(),
+                                    ) ??
+                                    0;
+                                int? quantity =
+                                    lastOrderItems?[productId.toString()];
 
                                 if (quantity == null || quantity == 0) {
-                                  return const SizedBox(); // Пропускаємо товари з нульовою кількістю
+                                  return const SizedBox();
                                 }
                                 return ListTile(
-                                  leading:
-                                  // buildProductImage(item['photo']),
-                                  ClipRRect(
+                                  leading: ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image.network(
                                       UrlHelper.getFullImageUrl(item['photo']),
@@ -206,9 +182,12 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
                                   ),
                                   title: Text(
                                     item['productName'] ?? 'Невідомий товар',
-                                    style: Theme.of(context).textTheme.titleMedium,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
-                                  subtitle: Text('Ціна: ${(item['price']/100).toStringAsFixed(0)} грн, кількість: $quantity шт'),
+                                  subtitle: Text(
+                                    'Ціна: ${(item['price'] / 100).toStringAsFixed(0)} грн, кількість: $quantity шт',
+                                  ),
                                 );
                               }).toList(),
                             ),
@@ -228,8 +207,13 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
                             backgroundColor: Colors.black.withAlpha(100),
                           ),
                           onPressed: () => _repeatOrder(context, cartStore),
-                          child: const Text('Перейти до оформлення',
-                            style: TextStyle(fontSize: 18, color: Colors.white,),),
+                          child: const Text(
+                            'Перейти до оформлення',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ),

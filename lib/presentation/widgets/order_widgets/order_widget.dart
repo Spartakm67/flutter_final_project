@@ -164,43 +164,6 @@ class _OrderWidgetState extends State<OrderWidget> {
                           ),
                         ],
                       ),
-                      // TextFormField(
-                      //         controller: nameController,
-                      //         decoration: InputDecoration(
-                      //           labelText: nameController.text.isEmpty ? 'Ім’я' : null,
-                      //           prefixIcon: const Icon(Icons.person),
-                      //           contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                      //         ),
-                      //         onChanged: _onNameChanged,
-                      //         validator: (value) {
-                      //           if (value == null || value.isEmpty) {
-                      //             return 'Будь ласка, введіть ім’я';
-                      //           }
-                      //           return null;
-                      //         },
-                      //       ),
-                      //       TextFormField(
-                      //         controller: phoneController,
-                      //         focusNode: phoneFocusNode,
-                      //         decoration: InputDecoration(
-                      //           labelText: phoneController.text.isEmpty ? 'Номер телефону' : null,
-                      //           prefixIcon: const Icon(Icons.phone_android),
-                      //           contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                      //           // border: InputBorder.none,
-                      //           // border: OutlineInputBorder(),
-                      //         ),
-                      //         onChanged: (value) {
-                      //           if (!value.startsWith('+380')) {
-                      //             phoneController.text = '+380';
-                      //             phoneController.selection = TextSelection.fromPosition(
-                      //               TextPosition(offset: phoneController.text.length),
-                      //             );
-                      //           } else {
-                      //             _onPhoneChanged(value);
-                      //           }
-                      //         },
-                      //         keyboardType: TextInputType.phone,
-                      //       ),
                       const SizedBox(height: 8),
                       Text(_isDelivery ? 'Доставка' : 'Самовивіз'),
                       const SizedBox(height: 8),
@@ -245,6 +208,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             controller: addressController,
                             maxLines: null,
                             keyboardType: TextInputType.multiline,
+                            textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
                               labelText: addressController.text.isEmpty ? 'Вкажіть адресу' : null,
                               prefixIcon: const Icon(Icons.location_on),

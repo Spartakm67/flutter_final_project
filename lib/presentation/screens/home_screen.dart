@@ -201,7 +201,7 @@ class HomeScreenState extends State<HomeScreen>
                                 }
                               },
                               text: 'Надіслати код підтвердження',
-                              backgroundColor: Colors.deepOrangeAccent, // Колір кнопки
+                              backgroundColor: Colors.deepOrangeAccent,
                               textColor: Colors.white,
                             ),
 

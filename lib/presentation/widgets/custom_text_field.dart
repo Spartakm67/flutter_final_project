@@ -54,7 +54,7 @@ class CustomTextField extends StatelessWidget {
       ),
       // maxLines: null,
       // keyboardType: TextInputType.multiline,
-      // onChanged: onChanged,
+      // textInputAction: TextInputAction.done,
       maxLines: Platform.isIOS ? 1 : null, // iOS – один рядок, Android – динамічне збільшення
       keyboardType: TextInputType.multiline,
       textInputAction: Platform.isIOS ? TextInputAction.done : TextInputAction.newline, // iOS – закриває клавіатуру, Android – додає новий рядок

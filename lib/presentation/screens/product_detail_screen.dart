@@ -58,12 +58,15 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(product.productName),
+            Text(product.productName,
+              style: TextStyles.categoriesText,),
             const SizedBox(height: 16),
-            Text('Ціна: ${(product.price / 100).toStringAsFixed(0)} грн\n'),
-            const SizedBox(height: 16),
+            Text('Ціна: ${(product.price / 100).toStringAsFixed(0)} грн\n',
+              style: TextStyles.authText,),
+            const SizedBox(height: 8),
             Text(
               'Інгредієнти: ${product.ingredients.map((i) => i.name).join(", ")}',
+              style: TextStyles.habitKeyText,
             ),
             const SizedBox(height: 32),
             Center(
