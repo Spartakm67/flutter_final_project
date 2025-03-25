@@ -278,6 +278,12 @@ class _OrderContainerState extends State<OrderContainer> {
           throw Exception('Адреса не може перевищувати 100 символів.');
         }
 
+        if (orderStore.selectedTime.hour < DateTime.now().hour ||
+            (orderStore.selectedTime.hour == DateTime.now().hour &&
+                orderStore.selectedTime.minute <= DateTime.now().minute)) {
+          throw Exception('Час замовлення повинен бути більшим за поточний.');
+        }
+
         final addressRegExp =
         RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s,.\-/\\]+$');
         if (!addressRegExp.hasMatch(orderModel.address!)) {
