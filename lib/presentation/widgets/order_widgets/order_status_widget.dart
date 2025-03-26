@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
-import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
-import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
+// import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
+// import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
-import 'package:flutter_final_project/presentation/widgets/order_widgets/order_widget.dart';
-import 'package:flutter_final_project/presentation/widgets/order_widgets/last_order_widget.dart';
 
 class OrderStatusWidget extends StatefulWidget {
   final String? orderId;
@@ -64,8 +61,8 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final cartStore = Provider.of<CartStore>(context, listen: false);
-    final orderStore = Provider.of<OrderStore>(context, listen: false);
+    // final cartStore = Provider.of<CartStore>(context, listen: false);
+    // final orderStore = Provider.of<OrderStore>(context, listen: false);
     final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Center(
       child: AnimatedOpacity(
@@ -165,12 +162,12 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                       style: TextStyles.cartBottomText,
                                     ),
                                     const SizedBox(height: 10),
-                                    Text(
-                                      widget.orderId != null
-                                          ? 'OrderId №: ${widget.orderId}'
-                                          : 'OrderId відсутній',
-                                      style: TextStyles.cartBottomText,
-                                    ),
+                                    // Text(
+                                    //   widget.orderId != null
+                                    //       ? 'OrderId №: ${widget.orderId}'
+                                    //       : 'OrderId відсутній',
+                                    //   style: TextStyles.cartBottomText,
+                                    // ),
                                   ],
                                 )
                               : Column(

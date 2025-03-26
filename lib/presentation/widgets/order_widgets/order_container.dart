@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
@@ -245,16 +244,15 @@ class _OrderContainerState extends State<OrderContainer> {
     required bool isDelivery,
     required TimeOfDay selectedTime,
   }) async {
-    await _updateUserDataIfNeeded(orderModel);
     orderStore.validatePhoneNumber(orderModel.phone);
 
         if (!orderStore.isPhoneNumberValid) {
           throw Exception('Невірний формат номера телефону');
         }
 
-        if (orderModel.name == null || orderModel.name.trim().isEmpty) {
-          throw Exception('Ім’я не може бути порожнім');
-        }
+        // if (orderModel.name == null || orderModel.name.trim().isEmpty) {
+        //   throw Exception('Ім’я не може бути порожнім');
+        // }
         if (orderModel.name.length < 2) {
           throw Exception('Ім’я повинно містити принаймні 2 символи.');
         }
@@ -380,13 +378,13 @@ class _OrderContainerState extends State<OrderContainer> {
         selectedTime: orderStore.selectedTime,
       );
 
-      final jsonOrder = incomingOrder.toJson();
-      print('Отправленный запрос: $jsonOrder');
+      // final jsonOrder = incomingOrder.toJson();
+      // print('Отправленный запрос: $jsonOrder');
 
       final response = await OrderApiService.sendOrder(incomingOrder);
 
       final Map<String, dynamic>? responseData = response['response'];
-      print('Респонс сервер: $responseData');
+      // print('Респонс сервер: $responseData');
       final orderId = responseData?['incoming_order_id']?.toString();
       final statusId = responseData?['status'];
       final checkId = responseData?['transaction_id']?.toString();
@@ -462,33 +460,6 @@ class _OrderContainerState extends State<OrderContainer> {
         setState(() {
           _isLoading = false;
         });
-      }
-    }
-  }
-
-  Future<void> _updateUserDataIfNeeded(OrderModelHive orderModel) async {
-    if (authStore.currentUser != null) {
-      final userId = authStore.currentUser!.uid;
-
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-      final userData = userDoc.data();
-
-      final updates = <String, dynamic>{};
-      if (userData != null) {
-        if (userData['phoneNumber'] != orderModel.phone.trim()) {
-          updates['phoneNumber'] = orderModel.phone.trim();
-        }
-        if (userData['name'] != orderModel.name.trim()) {
-          updates['name'] = orderModel.name.trim();
-        }
-        if (orderModel.address != null &&
-            userData['address'] != orderModel.address!.trim()) {
-          updates['address'] = orderModel.address!.trim();
-        }
-
-        if (updates.isNotEmpty) {
-          await authStore.updateUserData(userId, updates);
-        }
       }
     }
   }
