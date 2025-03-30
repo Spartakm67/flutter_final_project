@@ -1,8 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_final_project/data/models/poster/product.dart';
 import 'package:flutter_final_project/services/firebase_functions/firebase_config_service.dart';
+
+
+String formatIngredients(Ingredient ingredient) {
+  // Якщо є підінгредієнти, додаємо їх у дужках рекурсивно
+  String subIng = ingredient.subIngredients.isNotEmpty
+      ? " (${ingredient.subIngredients.map(formatIngredients).join(', ')})"
+      : "";
+
+  return ingredient.name + subIng;
+}
 
 class ProductApiServices {
   Future<List<Product>> getProductsByCategory(String categoryProductId) async {
@@ -13,12 +22,12 @@ class ProductApiServices {
 
       final url = Uri.parse('$baseUrl/api/menu.getProducts?'
           'token=$token&category_id=$categoryProductId');
-      print('URL: $url');
+      // print('URL: $url');
 
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        print('Response body: ${response.body}');
+        // print('Response body: ${response.body}');
         final data = jsonDecode(response.body);
         final List<dynamic> productsJson = data['response'] ?? [];
 
@@ -35,36 +44,20 @@ class ProductApiServices {
             product.productName.toLowerCase().contains(word.toLowerCase()),),)
             .toList();
 
-        print('Filtered products: $filteredProducts');
+        for (var product in filteredProducts) {
+          print("${product.productName}: ${product.ingredients.map(formatIngredients).join(', ')}");
+        }
+
         return filteredProducts;
       } else {
         throw Exception(
             'Failed to load products: ${response.statusCode} - ${response.reasonPhrase}',);
       }
     } catch (e) {
-      print('Error fetching products: $e');
+      // print('Error fetching products: $e');
       rethrow;
     }
   }
 }
 
-// class ProductApiServices {
-//   static const String baseUrl = 'https://joinposter.com/api';
-//   static final String token = dotenv.env['TOKEN'] ?? '';
-//
-//   Future<List<Product>> getProductsByCategory(String categoryProductId) async {
-//     final url = Uri.parse('$baseUrl/menu.getProducts?'
-//         'token=$token&category_id=$categoryProductId');
-//     final response = await http.get(url);
-//
-//     if (response.statusCode == 200) {
-//       final data = jsonDecode(response.body);
-//       final List productsJson = data['response'] ?? [];
-//
-//       return productsJson.map((json) => Product.fromJson(json)).toList();
-//     } else {
-//       throw Exception('Failed to load products');
-//     }
-//   }
-// }
 

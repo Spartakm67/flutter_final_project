@@ -127,6 +127,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                         children: [
                           TextFormField(
                             controller: nameController,
+                            // autofocus: true,
                             decoration: InputDecoration(
                               labelText: nameController.text.isEmpty ? 'Ім’я' : null,
                               prefixIcon: const Icon(Icons.person),

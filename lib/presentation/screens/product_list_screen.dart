@@ -194,11 +194,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       ),
                                       TextSpan(
                                         text: product.ingredients
-                                            .map((i) => i.name)
-                                            .join(", "),
+                                            .map((ing) => ing.name +
+                                            (ing.subIngredients.isNotEmpty
+                                                ? " (${ing.subIngredients.map((sub) => sub.name).join(', ')})"
+                                                : ""),)
+                                            .join(', '),
                                         style: TextStyles.spanKeyText,
-                                      ),
-                                    ],
+                                      ),],
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -364,3 +366,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
   }
 }
+
+//   text: product.ingredients
+//       .map((i) => i.name)
+//       .join(", "),
+//   style: TextStyles.spanKeyText,
+// ),

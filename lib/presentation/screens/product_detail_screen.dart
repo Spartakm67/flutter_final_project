@@ -58,44 +58,119 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(product.productName,
-              style: TextStyles.categoriesText,),
-            const SizedBox(height: 16),
-            Text('Ціна: ${(product.price / 100).toStringAsFixed(0)} грн\n',
-              style: TextStyles.authText,),
-            const SizedBox(height: 8),
             Text(
-              'Інгредієнти: ${product.ingredients.map((i) => i.name).join(", ")}',
-              style: TextStyles.habitKeyText,
+              product.productName,
+              style: TextStyles.categoriesText,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
+            Text(
+              'Ціна: ${(product.price / 100).toStringAsFixed(0)} грн\n',
+              style: TextStyles.authText,
+            ),
+            // const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                product.ingredients.map((i) => i.name).join(", "),
+                style: TextStyles.habitKeyText,
+                textAlign: TextAlign.justify,
+                softWrap: true,
+                overflow: TextOverflow.visible,
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Center(
+            //   child: Observer(
+            //     builder: (_) {
+            //       return ElevatedButton(
+            //         onPressed: () {
+            //           cartStore.incrementCounter(
+            //             product.productId,
+            //           );
+            //           Navigator.pop(context);
+            //         },
+            //         style: ElevatedButton.styleFrom(
+            //           padding: const EdgeInsets.symmetric(
+            //             vertical: 12,
+            //             horizontal: 24,
+            //           ),
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(16),
+            //           ),
+            //           backgroundColor: Colors.black.withAlpha((0.5 * 255).toInt()),
+            //         ),
+            //         child: Text(
+            //           'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
+            //           style: const TextStyle(fontSize: 18, color: Colors.white,),
+            //           textAlign: TextAlign.center,
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
             Center(
-              child: Observer(
-                builder: (_) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      cartStore.incrementCounter(
-                        product.productId,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Observer(
+                    builder: (_) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: Додати логіку вибору добавок
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            textStyle: const TextStyle(fontSize: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: const Text(
+                              "Вибрати добавки",
+                              style: TextStyle(
+                                fontSize: 17, color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                       );
-                      Navigator.pop(context);
                     },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 24,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      backgroundColor: Colors.black.withAlpha((0.5 * 255).toInt()),
-                    ),
-                    child: Text(
-                      'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
-                      style: const TextStyle(fontSize: 18, color: Colors.white,),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                },
+                  ),
+                  const SizedBox(height: 24),
+                  Observer(
+                    builder: (_) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          cartStore.incrementCounter(product.productId);
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 24),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          backgroundColor:
+                              Colors.black.withAlpha((0.5 * 255).toInt()),
+                        ),
+                        child: Text(
+                          'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ],

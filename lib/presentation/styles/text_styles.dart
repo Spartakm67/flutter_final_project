@@ -132,12 +132,6 @@ class TextStyles {
     color: Colors.black87,
   );
 
-  // static final TextStyle categoriesText = TextStyle(
-  //   fontWeight: FontWeight.bold,
-  //   fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
-  //   color: Color(0xFF52545C),
-  // );
-
   static final TextStyle categoriesText = GoogleFonts.roboto(
     fontSize: screenWidth >= smallScreenWidth ? 22 : (22 * screenMultiplier),
     fontWeight: FontWeight.bold,
