@@ -99,6 +99,8 @@ class Product {
           ingredientsList.add(Ingredient(
             name: mod['name'] ?? '',
             netto: 0, // Може бути відсутнє
+            brutto: double.tryParse(mod['brutto']?.toString() ?? '0') ?? 0,
+            price: double.tryParse(mod['price']?.toString() ?? '0') ?? 0,
             subIngredients: [],
           ),);
         }
@@ -125,23 +127,28 @@ class Product {
 class Ingredient {
   final String name;
   final double netto;
-  final List<Ingredient> subIngredients; // Вкладені інгредієнти
+  final double brutto;
+  final double price;
+  final List<Ingredient> subIngredients;
 
   Ingredient({
     required this.name,
     required this.netto,
+    required this.brutto,
+    required this.price,
     required this.subIngredients,
   });
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     List<Ingredient> subIngredientsList = [];
 
-    // Перевіряємо вкладені модифікації
     if (json.containsKey('modifications')) {
       subIngredientsList = (json['modifications'] as List<dynamic>?)
           ?.map((mod) => Ingredient(
         name: mod['modificator_name'] ?? '',
-        netto: 0, // Модифікатор може не мати ваги
+        netto: 0,
+        brutto: double.tryParse(mod['brutto']?.toString() ?? '0') ?? 0,
+        price: double.tryParse(mod['price']?.toString() ?? '0') ?? 0,// Модифікатор може не мати ваги
         subIngredients: [],
       ),)
           .toList() ??
@@ -151,6 +158,8 @@ class Ingredient {
     return Ingredient(
       name: json['ingredient_name'] ?? '',
       netto: double.tryParse(json['structure_netto']?.toString() ?? '0') ?? 0,
+      brutto: 0,
+      price: 0,
       subIngredients: subIngredientsList,
     );
   }

@@ -5,7 +5,6 @@ import 'package:flutter_final_project/services/firebase_functions/firebase_confi
 
 
 String formatIngredients(Ingredient ingredient) {
-  // Якщо є підінгредієнти, додаємо їх у дужках рекурсивно
   String subIng = ingredient.subIngredients.isNotEmpty
       ? " (${ingredient.subIngredients.map(formatIngredients).join(', ')})"
       : "";
@@ -22,7 +21,6 @@ class ProductApiServices {
 
       final url = Uri.parse('$baseUrl/api/menu.getProducts?'
           'token=$token&category_id=$categoryProductId');
-      // print('URL: $url');
 
       final response = await http.get(url);
 
@@ -44,20 +42,20 @@ class ProductApiServices {
             product.productName.toLowerCase().contains(word.toLowerCase()),),)
             .toList();
 
-        for (var product in filteredProducts) {
-          print("${product.productName}: ${product.ingredients.map(formatIngredients).join(', ')}");
-        }
-
         return filteredProducts;
       } else {
         throw Exception(
             'Failed to load products: ${response.statusCode} - ${response.reasonPhrase}',);
       }
     } catch (e) {
-      // print('Error fetching products: $e');
       rethrow;
     }
   }
 }
 
 
+// for (var product in filteredProducts) {
+// print("${product.productName}: ${product.ingredients.map(formatIngredients).join(', ')}");
+// }
+
+// print('Error fetching products: $e');

@@ -192,15 +192,31 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                         text: 'Інгредієнти: ',
                                         style: TextStyles.habitKeyText,
                                       ),
+                                      // TextSpan(
+                                      //   text: product.ingredients
+                                      //       .map((ing) => ing.name +
+                                      //       (ing.subIngredients.isNotEmpty
+                                      //           ? " (${ing.subIngredients.map((sub) => sub.name).join(', ')})"
+                                      //           : ""),)
+                                      //       .join(', '),
+                                      //   style: TextStyles.spanKeyText,
+                                      // ),
                                       TextSpan(
-                                        text: product.ingredients
-                                            .map((ing) => ing.name +
-                                            (ing.subIngredients.isNotEmpty
-                                                ? " (${ing.subIngredients.map((sub) => sub.name).join(', ')})"
-                                                : ""),)
-                                            .join(', '),
+                                        text: product.ingredients.map((ing) {
+                                          String ingredientText = ing.name;
+                                          // Додаємо вкладені інгредієнти, якщо вони є
+                                          if (ing.subIngredients.isNotEmpty) {
+                                            ingredientText += " (${ing.subIngredients.map((sub) => sub.name).join(', ')})";
+                                          }
+                                          // Якщо категорія "Додатки", додаємо brutto і price
+                                          if (product.categoryName == "Добавки") {
+                                            ingredientText += " [${ing.brutto} г, ${ing.price} грн]";
+                                          }
+                                          return ingredientText;
+                                        }).join(', '),
                                         style: TextStyles.spanKeyText,
-                                      ),],
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 const SizedBox(height: 8),
