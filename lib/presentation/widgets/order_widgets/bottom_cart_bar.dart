@@ -112,6 +112,7 @@ class _ResponsiveCartRow extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SizedBox(width: 8),
         const Icon(Icons.shopping_cart, size: 24, color: Colors.white),
         const SizedBox(width: 8),
         Flexible(

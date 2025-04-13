@@ -13,6 +13,9 @@ abstract class ProductStoreBase with Store {
   ObservableList<Product> products = ObservableList<Product>();
 
   @observable
+  Map<String, List<Product>> cachedProducts = {};
+
+  @observable
   bool isLoading = false;
 
   @observable
@@ -32,9 +35,23 @@ abstract class ProductStoreBase with Store {
       isLoading = true;
       error = null;
       selectedCategoryId = categoryProductId;
+
       final fetchedProducts =
-          await _apiService.getProductsByCategory(categoryProductId);
+      await _apiService.getProductsByCategory(categoryProductId);
+
       products = ObservableList.of(fetchedProducts);
+      cachedProducts[categoryProductId] = fetchedProducts;
+      if (cachedProducts.containsKey(categoryProductId)) {
+        products = ObservableList.of(cachedProducts[categoryProductId]!);
+      } else {
+        final fetchedProducts =
+        await _apiService.getProductsByCategory(categoryProductId);
+        products = ObservableList.of(fetchedProducts);
+        cachedProducts[categoryProductId] = fetchedProducts; // Кешування
+      }
+      // final fetchedProducts =
+      //     await _apiService.getProductsByCategory(categoryProductId);
+      // products = ObservableList.of(fetchedProducts);
     } catch (e) {
       error = 'Помилка завантаження продуктів: $e';
     } finally {
@@ -42,6 +59,16 @@ abstract class ProductStoreBase with Store {
       isFetching = false;
     }
   }
+
+  @action
+  void loadFromCache(String categoryId) {
+    final cached = cachedProducts[categoryId];
+    if (cached != null) {
+      selectedCategoryId = categoryId;
+      products = ObservableList.of(cached);
+    }
+  }
+
 
   @action
   Future<void> loadProducts({String? categoryProductId}) async {
@@ -54,7 +81,7 @@ abstract class ProductStoreBase with Store {
       try {
         final allProducts = await _apiService.getProductsByCategory('');
         products = ObservableList.of(allProducts);
-        print('LoadProducts ............$products');
+        // print('LoadProducts ............$products');
       } catch (e) {
         error = 'Помилка завантаження всіх продуктів: $e';
       }
@@ -68,5 +95,10 @@ abstract class ProductStoreBase with Store {
   @computed
   double get totalPrice {
     return products.fold(0.0, (sum, product) => sum + product.price);
+  }
+
+  @action
+  void clearCache() {
+    cachedProducts.clear();
   }
 }

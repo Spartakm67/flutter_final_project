@@ -5,18 +5,41 @@ import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
+import 'package:flutter_final_project/presentation/screens/additions_screen.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
+import 'package:flutter_final_project/services/poster_api/additions_api_service.dart';
+import 'package:flutter_final_project/data/models/poster/category.dart';
+import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
+import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
+  final String categoryId;
 
-  const ProductDetailScreen({super.key, required this.product});
+  const ProductDetailScreen({
+    super.key,
+    required this.product,
+    required this.categoryId,
+  });
 
   @override
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context, listen: false);
+
+    final categoriesStore = Provider.of<CategoriesStore>(context, listen: false);
+    final productStore = Provider.of<ProductStore>(context, listen: false);
+
     return Scaffold(
-      appBar: AppBar(title: Text(product.productName)),
+      // appBar: AppBar(title: Text(product.productName)),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, categoryId); // ← передаємо categoryId назад
+          },
+        ),
+        title: Text(product.productName),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -80,36 +103,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            // Center(
-            //   child: Observer(
-            //     builder: (_) {
-            //       return ElevatedButton(
-            //         onPressed: () {
-            //           cartStore.incrementCounter(
-            //             product.productId,
-            //           );
-            //           Navigator.pop(context);
-            //         },
-            //         style: ElevatedButton.styleFrom(
-            //           padding: const EdgeInsets.symmetric(
-            //             vertical: 12,
-            //             horizontal: 24,
-            //           ),
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(16),
-            //           ),
-            //           backgroundColor: Colors.black.withAlpha((0.5 * 255).toInt()),
-            //         ),
-            //         child: Text(
-            //           'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
-            //           style: const TextStyle(fontSize: 18, color: Colors.white,),
-            //           textAlign: TextAlign.center,
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            Center(
+             Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -119,7 +113,19 @@ class ProductDetailScreen extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.6,
                         child: ElevatedButton(
                           onPressed: () {
-                            // TODO: Додати логіку вибору добавок
+                            final additionsCategory = categoriesStore.additionsCategory;
+                            print('Категорія добавки:   id = ${additionsCategory.categoryId}, name = ${additionsCategory.categoryName}');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => AdditionsScreen(
+                                  productStore: productStore,
+                                  categoriesStore: categoriesStore,
+                                  categoryId: additionsCategory.categoryId,
+                                  categoryName: additionsCategory.categoryName,
+                                ),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blueAccent,
@@ -154,7 +160,7 @@ class ProductDetailScreen extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 24),
+                              vertical: 12, horizontal: 24,),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -164,7 +170,7 @@ class ProductDetailScreen extends StatelessWidget {
                         child: Text(
                           'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
                           style: const TextStyle(
-                              fontSize: 18, color: Colors.white),
+                              fontSize: 18, color: Colors.white,),
                           textAlign: TextAlign.center,
                         ),
                       );
@@ -179,3 +185,60 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 }
+
+
+// Center(
+//   child: Observer(
+//     builder: (_) {
+//       return ElevatedButton(
+//         onPressed: () {
+//           cartStore.incrementCounter(
+//             product.productId,
+//           );
+//           Navigator.pop(context);
+//         },
+//         style: ElevatedButton.styleFrom(
+//           padding: const EdgeInsets.symmetric(
+//             vertical: 12,
+//             horizontal: 24,
+//           ),
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(16),
+//           ),
+//           backgroundColor: Colors.black.withAlpha((0.5 * 255).toInt()),
+//         ),
+//         child: Text(
+//           'Додати до замовлення за ${(product.price / 100).toStringAsFixed(0)} грн',
+//           style: const TextStyle(fontSize: 18, color: Colors.white,),
+//           textAlign: TextAlign.center,
+//         ),
+//       );
+//     },
+//   ),
+// ),
+
+// onPressed: () async {
+//   try {
+//     final category = await AdditionsApiService.fetchAdditionsCategory();
+//
+//     if (context.mounted) {
+//       Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) => AdditionsScreen(
+//             categoriesStore: categoriesStore,
+//             productStore: productStore,
+//             categoryId: int.parse(category.categoryId),
+//             categoryName: category.categoryName,
+//           ),
+//         ),
+//       );
+//     }
+//   } catch (e) {
+//     if (context.mounted) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Не вдалося завантажити добавки: $e')),
+//       );
+//     }
+//   }
+// },

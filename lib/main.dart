@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
 import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
@@ -47,6 +48,7 @@ void main() async {
     final orderStore = OrderStore();
     final cartStore = CartStore(productStore, orderStore);
     final authStore = AuthStore();
+    final categoriesStore = CategoriesStore();
 
     await cartStore.initHive();
     await orderStore.initHive();
@@ -58,6 +60,7 @@ void main() async {
           Provider<CartStore>.value(value: cartStore),
           Provider<AuthStore>.value(value: authStore),
           Provider<OrderStore>.value(value: orderStore),
+          Provider<CategoriesStore>.value(value: categoriesStore),
           Provider<HomeScreenStore>(create: (_) => HomeScreenStore()),
         ],
         child: const MyApp(),

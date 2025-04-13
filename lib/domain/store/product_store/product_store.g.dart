@@ -40,6 +40,22 @@ mixin _$ProductStore on ProductStoreBase, Store {
     });
   }
 
+  late final _$cachedProductsAtom =
+      Atom(name: 'ProductStoreBase.cachedProducts', context: context);
+
+  @override
+  Map<String, List<Product>> get cachedProducts {
+    _$cachedProductsAtom.reportRead();
+    return super.cachedProducts;
+  }
+
+  @override
+  set cachedProducts(Map<String, List<Product>> value) {
+    _$cachedProductsAtom.reportWrite(value, super.cachedProducts, () {
+      super.cachedProducts = value;
+    });
+  }
+
   late final _$isLoadingAtom =
       Atom(name: 'ProductStoreBase.isLoading', context: context);
 
@@ -122,10 +138,36 @@ mixin _$ProductStore on ProductStoreBase, Store {
         .run(() => super.loadProducts(categoryProductId: categoryProductId));
   }
 
+  late final _$ProductStoreBaseActionController =
+      ActionController(name: 'ProductStoreBase', context: context);
+
+  @override
+  void loadFromCache(String categoryId) {
+    final _$actionInfo = _$ProductStoreBaseActionController.startAction(
+        name: 'ProductStoreBase.loadFromCache');
+    try {
+      return super.loadFromCache(categoryId);
+    } finally {
+      _$ProductStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void clearCache() {
+    final _$actionInfo = _$ProductStoreBaseActionController.startAction(
+        name: 'ProductStoreBase.clearCache');
+    try {
+      return super.clearCache();
+    } finally {
+      _$ProductStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 products: ${products},
+cachedProducts: ${cachedProducts},
 isLoading: ${isLoading},
 selectedCategoryId: ${selectedCategoryId},
 error: ${error},

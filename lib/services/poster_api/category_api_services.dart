@@ -15,7 +15,7 @@ class CategoryApiServices {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        print('Response body: ${response.body}');
+        // print('Response body: ${response.body}');
         final List<dynamic> data = json.decode(response.body)['response'];
 
         const excludedWords = [
@@ -33,7 +33,11 @@ class CategoryApiServices {
             category.categoryName.toLowerCase().contains(word.toLowerCase()),),)
             .toList();
 
-        print('Filtered categories: $filteredCategories');
+        final categoryIds = filteredCategories.map((category) => category.categoryId).toList();
+        final categoryNames = filteredCategories.map((category) => category.categoryName).toList();
+        print('Filtered categoryIds: $categoryIds');
+        print('Filtered categoryIds: $categoryNames');
+
         return filteredCategories;
       } else {
         throw Exception('Failed to fetch categories: ${response.statusCode}');
