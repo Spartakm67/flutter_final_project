@@ -7,8 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
 import 'package:flutter_final_project/presentation/screens/additions_screen.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:flutter_final_project/services/poster_api/additions_api_service.dart';
-import 'package:flutter_final_project/data/models/poster/category.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
 
@@ -114,7 +112,7 @@ class ProductDetailScreen extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             final additionsCategory = categoriesStore.additionsCategory;
-                            print('Категорія добавки:   id = ${additionsCategory.categoryId}, name = ${additionsCategory.categoryName}');
+                            // print('Категорія добавки:   id = ${additionsCategory.categoryId}, name = ${additionsCategory.categoryName}');
                             Navigator.push(
                               context,
                               MaterialPageRoute(

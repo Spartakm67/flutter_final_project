@@ -24,24 +24,24 @@ class ProductListScreen extends StatefulWidget {
   final String categoryId;
   final String categoryName;
 
-   ProductListScreen({
+   const ProductListScreen({
     super.key,
     required this.productStore,
     required this.categoryId,
     required this.categoryName,
     required this.categoriesStore,
   })
-  // ; // тут видалити
-  {
-    // productStore.fetchProducts(categoryId.toString());
-
-    if (!productStore.cachedProducts.containsKey(categoryId) ||
-        productStore.selectedCategoryId != categoryId) {
-      productStore.fetchProducts(categoryId);
-    } else {
-      productStore.loadFromCache(categoryId);
-    }
-  }
+  ; // тут видалити
+  // {
+  //   // productStore.fetchProducts(categoryId.toString());
+  // або
+  //   // if (!productStore.cachedProducts.containsKey(categoryId) ||
+  //   //     productStore.selectedCategoryId != categoryId) {
+  //   //   productStore.fetchProducts(categoryId);
+  //   // } else {
+  //   //   productStore.loadFromCache(categoryId);
+  //   // }
+  // }
 
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
@@ -61,19 +61,19 @@ class _ProductListScreenState extends State<ProductListScreen> {
     });
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //
-  //   final categoryId = widget.categoryId;
-  //
-  //   if (!widget.productStore.cachedProducts.containsKey(categoryId) ||
-  //           widget.productStore.selectedCategoryId != categoryId) {
-  //     widget.productStore.fetchProducts(categoryId);
-  //   } else {
-  //     widget.productStore.loadFromCache(categoryId);
-  //   }
-  // }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final categoryId = widget.categoryId;
+
+    if (!widget.productStore.cachedProducts.containsKey(categoryId) ||
+            widget.productStore.selectedCategoryId != categoryId) {
+      widget.productStore.fetchProducts(categoryId);
+    } else {
+      widget.productStore.loadFromCache(categoryId);
+    }
+  }
 
   @override
   void dispose() {

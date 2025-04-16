@@ -30,16 +30,26 @@ class CategoriesListWidget extends StatelessWidget {
           );
         }
 
-        if (categoriesStore.categories.isEmpty) {
+        // if (categoriesStore.categories.isEmpty) {
+        //   return const Center(child: Text('Немає категорій'));
+        // }
+
+        final visibleCategories = categoriesStore.categories
+            .where((c) => c.categoryName != 'Добавки')
+            .toList();
+
+        if (visibleCategories.isEmpty) {
           return const Center(child: Text('Немає категорій'));
         }
 
         return ListView.builder(
           controller: scrollController,
           padding: const EdgeInsets.all(8.0),
-          itemCount: categoriesStore.categories.length,
+          // itemCount: categoriesStore.categories.length,
+          itemCount: visibleCategories.length,
           itemBuilder: (context, index) {
-            final category = categoriesStore.categories[index];
+            // final category = categoriesStore.categories[index];
+            final category = visibleCategories[index];
             return Card(
               margin: const EdgeInsets.symmetric(vertical: 4.0),
               elevation: 4.0,
