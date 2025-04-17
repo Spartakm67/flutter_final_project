@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dart';
@@ -16,20 +15,19 @@ import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_pr
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
-
 import '../../data/models/poster/product.dart';
 
 class AdditionsScreen extends StatefulWidget {
   final CategoriesStore categoriesStore;
   final ProductStore productStore;
-  final String categoryId;  // Додано параметр categoryId
+  final String categoryId;
   final String categoryName;
 
   const AdditionsScreen({
     super.key,
     required this.productStore,
     required this.categoriesStore,
-    required this.categoryId,   // Додано required
+    required this.categoryId,
     required this.categoryName,
   });
 
@@ -104,11 +102,13 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
             return Center(child: Text(widget.productStore.error!));
           }
 
-          final filteredProducts = widget.productStore.products.where(
+          final filteredProducts = widget.productStore.products
+              .where(
                 (product) =>
-            product.categoryProductId ==
-                widget.categoriesStore.additionsCategory.categoryId,
-          ).toList();
+                    product.categoryProductId ==
+                    widget.categoriesStore.additionsCategory.categoryId,
+              )
+              .toList();
 
           if (filteredProducts.isEmpty) {
             return const Center(child: Text('No products found'));
@@ -159,7 +159,6 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
   }
 
   Widget _buildProductCard(Product product, CartStore cartStore) {
-    final counter = cartStore.counters[product.productId] ?? 0;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 2.0),
       elevation: 4.0,
@@ -179,61 +178,70 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      UrlHelper.getFullImageUrl(product.photo),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    UrlHelper.getFullImageUrl(product.photo),
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) =>
+                        loadingProgress == null
+                            ? child
+                            : LoadingImageIndicator(
+                                loadingProgress: loadingProgress,
+                              ),
+                    errorBuilder: (_, __, ___) => Image.asset(
+                      'assets/images/addition.png',
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) =>
-                      loadingProgress == null
-                          ? child
-                          : LoadingImageIndicator(
-                          loadingProgress: loadingProgress,),
-                      errorBuilder: (_, __, ___) => Image.asset(
-                        'assets/images/addition.png',
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
                     ),
                   ),
+                ),
                 // ),
                 const SizedBox(height: 8),
                 SizedBox(
                   height: 50,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Opacity(
-                        opacity: counter > 0 ? 1.0 : 0.0,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              onPressed: counter > 0
-                                  ? () => cartStore.decrementCounter(product.productId)
-                                  : null,
+                  child: Observer(
+                    builder: (_) {
+                      final counter =
+                          cartStore.counters[product.productId] ?? 0;
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Opacity(
+                            opacity: counter > 0 ? 1.0 : 0.0,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.remove),
+                                  onPressed: counter > 0
+                                      ? () => cartStore.decrementCounter(
+                                            product.productId,
+                                          )
+                                      : null,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                  child: Text(
+                                    '$counter',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              width: 20,
-                              child: Text(
-                                '$counter',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      CustomIconButton(
-                        icon: Icons.add,
-                        onPressed: () =>
-                            cartStore.incrementCounter(product.productId),
-                      ),
-                    ],
+                          ),
+                          const SizedBox(width: 4),
+                          CustomIconButton(
+                            icon: Icons.add,
+                            onPressed: () =>
+                                cartStore.incrementCounter(product.productId),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],
@@ -258,7 +266,8 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
                 text: product.ingredients.map((ing) {
                   String text = ing.name;
                   if (ing.subIngredients.isNotEmpty) {
-                    text += " (${ing.subIngredients.map((s) => s.name).join(', ')})";
+                    text +=
+                        " (${ing.subIngredients.map((s) => s.name).join(', ')})";
                   }
                   if (product.categoryName == "Добавки") {
                     text += " [${ing.brutto} г, ${ing.price} грн]";
@@ -286,4 +295,3 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
     );
   }
 }
-
