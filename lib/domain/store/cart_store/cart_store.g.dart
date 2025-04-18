@@ -173,6 +173,39 @@ mixin _$CartStore on CartStoreBase, Store {
     });
   }
 
+  late final _$ingredientCountersAtom =
+      Atom(name: 'CartStoreBase.ingredientCounters', context: context);
+
+  @override
+  ObservableMap<String, ObservableMap<String, int>> get ingredientCounters {
+    _$ingredientCountersAtom.reportRead();
+    return super.ingredientCounters;
+  }
+
+  @override
+  set ingredientCounters(
+      ObservableMap<String, ObservableMap<String, int>> value) {
+    _$ingredientCountersAtom.reportWrite(value, super.ingredientCounters, () {
+      super.ingredientCounters = value;
+    });
+  }
+
+  late final _$customPricesAtom =
+      Atom(name: 'CartStoreBase.customPrices', context: context);
+
+  @override
+  ObservableMap<String, double> get customPrices {
+    _$customPricesAtom.reportRead();
+    return super.customPrices;
+  }
+
+  @override
+  set customPrices(ObservableMap<String, double> value) {
+    _$customPricesAtom.reportWrite(value, super.customPrices, () {
+      super.customPrices = value;
+    });
+  }
+
   late final _$initHiveAsyncAction =
       AsyncAction('CartStoreBase.initHive', context: context);
 
@@ -273,6 +306,30 @@ mixin _$CartStore on CartStoreBase, Store {
   }
 
   @override
+  void incrementIngredient(
+      String productId, String ingredientId, double price) {
+    final _$actionInfo = _$CartStoreBaseActionController.startAction(
+        name: 'CartStoreBase.incrementIngredient');
+    try {
+      return super.incrementIngredient(productId, ingredientId, price);
+    } finally {
+      _$CartStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void decrementIngredient(
+      String productId, String ingredientId, double price) {
+    final _$actionInfo = _$CartStoreBaseActionController.startAction(
+        name: 'CartStoreBase.decrementIngredient');
+    try {
+      return super.decrementIngredient(productId, ingredientId, price);
+    } finally {
+      _$CartStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 counters: ${counters},
@@ -282,6 +339,8 @@ productHiveBox: ${productHiveBox},
 lastOrderBox: ${lastOrderBox},
 comment: ${comment},
 commentsBox: ${commentsBox},
+ingredientCounters: ${ingredientCounters},
+customPrices: ${customPrices},
 products: ${products},
 totalItems: ${totalItems},
 totalCombinedOrderPrice: ${totalCombinedOrderPrice},

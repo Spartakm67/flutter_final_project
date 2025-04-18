@@ -12,12 +12,14 @@ import 'package:flutter_final_project/presentation/widgets/custom_burger_button.
 import 'package:flutter_final_project/presentation/widgets/contacts/burger_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/bottom_cart_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
+import 'package:flutter_final_project/presentation/widgets/order_widgets/ingredient_selector.dart';
 import 'package:flutter_final_project/services/url_helper.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/poster/product.dart';
 
 class AdditionsScreen extends StatefulWidget {
+  // final CartStore cartStore;
   final CategoriesStore categoriesStore;
   final ProductStore productStore;
   final String categoryId;
@@ -25,6 +27,7 @@ class AdditionsScreen extends StatefulWidget {
 
   const AdditionsScreen({
     super.key,
+    // required this.cartStore,
     required this.productStore,
     required this.categoriesStore,
     required this.categoryId,
@@ -173,7 +176,7 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _buildProductDetails(product)),
+            Expanded(child: _buildProductDetails(product, cartStore)),
             const SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -252,7 +255,7 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
     );
   }
 
-  Widget _buildProductDetails(Product product) {
+  Widget _buildProductDetails(Product product, CartStore cartStore) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -262,58 +265,70 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '${product.productName}\n',
-                        style: TextStyles.categoriesText,
-                      ),
-                      WidgetSpan(
-                        child: SizedBox(height: 12),
-                      ),
-                      const TextSpan(
-                        text: 'виберіть від 1 варіанту',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: product.ingredients.map((ing) {
-                      final subText = "${ing.brutto.toStringAsFixed(0)} г, ${ing.price.toStringAsFixed(0)} грн";
-                      return CheckboxListTile(
-                        value: true,
-                        onChanged: null, // Чекбокси наразі неактивні
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(ing.name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,),),
-                            Text(subText,
-                                style: const TextStyle(color: Colors.grey),),
-                          ],
-                        ),
-                        controlAffinity: ListTileControlAffinity.leading,
-                      );
-                    }).toList(),
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Закрити'),
-                  ),
-                ],
+              // builder: (context) => AlertDialog(
+              //   title: RichText(
+              //     textAlign: TextAlign.start,
+              //     text: TextSpan(
+              //       children: [
+              //         TextSpan(
+              //           text: '${product.productName}\n',
+              //           style: TextStyles.categoriesText,
+              //         ),
+              //         WidgetSpan(
+              //           child: SizedBox(height: 12),
+              //         ),
+              //         const TextSpan(
+              //           text: 'виберіть від 1 варіанту',
+              //           style: TextStyle(
+              //             fontSize: 14,
+              //             color: Colors.grey,
+              //             fontStyle: FontStyle.italic,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              //   content: SingleChildScrollView(
+              //     child: Column(
+              //       children: product.ingredients.map((ing) {
+              //         final subText = "${ing.brutto.toStringAsFixed(0)} г, ${ing.price.toStringAsFixed(0)} грн";
+              //         return CheckboxListTile(
+              //           value: true,
+              //           onChanged: null, // Чекбокси наразі неактивні
+              //           title: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text(ing.name,
+              //                   style: const TextStyle(
+              //                       fontWeight: FontWeight.bold,),),
+              //               Text(subText,
+              //                   style: const TextStyle(color: Colors.grey),),
+              //             ],
+              //           ),
+              //           controlAffinity: ListTileControlAffinity.leading,
+              //         );
+              //       }).toList(),
+              //     ),
+              //   ),
+              //   actions: [
+              //     TextButton(
+              //       onPressed: () => Navigator.of(context).pop(),
+              //       child: const Text('Закрити'),
+              //     ),
+              //   ],
+              // ),
+
+              // builder: (_) => IngredientSelector(
+              //   productId: product.productId,
+              //   ingredients: product.ingredients,
+              //   cartStore: cartStore,
+              // ),
+
+              builder: (context) => IngredientSelector(
+                product: product,
+                cartStore: cartStore,
               ),
+
             );
           },
           child: const Text('+ Вибрати'),
@@ -335,46 +350,3 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
   }
 }
 
-// Widget _buildProductDetails(Product product) {
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Text(product.productName, style: TextStyles.categoriesText),
-//       const SizedBox(height: 4),
-//       RichText(
-//         text: TextSpan(
-//           children: [
-//             TextSpan(text: 'Інгредієнти: ', style: TextStyles.habitKeyText),
-//             TextSpan(
-//               text: product.ingredients.map((ing) {
-//                 String text = ing.name;
-//                 if (ing.subIngredients.isNotEmpty) {
-//                   text +=
-//                       " (${ing.subIngredients.map((s) => s.name).join(', ')})";
-//                 }
-//                 if (product.categoryName == "Добавки") {
-//                   text += " [${ing.brutto} г, ${ing.price} грн]";
-//                 }
-//                 print('Перелік добавок: $text');
-//                 return text;
-//               }).join(', '),
-//               style: TextStyles.spanKeyText,
-//             ),
-//           ],
-//         ),
-//       ),
-//       const SizedBox(height: 8),
-//       RichText(
-//         text: TextSpan(
-//           children: [
-//             TextSpan(text: 'Ціна: ', style: TextStyles.habitKeyText),
-//             TextSpan(
-//               text: '${(product.price / 100).toStringAsFixed(0)} грн',
-//               style: TextStyles.authText,
-//             ),
-//           ],
-//         ),
-//       ),
-//     ],
-//   );
-// }

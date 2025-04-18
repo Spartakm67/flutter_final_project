@@ -42,6 +42,13 @@ abstract class CartStoreBase with Store {
   @computed
   int get totalItems => counters.values.fold(0, (prev, next) => prev + next);
 
+  @observable
+  ObservableMap<String, ObservableMap<String, int>> ingredientCounters = ObservableMap();
+
+  @observable
+  ObservableMap<String, double> customPrices = ObservableMap();
+
+
   @action
   Future<void> initHive() async {
 
@@ -204,6 +211,57 @@ abstract class CartStoreBase with Store {
 
     await lastOrderBox.put('order', lastOrder);
   }
+
+  @action
+  void incrementIngredient(String productId, String ingredientId, double price) {
+    ingredientCounters.putIfAbsent(productId, () => ObservableMap());
+    final count = ingredientCounters[productId]![ingredientId] ?? 0;
+    ingredientCounters[productId]![ingredientId] = count + 1;
+    _recalculateCheckSum(productId);
+  }
+
+  @action
+  void decrementIngredient(String productId, String ingredientId, double price) {
+    if (!ingredientCounters.containsKey(productId)) return;
+    final count = ingredientCounters[productId]![ingredientId] ?? 0;
+    if (count > 0) {
+      ingredientCounters[productId]![ingredientId] = count - 1;
+      _recalculateCheckSum(productId);
+    }
+  }
+
+  int getIngredientCount(String productId, String ingredientId) {
+    return ingredientCounters[productId]?[ingredientId] ?? 0;
+  }
+
+  double getCheckSumForProduct(String productId) {
+    return customPrices[productId] ?? 0.0;
+  }
+
+  void _recalculateCheckSum(String productId) {
+    final product = _getProduct(productId);
+    final ingredients = product.ingredients;
+
+    final total = ingredientCounters[productId]?.entries.fold<double>(
+      0.0,
+          (sum, entry) {
+        final ing = ingredients.firstWhere(
+              (i) => i.name == entry.key,
+          orElse: () => Ingredient(
+            name: '',
+            netto: 0.0,
+            brutto: 0.0,
+            price: 0.0,
+            subIngredients: [],
+          ),
+        );
+        return sum + (entry.value * ing.price);
+      },
+    ) ?? 0.0;
+
+    customPrices[productId] = total;
+  }
+
 
   @action
   Future<void> completeOrder() async {

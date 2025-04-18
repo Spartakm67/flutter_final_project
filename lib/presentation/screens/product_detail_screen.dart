@@ -117,6 +117,7 @@ class ProductDetailScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (_) => AdditionsScreen(
+                                  // cartStore: cartStore,
                                   productStore: productStore,
                                   categoriesStore: categoriesStore,
                                   categoryId: additionsCategory.categoryId,
