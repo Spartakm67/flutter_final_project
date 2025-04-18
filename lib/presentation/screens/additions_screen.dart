@@ -269,14 +269,13 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
                     children: [
                       TextSpan(
                         text: '${product.productName}\n',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                        style: TextStyles.categoriesText,
+                      ),
+                      WidgetSpan(
+                        child: SizedBox(height: 12),
                       ),
                       const TextSpan(
-                        text: 'Виберіть від 1 варіанту',
+                        text: 'виберіть від 1 варіанту',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey,
@@ -289,15 +288,18 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
                 content: SingleChildScrollView(
                   child: Column(
                     children: product.ingredients.map((ing) {
-                      final subText = "${ing.brutto} г, ${ing.price} грн";
+                      final subText = "${ing.brutto.toStringAsFixed(0)} г, ${ing.price.toStringAsFixed(0)} грн";
                       return CheckboxListTile(
                         value: true,
                         onChanged: null, // Чекбокси наразі неактивні
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(ing.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                            Text(subText, style: const TextStyle(color: Colors.grey)),
+                            Text(ing.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,),),
+                            Text(subText,
+                                style: const TextStyle(color: Colors.grey),),
                           ],
                         ),
                         controlAffinity: ListTileControlAffinity.leading,
@@ -332,8 +334,6 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
     );
   }
 }
-
-
 
 // Widget _buildProductDetails(Product product) {
 //   return Column(
