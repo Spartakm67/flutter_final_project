@@ -265,65 +265,6 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
           onPressed: () {
             showDialog(
               context: context,
-              // builder: (context) => AlertDialog(
-              //   title: RichText(
-              //     textAlign: TextAlign.start,
-              //     text: TextSpan(
-              //       children: [
-              //         TextSpan(
-              //           text: '${product.productName}\n',
-              //           style: TextStyles.categoriesText,
-              //         ),
-              //         WidgetSpan(
-              //           child: SizedBox(height: 12),
-              //         ),
-              //         const TextSpan(
-              //           text: 'виберіть від 1 варіанту',
-              //           style: TextStyle(
-              //             fontSize: 14,
-              //             color: Colors.grey,
-              //             fontStyle: FontStyle.italic,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              //   content: SingleChildScrollView(
-              //     child: Column(
-              //       children: product.ingredients.map((ing) {
-              //         final subText = "${ing.brutto.toStringAsFixed(0)} г, ${ing.price.toStringAsFixed(0)} грн";
-              //         return CheckboxListTile(
-              //           value: true,
-              //           onChanged: null, // Чекбокси наразі неактивні
-              //           title: Column(
-              //             crossAxisAlignment: CrossAxisAlignment.start,
-              //             children: [
-              //               Text(ing.name,
-              //                   style: const TextStyle(
-              //                       fontWeight: FontWeight.bold,),),
-              //               Text(subText,
-              //                   style: const TextStyle(color: Colors.grey),),
-              //             ],
-              //           ),
-              //           controlAffinity: ListTileControlAffinity.leading,
-              //         );
-              //       }).toList(),
-              //     ),
-              //   ),
-              //   actions: [
-              //     TextButton(
-              //       onPressed: () => Navigator.of(context).pop(),
-              //       child: const Text('Закрити'),
-              //     ),
-              //   ],
-              // ),
-
-              // builder: (_) => IngredientSelector(
-              //   productId: product.productId,
-              //   ingredients: product.ingredients,
-              //   cartStore: cartStore,
-              // ),
-
               builder: (context) => IngredientSelector(
                 product: product,
                 cartStore: cartStore,
@@ -350,3 +291,61 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
   }
 }
 
+// builder: (context) => AlertDialog(
+//   title: RichText(
+//     textAlign: TextAlign.start,
+//     text: TextSpan(
+//       children: [
+//         TextSpan(
+//           text: '${product.productName}\n',
+//           style: TextStyles.categoriesText,
+//         ),
+//         WidgetSpan(
+//           child: SizedBox(height: 12),
+//         ),
+//         const TextSpan(
+//           text: 'виберіть від 1 варіанту',
+//           style: TextStyle(
+//             fontSize: 14,
+//             color: Colors.grey,
+//             fontStyle: FontStyle.italic,
+//           ),
+//         ),
+//       ],
+//     ),
+//   ),
+//   content: SingleChildScrollView(
+//     child: Column(
+//       children: product.ingredients.map((ing) {
+//         final subText = "${ing.brutto.toStringAsFixed(0)} г, ${ing.price.toStringAsFixed(0)} грн";
+//         return CheckboxListTile(
+//           value: true,
+//           onChanged: null, // Чекбокси наразі неактивні
+//           title: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(ing.name,
+//                   style: const TextStyle(
+//                       fontWeight: FontWeight.bold,),),
+//               Text(subText,
+//                   style: const TextStyle(color: Colors.grey),),
+//             ],
+//           ),
+//           controlAffinity: ListTileControlAffinity.leading,
+//         );
+//       }).toList(),
+//     ),
+//   ),
+//   actions: [
+//     TextButton(
+//       onPressed: () => Navigator.of(context).pop(),
+//       child: const Text('Закрити'),
+//     ),
+//   ],
+// ),
+
+// builder: (_) => IngredientSelector(
+//   productId: product.productId,
+//   ingredients: product.ingredients,
+//   cartStore: cartStore,
+// ),

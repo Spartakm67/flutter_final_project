@@ -110,8 +110,17 @@ class _IngredientSelectorState extends State<IngredientSelector> {
                         icon: const Icon(Icons.remove),
                         onPressed: () {
                           cartStore.decrementIngredient(
-                              product.productId, ing.name, ing.price,);
-                          setState(() {});
+                            product.productId, ing.name, ing.price,
+                          );
+                          final newCount = cartStore.getIngredientCount(product.productId, ing.name);
+
+                          if (newCount == 0) {
+                            setState(() {
+                              _selectedIngredients[ing.name] = false;
+                            });
+                          } else {
+                            setState(() {});
+                          }
                         },
                       ),
                       Text('$count'),
@@ -154,6 +163,12 @@ class _IngredientSelectorState extends State<IngredientSelector> {
     );
   }
 }
+
+
+
+
+
+
 
 // class IngredientSelector extends StatelessWidget {
 //   final String productId;

@@ -262,6 +262,26 @@ abstract class CartStoreBase with Store {
     customPrices[productId] = total;
   }
 
+  // @action
+  // void applyCustomIngredients(Product product, double checkSum, Map<String, int> ingredients) {
+  //   // 1. Зберігаємо інгредієнти
+  //   ingredientCounters[product.productId] = ObservableMap.of(ingredients);
+  //
+  //   // 2. Зберігаємо кастомну ціну
+  //   customPrices[product.productId] = checkSum;
+  //
+  //   // 3. Оновлюємо модель продукту
+  //   product.price = checkSum;
+  //   product.counter = ingredients.values.fold(0, (sum, val) => sum + val);
+  //
+  //   // 4. Додаємо в кошик (якщо ще немає)
+  //   if (!isItemInCart(product.productId)) {
+  //     incrementCounter(product.productId);
+  //   }
+  //
+  //   saveCartToHive();
+  // }
+
 
   @action
   Future<void> completeOrder() async {
