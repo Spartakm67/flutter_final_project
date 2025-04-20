@@ -177,6 +177,13 @@ class TextStyles {
     fontWeight: FontWeight.bold,
   );
 
+  static final TextStyle ingredientsText = TextStyle(
+    fontSize: screenWidth >= smallScreenWidth ? 16 : (14 * screenMultiplier),
+    color: Colors.black87,
+    // fontStyle: FontStyle.italic,
+    fontWeight: FontWeight.bold,
+  );
+
   static Text styledText(String text, TextStyle style) {
     return Text(
       text,
