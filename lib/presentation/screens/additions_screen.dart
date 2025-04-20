@@ -203,50 +203,50 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
                   ),
                 ),
                 // ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  height: 50,
-                  child: Observer(
-                    builder: (_) {
-                      final counter =
-                          cartStore.counters[product.productId] ?? 0;
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Opacity(
-                            opacity: counter > 0 ? 1.0 : 0.0,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.remove),
-                                  onPressed: counter > 0
-                                      ? () => cartStore.decrementCounter(
-                                            product.productId,
-                                          )
-                                      : null,
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                  child: Text(
-                                    '$counter',
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          CustomIconButton(
-                            icon: Icons.add,
-                            onPressed: () =>
-                                cartStore.incrementCounter(product.productId),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                // const SizedBox(height: 8),
+                // SizedBox(
+                //   height: 50,
+                //   child: Observer(
+                //     builder: (_) {
+                //       final counter =
+                //           cartStore.counters[product.productId] ?? 0;
+                //       return Row(
+                //         mainAxisSize: MainAxisSize.min,
+                //         children: [
+                //           Opacity(
+                //             opacity: counter > 0 ? 1.0 : 0.0,
+                //             child: Row(
+                //               children: [
+                //                 IconButton(
+                //                   icon: const Icon(Icons.remove),
+                //                   onPressed: counter > 0
+                //                       ? () => cartStore.decrementCounter(
+                //                             product.productId,
+                //                           )
+                //                       : null,
+                //                 ),
+                //                 SizedBox(
+                //                   width: 20,
+                //                   child: Text(
+                //                     '$counter',
+                //                     textAlign: TextAlign.center,
+                //                     style: const TextStyle(fontSize: 16),
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //           const SizedBox(width: 4),
+                //           CustomIconButton(
+                //             icon: Icons.add,
+                //             onPressed: () =>
+                //                 cartStore.incrementCounter(product.productId),
+                //           ),
+                //         ],
+                //       );
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ],
@@ -269,17 +269,21 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
                 product: product,
                 cartStore: cartStore,
               ),
-
             );
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.amber,
+            foregroundColor: Colors.brown[900],
+          ),
           child: const Text('+ Вибрати'),
         ),
         const SizedBox(height: 8),
         RichText(
           text: TextSpan(
             children: [
-              TextSpan(text: 'Ціна: ', style: TextStyles.habitKeyText),
+              TextSpan(text: 'На суму: ', style: TextStyles.habitKeyText),
               TextSpan(
+                // text: '${(product.price / 100).toStringAsFixed(0)} грн',
                 text: '${(product.price / 100).toStringAsFixed(0)} грн',
                 style: TextStyles.authText,
               ),
@@ -291,61 +295,3 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
   }
 }
 
-// builder: (context) => AlertDialog(
-//   title: RichText(
-//     textAlign: TextAlign.start,
-//     text: TextSpan(
-//       children: [
-//         TextSpan(
-//           text: '${product.productName}\n',
-//           style: TextStyles.categoriesText,
-//         ),
-//         WidgetSpan(
-//           child: SizedBox(height: 12),
-//         ),
-//         const TextSpan(
-//           text: 'виберіть від 1 варіанту',
-//           style: TextStyle(
-//             fontSize: 14,
-//             color: Colors.grey,
-//             fontStyle: FontStyle.italic,
-//           ),
-//         ),
-//       ],
-//     ),
-//   ),
-//   content: SingleChildScrollView(
-//     child: Column(
-//       children: product.ingredients.map((ing) {
-//         final subText = "${ing.brutto.toStringAsFixed(0)} г, ${ing.price.toStringAsFixed(0)} грн";
-//         return CheckboxListTile(
-//           value: true,
-//           onChanged: null, // Чекбокси наразі неактивні
-//           title: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(ing.name,
-//                   style: const TextStyle(
-//                       fontWeight: FontWeight.bold,),),
-//               Text(subText,
-//                   style: const TextStyle(color: Colors.grey),),
-//             ],
-//           ),
-//           controlAffinity: ListTileControlAffinity.leading,
-//         );
-//       }).toList(),
-//     ),
-//   ),
-//   actions: [
-//     TextButton(
-//       onPressed: () => Navigator.of(context).pop(),
-//       child: const Text('Закрити'),
-//     ),
-//   ],
-// ),
-
-// builder: (_) => IngredientSelector(
-//   productId: product.productId,
-//   ingredients: product.ingredients,
-//   cartStore: cartStore,
-// ),

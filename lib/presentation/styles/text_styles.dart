@@ -181,6 +181,13 @@ class TextStyles {
     fontSize: screenWidth >= smallScreenWidth ? 16 : (14 * screenMultiplier),
     color: Colors.black87,
     // fontStyle: FontStyle.italic,
+    // fontWeight: FontWeight.bold,
+  );
+
+  static final TextStyle ingredientPriceText = TextStyle(
+    fontSize: screenWidth >= smallScreenWidth ? 14 : (14 * screenMultiplier),
+    color: Colors.blueAccent,
+    // fontStyle: FontStyle.italic,
     fontWeight: FontWeight.bold,
   );
 
