@@ -105,50 +105,50 @@ class ProductDetailScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Observer(
-                    builder: (_) {
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            final additionsCategory = categoriesStore.additionsCategory;
-                            // print('Категорія добавки:   id = ${additionsCategory.categoryId}, name = ${additionsCategory.categoryName}');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => AdditionsScreen(
-                                  // cartStore: cartStore,
-                                  productStore: productStore,
-                                  categoriesStore: categoriesStore,
-                                  categoryId: additionsCategory.categoryId,
-                                  categoryName: additionsCategory.categoryName,
-                                ),
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueAccent,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            textStyle: const TextStyle(fontSize: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: const Text(
-                              "Вибрати добавки",
-                              style: TextStyle(
-                                fontSize: 17, color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  // Observer(
+                  //   builder: (_) {
+                  //     return SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.6,
+                  //       child: ElevatedButton(
+                  //         onPressed: () {
+                  //           final additionsCategory = categoriesStore.additionsCategory;
+                  //           // print('Категорія добавки:   id = ${additionsCategory.categoryId}, name = ${additionsCategory.categoryName}');
+                  //           Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (_) => AdditionsScreen(
+                  //                 // cartStore: cartStore,
+                  //                 productStore: productStore,
+                  //                 categoriesStore: categoriesStore,
+                  //                 categoryId: additionsCategory.categoryId,
+                  //                 categoryName: additionsCategory.categoryName,
+                  //               ),
+                  //             ),
+                  //           );
+                  //         },
+                  //         style: ElevatedButton.styleFrom(
+                  //           backgroundColor: Colors.blueAccent,
+                  //           foregroundColor: Colors.white,
+                  //           padding: const EdgeInsets.symmetric(vertical: 12),
+                  //           textStyle: const TextStyle(fontSize: 16),
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(12),
+                  //           ),
+                  //         ),
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.symmetric(horizontal: 12),
+                  //           child: const Text(
+                  //             "Вибрати добавки",
+                  //             style: TextStyle(
+                  //               fontSize: 17, color: Colors.white,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   const SizedBox(height: 24),
                   Observer(
                     builder: (_) {

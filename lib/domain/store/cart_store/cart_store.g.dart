@@ -330,6 +330,17 @@ mixin _$CartStore on CartStoreBase, Store {
   }
 
   @override
+  void addSelectedIngredientsToCart(String productId) {
+    final _$actionInfo = _$CartStoreBaseActionController.startAction(
+        name: 'CartStoreBase.addSelectedIngredientsToCart');
+    try {
+      return super.addSelectedIngredientsToCart(productId);
+    } finally {
+      _$CartStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 counters: ${counters},

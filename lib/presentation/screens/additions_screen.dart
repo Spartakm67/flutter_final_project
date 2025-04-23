@@ -6,7 +6,6 @@ import 'package:flutter_final_project/domain/store/categories_store/categories_s
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/presentation/widgets/loading_image_indicator.dart';
 import 'package:flutter_final_project/presentation/widgets/scroll_to_top_button.dart';
-import 'package:flutter_final_project/presentation/widgets/custom_add_icon_button.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/burger_widget.dart';
@@ -19,7 +18,6 @@ import 'package:provider/provider.dart';
 import '../../data/models/poster/product.dart';
 
 class AdditionsScreen extends StatefulWidget {
-  // final CartStore cartStore;
   final CategoriesStore categoriesStore;
   final ProductStore productStore;
   final String categoryId;
@@ -27,7 +25,6 @@ class AdditionsScreen extends StatefulWidget {
 
   const AdditionsScreen({
     super.key,
-    // required this.cartStore,
     required this.productStore,
     required this.categoriesStore,
     required this.categoryId,
@@ -202,51 +199,7 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
                     ),
                   ),
                 ),
-                // ),
-                // const SizedBox(height: 8),
-                // SizedBox(
-                //   height: 50,
-                //   child: Observer(
-                //     builder: (_) {
-                //       final counter =
-                //           cartStore.counters[product.productId] ?? 0;
-                //       return Row(
-                //         mainAxisSize: MainAxisSize.min,
-                //         children: [
-                //           Opacity(
-                //             opacity: counter > 0 ? 1.0 : 0.0,
-                //             child: Row(
-                //               children: [
-                //                 IconButton(
-                //                   icon: const Icon(Icons.remove),
-                //                   onPressed: counter > 0
-                //                       ? () => cartStore.decrementCounter(
-                //                             product.productId,
-                //                           )
-                //                       : null,
-                //                 ),
-                //                 SizedBox(
-                //                   width: 20,
-                //                   child: Text(
-                //                     '$counter',
-                //                     textAlign: TextAlign.center,
-                //                     style: const TextStyle(fontSize: 16),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //           const SizedBox(width: 4),
-                //           CustomIconButton(
-                //             icon: Icons.add,
-                //             onPressed: () =>
-                //                 cartStore.incrementCounter(product.productId),
-                //           ),
-                //         ],
-                //       );
-                //     },
-                //   ),
-                // ),
+
               ],
             ),
           ],
@@ -284,7 +237,7 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
               TextSpan(text: 'На суму: ', style: TextStyles.habitKeyText),
               TextSpan(
                 // text: '${(product.price / 100).toStringAsFixed(0)} грн',
-                text: '${(product.price / 100).toStringAsFixed(0)} грн',
+                text: '${(product.price).toStringAsFixed(0)} грн',
                 style: TextStyles.authText,
               ),
             ],
@@ -295,3 +248,52 @@ class _AdditionsScreenState extends State<AdditionsScreen> {
   }
 }
 
+
+
+
+
+// ),
+// const SizedBox(height: 8),
+// SizedBox(
+//   height: 50,
+//   child: Observer(
+//     builder: (_) {
+//       final counter =
+//           cartStore.counters[product.productId] ?? 0;
+//       return Row(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           Opacity(
+//             opacity: counter > 0 ? 1.0 : 0.0,
+//             child: Row(
+//               children: [
+//                 IconButton(
+//                   icon: const Icon(Icons.remove),
+//                   onPressed: counter > 0
+//                       ? () => cartStore.decrementCounter(
+//                             product.productId,
+//                           )
+//                       : null,
+//                 ),
+//                 SizedBox(
+//                   width: 20,
+//                   child: Text(
+//                     '$counter',
+//                     textAlign: TextAlign.center,
+//                     style: const TextStyle(fontSize: 16),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           const SizedBox(width: 4),
+//           CustomIconButton(
+//             icon: Icons.add,
+//             onPressed: () =>
+//                 cartStore.incrementCounter(product.productId),
+//           ),
+//         ],
+//       );
+//     },
+//   ),
+// ),

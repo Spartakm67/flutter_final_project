@@ -161,13 +161,38 @@ class _IngredientSelectorState extends State<IngredientSelector> {
                       );
                     },
                   ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     final checkSum = cartStore.getCheckSumForProduct(product.productId);
+                  //     product.price = checkSum; // 🟢 оновлюємо ціну прямо в моделі продукту
+                  //     print("product.price: ${product.price}");
+                  //     print("Додавання інгредієнтів: ${checkSum.toStringAsFixed(2)} грн");
+                  //     cartStore.addSelectedIngredientsToCart(product.productId); // додає "інгредієнтний продукт"
+                  //     Navigator.of(context).pop(); // закриває діалог
+                  //   },
+                  //   child: Text(
+                  //     'OK',
+                  //     style: TextStyles.buttonText,
+                  //   ),
+                  // ),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      final checkSum = cartStore.getCheckSumForProduct(product.productId);
+                      product.price = checkSum; // 🟢 оновлюємо ціну в продукті
+                      cartStore.customPrices[product.productId] = checkSum; // 🟢 синхронізуємо з CartStore
+                      print("product.price: ${product.price}");
+                      print("Додавання інгредієнтів: ${checkSum.toStringAsFixed(2)} грн");
+
+                      cartStore.addSelectedIngredientsToCart(product.productId); // ✅ тут уже буде правильна ціна
+                      // cartStore.addSelectedIngredientsToCart(product);
+                      Navigator.of(context).pop();
+                    },
                     child: Text(
                       'OK',
-                    style: TextStyles.buttonText,
+                      style: TextStyles.buttonText,
                     ),
                   ),
+
                 ],
               ),
             ],

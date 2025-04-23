@@ -260,24 +260,103 @@ abstract class CartStoreBase with Store {
     ) ?? 0.0;
 
     customPrices[productId] = total;
+    product.price = total;
+    print("product.price: ${product.price}");
+  }
+
+  @action
+  void addSelectedIngredientsToCart(String productId) {
+    final product = _getProduct(productId);
+    final countersMap = ingredientCounters[productId];
+
+    if (countersMap == null || countersMap.isEmpty) {
+      print("Немає обраних інгредієнтів для продукту $productId");
+      return;
+    }
+
+    final selectedEntries = countersMap.entries.where((e) => e.value > 0).toList();
+
+    if (selectedEntries.isEmpty) {
+      print("Усі значення інгредієнтів — 0");
+      return;
+    }
+
+    final nameParts = selectedEntries.map((entry) {
+      final ingName = entry.key;
+      final count = entry.value;
+      return '🧀 $ingName (до ${product.productName}) ×$count';
+    });
+
+    final combinedName = nameParts.join(', ');
+    final additionsProductId = '${productId}_additions';
+
+    print("🛑 Перед getCheckSum: product.price = ${product.price}");
+
+    final totalPrice = getCheckSumForProduct(productId);
+
+    print("totalPrice: $totalPrice");
+
+    final additionsProduct = ProductCounterHive(
+      productId: additionsProductId,
+      productName: combinedName,
+      price: totalPrice,
+      photo: '', // або якась заглушка
+    );
+
+    print("✅ Додаємо інгредієнтний продукт до кошика: $combinedName за $totalPrice");
+
+    cartItems.removeWhere((item) => item.productId == additionsProductId);
+    cartItems.add(additionsProduct);
+    counters[additionsProductId] = 1;
+
+    ingredientCounters.remove(productId);
+    customPrices.remove(productId);
+
+    saveCartToHive();
   }
 
   // @action
-  // void applyCustomIngredients(Product product, double checkSum, Map<String, int> ingredients) {
-  //   // 1. Зберігаємо інгредієнти
-  //   ingredientCounters[product.productId] = ObservableMap.of(ingredients);
+  // void addSelectedIngredientsToCart(Product product) {
+  //   final productId = product.productId;
+  //   final countersMap = ingredientCounters[productId];
   //
-  //   // 2. Зберігаємо кастомну ціну
-  //   customPrices[product.productId] = checkSum;
-  //
-  //   // 3. Оновлюємо модель продукту
-  //   product.price = checkSum;
-  //   product.counter = ingredients.values.fold(0, (sum, val) => sum + val);
-  //
-  //   // 4. Додаємо в кошик (якщо ще немає)
-  //   if (!isItemInCart(product.productId)) {
-  //     incrementCounter(product.productId);
+  //   if (countersMap == null || countersMap.isEmpty) {
+  //     print("Немає обраних інгредієнтів для продукту $productId");
+  //     return;
   //   }
+  //
+  //   final selectedEntries = countersMap.entries.where((e) => e.value > 0).toList();
+  //
+  //   if (selectedEntries.isEmpty) {
+  //     print("Усі значення інгредієнтів — 0");
+  //     return;
+  //   }
+  //
+  //   final nameParts = selectedEntries.map((entry) {
+  //     final ingName = entry.key;
+  //     final count = entry.value;
+  //     return '🧀 $ingName (до ${product.productName}) ×$count';
+  //   });
+  //
+  //   final combinedName = nameParts.join(', ');
+  //   final additionsProductId = '${productId}_additions';
+  //   final totalPrice = product.price; // 🟢 БЕРЕМО ВЖЕ ГОТОВУ ЦІНУ
+  //
+  //   final additionsProduct = ProductCounterHive(
+  //     productId: additionsProductId,
+  //     productName: combinedName,
+  //     price: totalPrice,
+  //     photo: '', // або щось із product.photo
+  //   );
+  //
+  //   print("✅ Додаємо інгредієнтний продукт до кошика: $combinedName за $totalPrice");
+  //
+  //   cartItems.removeWhere((item) => item.productId == additionsProductId);
+  //   cartItems.add(additionsProduct);
+  //   counters[additionsProductId] = 1;
+  //
+  //   ingredientCounters.remove(productId);
+  //   customPrices.remove(productId);
   //
   //   saveCartToHive();
   // }
@@ -290,3 +369,6 @@ abstract class CartStoreBase with Store {
     // Інші дії, наприклад, збереження інформації про замовлення
   }
 }
+
+
+
