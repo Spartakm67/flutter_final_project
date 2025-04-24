@@ -170,8 +170,7 @@ abstract class AuthStoreBase with Store {
         errorMessage = 'Невідома помилка: ${e.toString()}';
         showErrorMessage?.call(errorMessage!);
       }
-      // errorMessage = ' ${e.toString()}';
-      // showErrorMessage?.call(errorMessage!);
+
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;

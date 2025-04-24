@@ -139,7 +139,9 @@ class _OrderContainerState extends State<OrderContainer> {
                             ),
                             onPressed: _authRedirection,
                           ),
-                          const SizedBox(width: 8,),
+                          const SizedBox(
+                            width: 8,
+                          ),
                           Expanded(
                             child: Text(
                               'Авторизуйтеся для оформлення замовлення',
@@ -187,9 +189,9 @@ class _OrderContainerState extends State<OrderContainer> {
                         onPressed: _isLoading
                             ? null
                             : () async {
-                          if (!mounted) return;
-                          await _handleOrder();
-                        },
+                                if (!mounted) return;
+                                await _handleOrder();
+                              },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                             vertical: 12,
@@ -202,29 +204,29 @@ class _OrderContainerState extends State<OrderContainer> {
                         ),
                         child: _isLoading
                             ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Відправка...',
-                              style: TextStyles.cartBarThinText,
-                            ),
-                          ],
-                        )
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Відправка...',
+                                    style: TextStyles.cartBarThinText,
+                                  ),
+                                ],
+                              )
                             : Observer(
-                          builder: (_) => Text(
-                            'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
-                            style: TextStyles.cartBarThinText,
-                          ),
-                        ),
+                                builder: (_) => Text(
+                                  'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
+                                  style: TextStyles.cartBarThinText,
+                                ),
+                              ),
                       ),
                     ),
                   ],
@@ -246,52 +248,49 @@ class _OrderContainerState extends State<OrderContainer> {
   }) async {
     orderStore.validatePhoneNumber(orderModel.phone);
 
-        if (!orderStore.isPhoneNumberValid) {
-          throw Exception('Невірний формат номера телефону');
-        }
+    if (!orderStore.isPhoneNumberValid) {
+      throw Exception('Невірний формат номера телефону');
+    }
 
-        // if (orderModel.name == null || orderModel.name.trim().isEmpty) {
-        //   throw Exception('Ім’я не може бути порожнім');
-        // }
-        if (orderModel.name.length < 2) {
-          throw Exception('Ім’я повинно містити принаймні 2 символи.');
-        }
+    if (orderModel.name.length < 2) {
+      throw Exception('Ім’я повинно містити принаймні 2 символи.');
+    }
 
-        final nameRegExp = RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ\s]+$');
-        if (!nameRegExp.hasMatch(orderModel.name)) {
-        throw Exception(
-        'Ім’я може містити лише літери та пробіли.',);
-        }
+    final nameRegExp = RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ\s]+$');
+    if (!nameRegExp.hasMatch(orderModel.name)) {
+      throw Exception(
+        'Ім’я може містити лише літери та пробіли.',
+      );
+    }
 
-        if (isDelivery && (orderModel.address?.trim().isEmpty ?? true)) {
-          throw Exception('Адреса для доставки не може бути порожньою');
-        }
-        if (!isDelivery && (orderModel.point.trim().isEmpty)) {
-        throw Exception('Будь-ласка виберіть адресу для самовивозу');
-        }
-        if (orderModel.address!.trim().length < 5) {
-          throw Exception('Адреса повинна містити принаймні 5 символів.');
-        }
-        if (orderModel.address!.trim().length > 100) {
-          throw Exception('Адреса не може перевищувати 100 символів.');
-        }
+    if (isDelivery && (orderModel.address?.trim().isEmpty ?? true)) {
+      throw Exception('Адреса для доставки не може бути порожньою');
+    }
+    if (!isDelivery && (orderModel.point.trim().isEmpty)) {
+      throw Exception('Будь-ласка виберіть адресу для самовивозу');
+    }
+    if (orderModel.address!.trim().length < 5) {
+      throw Exception('Адреса повинна містити принаймні 5 символів.');
+    }
+    if (orderModel.address!.trim().length > 100) {
+      throw Exception('Адреса не може перевищувати 100 символів.');
+    }
 
-        if (orderStore.selectedTime.hour < DateTime.now().hour ||
-            (orderStore.selectedTime.hour == DateTime.now().hour &&
-                orderStore.selectedTime.minute <= DateTime.now().minute)) {
-          throw Exception('Час замовлення повинен бути більшим за поточний.');
-        }
+    if (orderStore.selectedTime.hour < DateTime.now().hour ||
+        (orderStore.selectedTime.hour == DateTime.now().hour &&
+            orderStore.selectedTime.minute <= DateTime.now().minute)) {
+      throw Exception('Час замовлення повинен бути більшим за поточний.');
+    }
 
-        final addressRegExp =
-        RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s,.\-/\\]+$');
-        if (!addressRegExp.hasMatch(orderModel.address!)) {
-          throw Exception(
-              'Адреса може містити лише літери, цифри, пробіли, коми, крапки, дефіси, а також "/" або "\\".',);
-        }
+    final addressRegExp = RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s,.\-/\\]+$');
+    if (!addressRegExp.hasMatch(orderModel.address!)) {
+      throw Exception(
+        'Адреса може містити лише літери, цифри, пробіли, коми, крапки, дефіси, а також "/" або "\\".',
+      );
+    }
 
-        final products = counters.entries
-        .where((entry) => entry.value > 0)
-        .map((entry) {
+    final products =
+        counters.entries.where((entry) => entry.value > 0).map((entry) {
       return Product(
         productId: entry.key,
         count: entry.value,
@@ -301,21 +300,23 @@ class _OrderContainerState extends State<OrderContainer> {
     if (products.isEmpty) {
       throw Exception('Замовлення повинно містити хоча б один продукт');
     }
-        final serviceMode = isDelivery ? 3 : 2;
-        final deliveryPrice = isDelivery ? cartStore.deliveryPrice.toInt()*100 : 0;
+    final serviceMode = isDelivery ? 3 : 2;
+    final deliveryPrice =
+        isDelivery ? cartStore.deliveryPrice.toInt() * 100 : 0;
 
-        final now = DateTime.now();
-        final isOutOfWorkingHours = now.hour >= 20 && now.hour < 24;
-        final deliveryDate = isOutOfWorkingHours ? now.add(Duration(days: 1)) : now;
+    final now = DateTime.now();
+    final isOutOfWorkingHours = now.hour >= 20 && now.hour < 24;
+    final deliveryDate = isOutOfWorkingHours ? now.add(Duration(days: 1)) : now;
 
     final deliveryDateTime = DateTime(
-          deliveryDate.year,
-          deliveryDate.month,
-          deliveryDate.day,
-          selectedTime.hour,
-          selectedTime.minute,
-        );
-        final deliveryTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(deliveryDateTime);
+      deliveryDate.year,
+      deliveryDate.month,
+      deliveryDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+    final deliveryTime =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(deliveryDateTime);
 
     return IncomingOrder(
       spotId: 1,
@@ -332,7 +333,7 @@ class _OrderContainerState extends State<OrderContainer> {
   }
 
   Future<void> _handleOrder() async {
-    if (_isLoading) return; // Уникаємо повторних натискань
+    if (_isLoading) return;
 
     setState(() {
       _isLoading = true;
@@ -360,7 +361,7 @@ class _OrderContainerState extends State<OrderContainer> {
       final comment = cartStore.comment;
 
       if (orderModel == null || counters.isEmpty) {
-          CustomSnackBar.show(
+        CustomSnackBar.show(
           context: context,
           message: 'Замовлення відсутнє!',
           backgroundColor: Colors.orangeAccent,
@@ -378,13 +379,9 @@ class _OrderContainerState extends State<OrderContainer> {
         selectedTime: orderStore.selectedTime,
       );
 
-      // final jsonOrder = incomingOrder.toJson();
-      // print('Отправленный запрос: $jsonOrder');
-
       final response = await OrderApiService.sendOrder(incomingOrder);
 
       final Map<String, dynamic>? responseData = response['response'];
-      // print('Респонс сервер: $responseData');
       final orderId = responseData?['incoming_order_id']?.toString();
       final statusId = responseData?['status'];
       final checkId = responseData?['transaction_id']?.toString();
@@ -395,7 +392,8 @@ class _OrderContainerState extends State<OrderContainer> {
         if (statusId == null) {
           CustomSnackBar.show(
             context: context,
-            message: 'Замовлення не відправлене, ID статусу замовлення не отримано!',
+            message:
+                'Замовлення не відправлене, ID статусу замовлення не отримано!',
             backgroundColor: Colors.orangeAccent,
             position: SnackBarPosition.top,
             duration: const Duration(seconds: 5),

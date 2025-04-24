@@ -86,7 +86,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                 child: Observer(
                   builder: (_) => Column(
                     children: [
-                       Text(
+                      Text(
                         'МАЙСТЕРНЯ МЛИНЦІВ',
                         style: TextStyles.cartBottomText,
                       ),
@@ -118,7 +118,9 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 14,),
+                      const SizedBox(
+                        height: 14,
+                      ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -129,7 +131,9 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                           textAlign: TextAlign.left,
                         ),
                       ),
-                      const SizedBox(height: 14,),
+                      const SizedBox(
+                        height: 14,
+                      ),
                       if (authStore.isLoggedIn)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,

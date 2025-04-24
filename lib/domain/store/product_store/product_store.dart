@@ -37,7 +37,7 @@ abstract class ProductStoreBase with Store {
       selectedCategoryId = categoryProductId;
 
       final fetchedProducts =
-      await _apiService.getProductsByCategory(categoryProductId);
+          await _apiService.getProductsByCategory(categoryProductId);
 
       products = ObservableList.of(fetchedProducts);
       cachedProducts[categoryProductId] = fetchedProducts;
@@ -45,13 +45,10 @@ abstract class ProductStoreBase with Store {
         products = ObservableList.of(cachedProducts[categoryProductId]!);
       } else {
         final fetchedProducts =
-        await _apiService.getProductsByCategory(categoryProductId);
+            await _apiService.getProductsByCategory(categoryProductId);
         products = ObservableList.of(fetchedProducts);
-        cachedProducts[categoryProductId] = fetchedProducts; // Кешування
+        cachedProducts[categoryProductId] = fetchedProducts;
       }
-      // final fetchedProducts =
-      //     await _apiService.getProductsByCategory(categoryProductId);
-      // products = ObservableList.of(fetchedProducts);
     } catch (e) {
       error = 'Помилка завантаження продуктів: $e';
     } finally {
@@ -69,7 +66,6 @@ abstract class ProductStoreBase with Store {
     }
   }
 
-
   @action
   Future<void> loadProducts({String? categoryProductId}) async {
     isLoading = true;
@@ -81,7 +77,6 @@ abstract class ProductStoreBase with Store {
       try {
         final allProducts = await _apiService.getProductsByCategory('');
         products = ObservableList.of(allProducts);
-        // print('LoadProducts ............$products');
       } catch (e) {
         error = 'Помилка завантаження всіх продуктів: $e';
       }

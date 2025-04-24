@@ -43,22 +43,16 @@ abstract class CartStoreBase with Store {
   int get totalItems => counters.values.fold(0, (prev, next) => prev + next);
 
   @observable
-  ObservableMap<String, ObservableMap<String, int>> ingredientCounters = ObservableMap();
-
-  @observable
   ObservableMap<String, double> customPrices = ObservableMap();
-
 
   @action
   Future<void> initHive() async {
-
     hiveBox = await Hive.openBox<Map>('cart');
     commentsBox = await Hive.openBox<String>('comments');
     productHiveBox = await Hive.openBox<ProductCounterHive>('cartProducts');
     lastOrderBox = await Hive.openBox<Map>('last_order');
     loadCartFromHive();
     loadCommentFromHive();
-    // await lastOrderBox.clear();
   }
 
   @action
@@ -213,162 +207,9 @@ abstract class CartStoreBase with Store {
   }
 
   @action
-  void incrementIngredient(String productId, String ingredientId, double price) {
-    ingredientCounters.putIfAbsent(productId, () => ObservableMap());
-    final count = ingredientCounters[productId]![ingredientId] ?? 0;
-    ingredientCounters[productId]![ingredientId] = count + 1;
-    _recalculateCheckSum(productId);
-  }
-
-  @action
-  void decrementIngredient(String productId, String ingredientId, double price) {
-    if (!ingredientCounters.containsKey(productId)) return;
-    final count = ingredientCounters[productId]![ingredientId] ?? 0;
-    if (count > 0) {
-      ingredientCounters[productId]![ingredientId] = count - 1;
-      _recalculateCheckSum(productId);
-    }
-  }
-
-  int getIngredientCount(String productId, String ingredientId) {
-    return ingredientCounters[productId]?[ingredientId] ?? 0;
-  }
-
-  double getCheckSumForProduct(String productId) {
-    return customPrices[productId] ?? 0.0;
-  }
-
-  void _recalculateCheckSum(String productId) {
-    final product = _getProduct(productId);
-    final ingredients = product.ingredients;
-
-    final total = ingredientCounters[productId]?.entries.fold<double>(
-      0.0,
-          (sum, entry) {
-        final ing = ingredients.firstWhere(
-              (i) => i.name == entry.key,
-          orElse: () => Ingredient(
-            name: '',
-            netto: 0.0,
-            brutto: 0.0,
-            price: 0.0,
-            subIngredients: [],
-          ),
-        );
-        return sum + (entry.value * ing.price);
-      },
-    ) ?? 0.0;
-
-    customPrices[productId] = total;
-    product.price = total;
-    print("product.price: ${product.price}");
-  }
-
-  @action
-  void addSelectedIngredientsToCart(String productId) {
-    final product = _getProduct(productId);
-    final countersMap = ingredientCounters[productId];
-
-    if (countersMap == null || countersMap.isEmpty) {
-      print("Немає обраних інгредієнтів для продукту $productId");
-      return;
-    }
-
-    final selectedEntries = countersMap.entries.where((e) => e.value > 0).toList();
-
-    if (selectedEntries.isEmpty) {
-      print("Усі значення інгредієнтів — 0");
-      return;
-    }
-
-    final nameParts = selectedEntries.map((entry) {
-      final ingName = entry.key;
-      final count = entry.value;
-      return '🧀 $ingName (до ${product.productName}) ×$count';
-    });
-
-    final combinedName = nameParts.join(', ');
-    final additionsProductId = '${productId}_additions';
-
-    print("🛑 Перед getCheckSum: product.price = ${product.price}");
-
-    final totalPrice = getCheckSumForProduct(productId);
-
-    print("totalPrice: $totalPrice");
-
-    final additionsProduct = ProductCounterHive(
-      productId: additionsProductId,
-      productName: combinedName,
-      price: totalPrice,
-      photo: '', // або якась заглушка
-    );
-
-    print("✅ Додаємо інгредієнтний продукт до кошика: $combinedName за $totalPrice");
-
-    cartItems.removeWhere((item) => item.productId == additionsProductId);
-    cartItems.add(additionsProduct);
-    counters[additionsProductId] = 1;
-
-    ingredientCounters.remove(productId);
-    customPrices.remove(productId);
-
-    saveCartToHive();
-  }
-
-  // @action
-  // void addSelectedIngredientsToCart(Product product) {
-  //   final productId = product.productId;
-  //   final countersMap = ingredientCounters[productId];
-  //
-  //   if (countersMap == null || countersMap.isEmpty) {
-  //     print("Немає обраних інгредієнтів для продукту $productId");
-  //     return;
-  //   }
-  //
-  //   final selectedEntries = countersMap.entries.where((e) => e.value > 0).toList();
-  //
-  //   if (selectedEntries.isEmpty) {
-  //     print("Усі значення інгредієнтів — 0");
-  //     return;
-  //   }
-  //
-  //   final nameParts = selectedEntries.map((entry) {
-  //     final ingName = entry.key;
-  //     final count = entry.value;
-  //     return '🧀 $ingName (до ${product.productName}) ×$count';
-  //   });
-  //
-  //   final combinedName = nameParts.join(', ');
-  //   final additionsProductId = '${productId}_additions';
-  //   final totalPrice = product.price; // 🟢 БЕРЕМО ВЖЕ ГОТОВУ ЦІНУ
-  //
-  //   final additionsProduct = ProductCounterHive(
-  //     productId: additionsProductId,
-  //     productName: combinedName,
-  //     price: totalPrice,
-  //     photo: '', // або щось із product.photo
-  //   );
-  //
-  //   print("✅ Додаємо інгредієнтний продукт до кошика: $combinedName за $totalPrice");
-  //
-  //   cartItems.removeWhere((item) => item.productId == additionsProductId);
-  //   cartItems.add(additionsProduct);
-  //   counters[additionsProductId] = 1;
-  //
-  //   ingredientCounters.remove(productId);
-  //   customPrices.remove(productId);
-  //
-  //   saveCartToHive();
-  // }
-
-
-  @action
   Future<void> completeOrder() async {
     // Тут можна виконати дії після виконання замовлення
-    await resetCart();  // Очистити корзину та коментарі
+    await resetCart(); // Очистити корзину та коментарі
     // Інші дії, наприклад, збереження інформації про замовлення
   }
 }
-
-
-

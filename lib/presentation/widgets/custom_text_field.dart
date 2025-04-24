@@ -40,24 +40,23 @@ class CustomTextField extends StatelessWidget {
         filled: true,
         fillColor: Colors.grey[200],
         floatingLabelBehavior: FloatingLabelBehavior.never,
-        prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: Colors.grey) : null,
+        prefixIcon:
+            prefixIcon != null ? Icon(prefixIcon, color: Colors.grey) : null,
         suffixIcon: suffixIcon != null
             ? IconButton(
-          icon: Icon(suffixIcon, color: Colors.grey),
-          onPressed: onSuffixIconPressed,
-        )
+                icon: Icon(suffixIcon, color: Colors.grey),
+                onPressed: onSuffixIconPressed,
+              )
             : null,
       ),
       style: const TextStyle(
         fontSize: 16,
         color: Colors.black,
       ),
-      // maxLines: null,
-      // keyboardType: TextInputType.multiline,
-      // textInputAction: TextInputAction.done,
-      maxLines: Platform.isIOS ? 1 : null, // iOS – один рядок, Android – динамічне збільшення
+      maxLines: Platform.isIOS ? 1 : null,
       keyboardType: TextInputType.multiline,
-      textInputAction: Platform.isIOS ? TextInputAction.done : TextInputAction.newline, // iOS – закриває клавіатуру, Android – додає новий рядок
+      textInputAction:
+          Platform.isIOS ? TextInputAction.done : TextInputAction.newline,
       onChanged: onChanged,
     );
   }

@@ -94,7 +94,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                           iconSize: 32,
                           onPressed: _closeWidget,
                         ),
-                         Text(
+                        Text(
                           'Статус замовлення',
                           style: TextStyles.oderAppBarText,
                         ),
@@ -158,12 +158,6 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                       style: TextStyles.cartBottomText,
                                     ),
                                     const SizedBox(height: 10),
-                                    // Text(
-                                    //   widget.orderId != null
-                                    //       ? 'OrderId №: ${widget.orderId}'
-                                    //       : 'OrderId відсутній',
-                                    //   style: TextStyles.cartBottomText,
-                                    // ),
                                   ],
                                 )
                               : Column(
@@ -179,7 +173,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                       widget.orderId != null
                                           ? 'OrderId: ${widget.orderId}'
                                           : 'Замовлення не прийняте, будь-ласка змініть час'
-                                          ' доставки/самовивозу, або спробуйте завтра після 00:00',
+                                              ' доставки/самовивозу, або спробуйте завтра після 00:00',
                                       style: TextStyles.cartBottomText,
                                       softWrap: true,
                                       overflow: TextOverflow.visible,
@@ -250,5 +244,3 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
     );
   }
 }
-
-

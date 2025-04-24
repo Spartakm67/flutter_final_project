@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_final_project/data/models/poster/product.dart';
 import 'package:flutter_final_project/services/firebase_functions/firebase_config_service.dart';
 
-
 String formatIngredients(Ingredient ingredient) {
   String subIng = ingredient.subIngredients.isNotEmpty
       ? " (${ingredient.subIngredients.map(formatIngredients).join(', ')})"
@@ -25,7 +24,6 @@ class ProductApiServices {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        // print('Response body: ${response.body}');
         final data = jsonDecode(response.body);
         final List<dynamic> productsJson = data['response'] ?? [];
 
@@ -37,25 +35,23 @@ class ProductApiServices {
 
         final filteredProducts = productsJson
             .map((json) => Product.fromJson(json as Map<String, dynamic>))
-            .where((product) =>
-        !excludedWords.any((word) =>
-            product.productName.toLowerCase().contains(word.toLowerCase()),),)
+            .where(
+              (product) => !excludedWords.any(
+                (word) => product.productName
+                    .toLowerCase()
+                    .contains(word.toLowerCase()),
+              ),
+            )
             .toList();
 
         return filteredProducts;
       } else {
         throw Exception(
-            'Failed to load products: ${response.statusCode} - ${response.reasonPhrase}',);
+          'Failed to load products: ${response.statusCode} - ${response.reasonPhrase}',
+        );
       }
     } catch (e) {
       rethrow;
     }
   }
 }
-
-
-// for (var product in filteredProducts) {
-// print("${product.productName}: ${product.ingredients.map(formatIngredients).join(', ')}");
-// }
-
-// print('Error fetching products: $e');

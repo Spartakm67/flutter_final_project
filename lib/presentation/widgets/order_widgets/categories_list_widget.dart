@@ -30,10 +30,6 @@ class CategoriesListWidget extends StatelessWidget {
           );
         }
 
-        // if (categoriesStore.categories.isEmpty) {
-        //   return const Center(child: Text('Немає категорій'));
-        // }
-
         final visibleCategories = categoriesStore.categories
             .where((c) => c.categoryName != 'Добавки')
             .toList();
@@ -45,10 +41,8 @@ class CategoriesListWidget extends StatelessWidget {
         return ListView.builder(
           controller: scrollController,
           padding: const EdgeInsets.all(8.0),
-          // itemCount: categoriesStore.categories.length,
           itemCount: visibleCategories.length,
           itemBuilder: (context, index) {
-            // final category = categoriesStore.categories[index];
             final category = visibleCategories[index];
             return Card(
               margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -70,32 +64,32 @@ class CategoriesListWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.0),
                         child: category.categoryPhoto != null
                             ? Image.network(
-                          'https://joinposter.com${category.categoryPhoto}',
-                          width: 75,
-                          height: 75,
-                          fit: BoxFit.cover,
-                          loadingBuilder:
-                              (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
+                                'https://joinposter.com${category.categoryPhoto}',
                                 width: 75,
                                 height: 75,
-                                color: Colors.grey,
-                              ),
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.broken_image, size: 75),
-                        )
+                                fit: BoxFit.cover,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      width: 75,
+                                      height: 75,
+                                      color: Colors.grey,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.broken_image, size: 75),
+                              )
                             : Image.asset(
-                          'assets/images/default_image.webp',
-                          width: 75,
-                          height: 75,
-                          fit: BoxFit.cover,
-                        ),
+                                'assets/images/default_image.webp',
+                                width: 75,
+                                height: 75,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       const SizedBox(width: 30.0),
                       Expanded(

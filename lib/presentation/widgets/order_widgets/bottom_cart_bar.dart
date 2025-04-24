@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_final_project/services/get_item_text.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
-
 class BottomCartBar extends StatelessWidget {
   final int totalItems;
   final double totalPrice;
@@ -22,20 +21,20 @@ class BottomCartBar extends StatelessWidget {
       curve: Curves.easeInOut,
       child: totalItems > 0
           ? Container(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-        color: const Color(0xB3000000),
-        alignment: Alignment.center,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return _ResponsiveCartRow(
-              onOrder: onOrder,
-              totalItems: totalItems,
-              totalPrice: totalPrice,
-              maxWidth: constraints.maxWidth,
-            );
-          },
-        ),
-      )
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              color: const Color(0xB3000000),
+              alignment: Alignment.center,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return _ResponsiveCartRow(
+                    onOrder: onOrder,
+                    totalItems: totalItems,
+                    totalPrice: totalPrice,
+                    maxWidth: constraints.maxWidth,
+                  );
+                },
+              ),
+            )
           : const SizedBox.shrink(),
     );
   }
@@ -58,10 +57,9 @@ class _ResponsiveCartRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final double buttonMinWidth = 180; // Мінімальна ширина кнопки
-        final double padding = 32; // Запас для відступів
+        final double buttonMinWidth = 180;
+        final double padding = 32;
 
-        // Визначаємо фактичні розміри текстових елементів
         final double textWidth = _getTextWidth(
           "$totalItems ${GetItemText.getItemText(totalItems)}",
           TextStyles.cartBarBtnText,
@@ -72,38 +70,36 @@ class _ResponsiveCartRow extends StatelessWidget {
           TextStyles.cartBarBtnText,
         );
 
-        // Загальна ширина всіх елементів
-        final double totalContentWidth = textWidth + priceWidth + buttonMinWidth + padding;
-
-        // Використовуємо Column, якщо не вміщається в один рядок
+        final double totalContentWidth =
+            textWidth + priceWidth + buttonMinWidth + padding;
         final bool useColumn = totalContentWidth > maxWidth;
 
         return useColumn
             ? Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(child: _buildCartInfo()), // Гнучка адаптація
-                const SizedBox(width: 8),
-                _buildPriceText(),
-              ],
-            ),
-            const SizedBox(height: 8),
-            _buildOrderButton(),
-          ],
-        )
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: _buildCartInfo()),
+                      const SizedBox(width: 8),
+                      _buildPriceText(),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  _buildOrderButton(),
+                ],
+              )
             : Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(child: _buildCartInfo()),
-            const SizedBox(width: 8),
-            _buildPriceText(),
-            const SizedBox(width: 8),
-            Flexible(child: _buildOrderButton()), // Запобігає переповненню
-          ],
-        );
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(child: _buildCartInfo()),
+                  const SizedBox(width: 8),
+                  _buildPriceText(),
+                  const SizedBox(width: 8),
+                  Flexible(child: _buildOrderButton()),
+                ],
+              );
       },
     );
   }
@@ -119,7 +115,7 @@ class _ResponsiveCartRow extends StatelessWidget {
           child: Text(
             "$totalItems ${GetItemText.getItemText(totalItems)}",
             style: TextStyles.cartBarBtnText,
-            overflow: TextOverflow.ellipsis, // Запобігання переповненню
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
@@ -135,7 +131,7 @@ class _ResponsiveCartRow extends StatelessWidget {
 
   Widget _buildOrderButton() {
     return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 110), // Мінімальна ширина кнопки
+      constraints: const BoxConstraints(minWidth: 110),
       child: ElevatedButton(
         onPressed: onOrder,
         style: ElevatedButton.styleFrom(
@@ -151,7 +147,6 @@ class _ResponsiveCartRow extends StatelessWidget {
     );
   }
 
-  // Метод для підрахунку ширини тексту
   double _getTextWidth(String text, TextStyle style) {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),

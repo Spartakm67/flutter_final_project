@@ -127,32 +127,30 @@ abstract class OrderStoreBase with Store {
   }
 
   List<TimeOfDay> availableTimes = List.generate(
-    22 * 2, // Для інтервалів кожні 30 хвилин
+    22 * 2,
         (index) {
       final now = DateTime.now();
-      const int startHour = 9; // Початок робочого часу
-      const int endHour = 20; // Кінець робочого часу
-      const int extendedEndHour = 21; // Кінець додаткових інтервалів
+      const int startHour = 9;
+      const int endHour = 20;
+      const int extendedEndHour = 21;
 
       final int hours = startHour + ((index + 1) ~/ 2);
       final int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
 
-      // Додавання 1 дня, якщо замовлення генерується у неробочий час
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
       if (now.hour >= endHour || now.hour < startHour) {
         generatedTime = generatedTime.add(const Duration(days: 1));
       }
 
-      // Якщо зараз у робочий час
       if (now.hour >= startHour && now.hour < endHour) {
-        // Додати інтервали від поточного часу до 21:00
+
         if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
         }
       }
-      // Якщо зараз не робочий час
+
       else if (now.hour >= endHour || now.hour < startHour) {
-        // Додати всі інтервали для наступного дня з 9:30 до 20:00
+
         if (hours >= startHour && hours <= endHour) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
         }
@@ -166,26 +164,22 @@ abstract class OrderStoreBase with Store {
         (index) {
       final now = DateTime.now();
 
-      // Розрахунок часу для кожного інтервалу
       int totalMinutes = 9 * 60 + 15 + index * 15;
       int hours = totalMinutes ~/ 60;
       int minutes = totalMinutes % 60;
 
-      // Генеруємо базовий час
       DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
 
-      // Додавання 1 дня для замовлень у неробочий час
       if (now.hour >= 20 || now.hour < 9) {
         generatedTime = generatedTime.add(const Duration(days: 1));
       }
 
-      // Логіка для неробочого часу
       if (now.hour >= 20 || now.hour < 9) {
         if (hours < 20) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
         }
       }
-      // Логіка для робочого часу
+
       else if (generatedTime.isAfter(now)) {
         return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
       }

@@ -24,24 +24,13 @@ class ProductListScreen extends StatefulWidget {
   final String categoryId;
   final String categoryName;
 
-   const ProductListScreen({
+  const ProductListScreen({
     super.key,
     required this.productStore,
     required this.categoryId,
     required this.categoryName,
     required this.categoriesStore,
-  })
-  ; // тут видалити
-  // {
-  //   // productStore.fetchProducts(categoryId.toString());
-  // або
-  //   // if (!productStore.cachedProducts.containsKey(categoryId) ||
-  //   //     productStore.selectedCategoryId != categoryId) {
-  //   //   productStore.fetchProducts(categoryId);
-  //   // } else {
-  //   //   productStore.loadFromCache(categoryId);
-  //   // }
-  // }
+  });
 
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
@@ -68,7 +57,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     final categoryId = widget.categoryId;
 
     if (!widget.productStore.cachedProducts.containsKey(categoryId) ||
-            widget.productStore.selectedCategoryId != categoryId) {
+        widget.productStore.selectedCategoryId != categoryId) {
       widget.productStore.fetchProducts(categoryId);
     } else {
       widget.productStore.loadFromCache(categoryId);
@@ -169,9 +158,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           }
           final filteredProducts = widget.productStore.products
               .where(
-                (product) =>
-                    product.categoryProductId ==
-                    widget.categoryId,
+                (product) => product.categoryProductId == widget.categoryId,
               )
               .toList();
           if (filteredProducts.isEmpty) {
@@ -218,13 +205,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       TextSpan(
                                         text: product.ingredients.map((ing) {
                                           String ingredientText = ing.name;
-                                          // Додаємо вкладені інгредієнти, якщо вони є
                                           if (ing.subIngredients.isNotEmpty) {
-                                            ingredientText += " (${ing.subIngredients.map((sub) => sub.name).join(', ')})";
+                                            ingredientText +=
+                                                " (${ing.subIngredients.map((sub) => sub.name).join(', ')})";
                                           }
-                                          // Якщо категорія "Додатки", додаємо brutto і price
-                                          if (product.categoryName == "Добавки") {
-                                            ingredientText += " [${ing.brutto} г, ${ing.price} грн]";
+                                          if (product.categoryName ==
+                                              "Добавки") {
+                                            ingredientText +=
+                                                " [${ing.brutto} г, ${ing.price} грн]";
                                           }
                                           return ingredientText;
                                         }).join(', '),
@@ -350,18 +338,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           ),
                         ],
                       ),
-                      // onTap: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (_) =>
-                      //           ProductDetailScreen(
-                      //             product: product,
-                      //             categoryId: widget.categoryId,
-                      //           ),
-                      //     ),
-                      //   );
-                      // },
                       onTap: () async {
                         final returnedCategoryId = await Navigator.push<String>(
                           context,
@@ -372,18 +348,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             ),
                           ),
                         );
-
-                        // Якщо ми повернулись з категорії, яка вже була в кеші — рендеримо з неї
                         if (returnedCategoryId != null) {
-                          if (widget.productStore.cachedProducts.containsKey(returnedCategoryId)) {
-                            widget.productStore.loadFromCache(returnedCategoryId);
+                          if (widget.productStore.cachedProducts
+                              .containsKey(returnedCategoryId)) {
+                            widget.productStore
+                                .loadFromCache(returnedCategoryId);
                           } else {
-                            await widget.productStore.fetchProducts(returnedCategoryId);
+                            await widget.productStore
+                                .fetchProducts(returnedCategoryId);
                           }
                         }
                       },
-
-
                     ),
                   );
                 },
@@ -421,20 +396,3 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
   }
 }
-
-//   text: product.ingredients
-//       .map((i) => i.name)
-//       .join(", "),
-//   style: TextStyles.spanKeyText,
-// ),
-
-
-// TextSpan(
-//   text: product.ingredients
-//       .map((ing) => ing.name +
-//       (ing.subIngredients.isNotEmpty
-//           ? " (${ing.subIngredients.map((sub) => sub.name).join(', ')})"
-//           : ""),)
-//       .join(', '),
-//   style: TextStyles.spanKeyText,
-// ),

@@ -13,7 +13,6 @@ import 'package:flutter_final_project/presentation/widgets/contacts/burger_widge
 import 'package:flutter_final_project/presentation/widgets/order_widgets/categories_list_widget.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/cart_preview_container.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
-import 'package:flutter_final_project/presentation/screens/auth/error_app.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 

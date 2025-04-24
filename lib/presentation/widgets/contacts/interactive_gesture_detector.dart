@@ -41,13 +41,13 @@ class InteractiveGestureDetector extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (icon != null)
-                  Icon(icon, color: Colors.black, size: 20),
+                if (icon != null) Icon(icon, color: Colors.black, size: 20),
                 if (icon != null) const SizedBox(width: 8),
                 Flexible(
                   child: Text(
                     label,
-                    style: textStyle ?? const TextStyle(fontSize: 16, color: Colors.black),
+                    style: textStyle ??
+                        const TextStyle(fontSize: 16, color: Colors.black),
                     softWrap: true,
                     overflow: TextOverflow.visible,
                   ),
@@ -70,13 +70,9 @@ class InteractiveGestureDetector extends StatelessWidget {
 
     if (actionUri.startsWith('tel:') || actionUri.startsWith('mailto:')) {
       uri = actionUri;
-    }
-    else if (actionUri.startsWith('geo:')) {
+    } else if (actionUri.startsWith('geo:')) {
       if (Platform.isIOS) {
-        // Якщо на iOS встановлено Google Maps, використовуємо його,
-        // інакше - Apple Maps.
         if (await canLaunchUrl(Uri.parse('comgooglemaps://'))) {
-          // Замінюємо схему geo на Google Maps.
           final query = actionUri.split('?q=').last;
           uri = 'comgooglemaps://?q=$query';
         } else {
@@ -84,12 +80,9 @@ class InteractiveGestureDetector extends StatelessWidget {
           uri = 'http://maps.apple.com/?q=$query';
         }
       } else {
-        // На Android використовуємо стандартний geo: URI.
         uri = actionUri;
       }
-    }
-    // Якщо інший тип посилання, використовуємо його без змін.
-    else {
+    } else {
       uri = actionUri;
     }
 
@@ -111,22 +104,3 @@ class InteractiveGestureDetector extends StatelessWidget {
     }
   }
 }
-
-// Future<void> _handleTap(BuildContext context) async {
-//   final uri = Uri.parse(actionUri);
-//   final bool canLaunchUri = await canLaunchUrl(uri);
-//
-//   if (!context.mounted) return;
-//
-//   if (canLaunchUri) {
-//     await launchUrl(uri);
-//   } else {
-//     CustomSnackBar.show(
-//       context: context,
-//       message: errorMessage,
-//       backgroundColor: Colors.redAccent,
-//       position: SnackBarPosition.top,
-//       duration: const Duration(seconds: 3),
-//     );
-//   }
-// }

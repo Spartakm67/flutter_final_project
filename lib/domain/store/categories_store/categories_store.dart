@@ -16,13 +16,12 @@ abstract class CategoriesStoreBase with Store {
   @observable
   String? error;
 
-  // Постійна категорія для "Добавки"
   final Category additionsCategory = Category(
     categoryId: '10',
     categoryName: 'Добавки',
-    categoryPhoto: null, // або вкажи посилання на зображення, якщо потрібно
+    categoryPhoto: null,
     categoryTag: 'additions',
-    categoryColor: '#FFC107', // колір за замовчуванням
+    categoryColor: '#FFC107',
   );
 
   @action
@@ -46,33 +45,3 @@ abstract class CategoriesStoreBase with Store {
 }
 
 
-// part 'categories_store.g.dart';
-//
-// class CategoriesStore = CategoriesStoreBase with _$CategoriesStore;
-//
-// abstract class CategoriesStoreBase with Store {
-//   @observable
-//   ObservableList<Category> categories = ObservableList<Category>();
-//
-//   @observable
-//   bool isLoading = false;
-//
-//   @observable
-//   String? error;
-//
-//   @action
-//   Future<void> fetchCategories() async {
-//     try {
-//       isLoading = true;
-//       error = null;
-//       final fetchedCategories = await CategoryApiServices.fetchCategories();
-//       categories = ObservableList.of(
-//         fetchedCategories.where((category) => !category.categoryName.contains('Glovo')),
-//       );
-//     } catch (e) {
-//       error = 'Помилка завантаження категорій: $e';
-//     } finally {
-//       isLoading = false;
-//     }
-//   }
-// }
