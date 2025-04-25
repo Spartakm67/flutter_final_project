@@ -269,11 +269,18 @@ class _OrderContainerState extends State<OrderContainer> {
     if (!isDelivery && (orderModel.point.trim().isEmpty)) {
       throw Exception('Будь-ласка виберіть адресу для самовивозу');
     }
-    if (orderModel.address!.trim().length < 5) {
+    if (isDelivery && (orderModel.address!.trim().length < 5)) {
       throw Exception('Адреса повинна містити принаймні 5 символів.');
     }
-    if (orderModel.address!.trim().length > 100) {
+    if (isDelivery && (orderModel.address!.trim().length > 100)) {
       throw Exception('Адреса не може перевищувати 100 символів.');
+    }
+
+    final addressRegExp = RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s,.\-/\\]+$');
+    if (isDelivery && (!addressRegExp.hasMatch(orderModel.address!))) {
+      throw Exception(
+        'Адреса може містити лише літери, цифри, пробіли, коми, крапки, дефіси, а також "/" або "\\".',
+      );
     }
 
     if (orderStore.selectedTime.hour < DateTime.now().hour ||
@@ -282,14 +289,7 @@ class _OrderContainerState extends State<OrderContainer> {
       throw Exception('Час замовлення повинен бути більшим за поточний.');
     }
 
-    final addressRegExp = RegExp(r'^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s,.\-/\\]+$');
-    if (!addressRegExp.hasMatch(orderModel.address!)) {
-      throw Exception(
-        'Адреса може містити лише літери, цифри, пробіли, коми, крапки, дефіси, а також "/" або "\\".',
-      );
-    }
-
-    final products =
+   final products =
         counters.entries.where((entry) => entry.value > 0).map((entry) {
       return Product(
         productId: entry.key,
@@ -446,6 +446,7 @@ class _OrderContainerState extends State<OrderContainer> {
     } catch (e) {
       if (!mounted) return;
       String errorMessage = e.toString().replaceFirst('Exception: ', '');
+      print("Order error: $errorMessage");
       CustomSnackBar.show(
         context: context,
         message: 'Замовлення не відправлене: $errorMessage',

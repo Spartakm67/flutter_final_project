@@ -20,6 +20,7 @@ class CategoryApiServices {
         const excludedWords = [
           'Glovo',
           'Сборки',
+          'Коктейлі',
           'Морозиво',
           'Горячи напої',
         ];

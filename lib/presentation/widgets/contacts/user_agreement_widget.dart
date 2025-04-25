@@ -46,7 +46,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth * 0.95;
-        final height = constraints.maxHeight * 0.95;
+        final height = constraints.maxHeight * 0.8;
         return Center(
           child: AnimatedOpacity(
             opacity: _isVisible ? 1.0 : 0.0,
@@ -116,10 +116,19 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                                 child: RichText(
                                   text: TextSpan(
                                     children: [
-                                      TextSpan(
-                                        text: 'Угода користувача\n ',
-                                        style: TextStyles.oderAppBarText,
+                                      WidgetSpan(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 8.0,
+                                          ),
+                                          child: Text(
+                                            'Угода користувача',
+                                            style: TextStyles.oderAppBarText,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
                                       ),
+                                      TextSpan(text: '\n'),
                                       TextSpan(
                                         text:
                                             '''Текст цього документу є договором, публічною пропозицією ФОП Козловський Дмитро Володимирович (надалі “Продавець”, "Ми") укласти на вашу користь (надалі “Ви”, "Покупець") договір на умовах, що викладені нижче.
@@ -148,10 +157,19 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
 Якщо ви не погоджуєтеся з цією Угодою, ви зобов'язані припинити використання додатку.\n''',
                                         style: TextStyles.spanBodyText,
                                       ),
-                                      TextSpan(
-                                        text: 'Реєстрація на Сайті\n',
-                                        style: TextStyles.oderAppBarText,
+                                      WidgetSpan(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 8.0,
+                                          ),
+                                          child: Text(
+                                            'Реєстрація на Сайті',
+                                            style: TextStyles.oderAppBarText,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
                                       ),
+                                      TextSpan(text: '\n'),
                                       TextSpan(
                                         text:
                                             '''Для оформлення замовлення в мобільному додатку необхідно зареєструватися. Реєстрація відбувається через форму в додатку або за телефоном за допомогою оператора.
@@ -192,7 +210,7 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                                             vertical: 8.0,
                                           ),
                                           child: Text(
-                                            'Умови продажу Товару та надання послуг\n',
+                                            'Умови продажу Товару та надання послуг',
                                             style: TextStyles.oderAppBarText,
                                             textAlign: TextAlign.start,
                                           ),
@@ -203,6 +221,9 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                                             '''Використовуючи мобільний додаток, ви погоджуєтеся з умовами продажу Товарів та послуг, встановленими Продавцем. Ці умови є публічною офертою.
 Зображення товарів у додатку мають виключно ілюстративний характер.
 Інформація щодо характеристик товарів може містити неточності. Для уточнення деталей рекомендується звертатися до Продавця.
+Замовлення Товарів та послуг здійснюється із переліку, запропонованого Продавцем у додатку.
+Продавець намагається підтримувати актуальність асортименту, однак у разі відсутності товару може вилучити його з замовлення або анулювати його.
+У такому разі вартість скасованих позицій не враховується під час розрахунку між Сторонами.
                                         \n''',
                                         style: TextStyles.spanBodyText,
                                       ),
@@ -223,13 +244,6 @@ class _UserAgreementWidgetState extends State<UserAgreementWidget> {
                                 child: RichText(
                                   text: TextSpan(
                                     children: [
-                                      TextSpan(
-                                        text:
-                                            '''Замовлення Товарів та послуг здійснюється із переліку, запропонованого Продавцем у додатку.
-Продавець намагається підтримувати актуальність асортименту, однак у разі відсутності товару може вилучити його з замовлення або анулювати його.
-У такому разі вартість скасованих позицій не враховується під час розрахунку між Сторонами.\n''',
-                                        style: TextStyles.spanBodyText,
-                                      ),
                                       TextSpan(
                                         text: 'Доставка Товару\n ',
                                         style: TextStyles.oderAppBarText,
