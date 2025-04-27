@@ -53,7 +53,7 @@ abstract class AuthStoreBase with Store {
   }
 
   @action
-  Future<void> sendOTP({required bool viaWhatsApp}) async {
+  Future<void> sendOTP() async {
     if (!isPhoneNumberValid(phoneNumber!)) {
       errorMessage = 'Номер телефону має містити 9 цифр!';
       clearErrorMessageAfterDelay();

@@ -190,7 +190,7 @@ class HomeScreenState extends State<HomeScreen>
                                 final formattedPhoneNumber = '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
                                 orderStore.updateOrder(phone: formattedPhoneNumber);
 
-                                await _handleSendOTP(context, viaWhatsApp: false, authStore: authStore);
+                                await _handleSendOTP(context, authStore: authStore);
 
                                 if (context.mounted) {
                                   Navigator.pop(context);
@@ -307,7 +307,7 @@ class HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Future<void> _handleSendOTP(BuildContext context, {required bool viaWhatsApp, required AuthStore authStore}) async {
+  Future<void> _handleSendOTP(BuildContext context, { required AuthStore authStore}) async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -315,7 +315,7 @@ class HomeScreenState extends State<HomeScreen>
     );
 
     try {
-      await authStore.sendOTP(viaWhatsApp: viaWhatsApp);
+      await authStore.sendOTP();
 
     } catch (e) {
       if (context.mounted) {

@@ -141,9 +141,8 @@ mixin _$AuthStore on AuthStoreBase, Store {
       AsyncAction('AuthStoreBase.sendOTP', context: context);
 
   @override
-  Future<void> sendOTP({required bool viaWhatsApp}) {
-    return _$sendOTPAsyncAction
-        .run(() => super.sendOTP(viaWhatsApp: viaWhatsApp));
+  Future<void> sendOTP() {
+    return _$sendOTPAsyncAction.run(() => super.sendOTP());
   }
 
   late final _$verifyOTPAsyncAction =
