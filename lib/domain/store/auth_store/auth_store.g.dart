@@ -121,6 +121,22 @@ mixin _$AuthStore on AuthStoreBase, Store {
     });
   }
 
+  late final _$isWaitingForSmsAtom =
+      Atom(name: 'AuthStoreBase.isWaitingForSms', context: context);
+
+  @override
+  bool get isWaitingForSms {
+    _$isWaitingForSmsAtom.reportRead();
+    return super.isWaitingForSms;
+  }
+
+  @override
+  set isWaitingForSms(bool value) {
+    _$isWaitingForSmsAtom.reportWrite(value, super.isWaitingForSms, () {
+      super.isWaitingForSms = value;
+    });
+  }
+
   late final _$sendOTPAsyncAction =
       AsyncAction('AuthStoreBase.sendOTP', context: context);
 
@@ -279,7 +295,8 @@ isLoading: ${isLoading},
 isLoggedIn: ${isLoggedIn},
 verificationId: ${verificationId},
 phoneNumber: ${phoneNumber},
-isCodeSent: ${isCodeSent}
+isCodeSent: ${isCodeSent},
+isWaitingForSms: ${isWaitingForSms}
     ''';
   }
 }

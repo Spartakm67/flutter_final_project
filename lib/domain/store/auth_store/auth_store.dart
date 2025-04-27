@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_final_project/data/models/firebase/firebase_user_model.dart';
 
-
 part 'auth_store.g.dart';
 
 class AuthStore = AuthStoreBase with _$AuthStore;
@@ -34,6 +33,9 @@ abstract class AuthStoreBase with Store {
 
   @observable
   bool isCodeSent = false;
+
+  @observable
+  bool isWaitingForSms = false;
 
   int? _resendToken;
 
@@ -73,12 +75,13 @@ abstract class AuthStoreBase with Store {
         verificationFailed: (FirebaseAuthException e) {
           errorMessage = 'Verification failed: ${e.message}';
           clearErrorMessageAfterDelay();
+          isWaitingForSms = false;
         },
         codeSent: (String verId, int? resendToken) {
           verificationId = verId;
           _resendToken = resendToken;
           isCodeSent = true;
-
+          isWaitingForSms = true;
         },
         codeAutoRetrievalTimeout: (String verId) {
           verificationId = verId;
@@ -87,6 +90,7 @@ abstract class AuthStoreBase with Store {
     } catch (e) {
       errorMessage = 'Failed to send OTP: ${e.toString()}';
       clearErrorMessageAfterDelay();
+      isWaitingForSms = false;
     } finally {
       isLoading = false;
     }
@@ -112,9 +116,11 @@ abstract class AuthStoreBase with Store {
         );
         await saveInitialUserData(userModel);
       }
+      isWaitingForSms = false;
     } catch (e) {
       errorMessage = 'Failed to verify OTP: ${e.toString()}';
       clearErrorMessageAfterDelay();
+      isWaitingForSms = false;
       throw Exception('OTP verification failed');
     } finally {
       isLoading = false;
@@ -170,7 +176,6 @@ abstract class AuthStoreBase with Store {
         errorMessage = 'Невідома помилка: ${e.toString()}';
         showErrorMessage?.call(errorMessage!);
       }
-
       clearErrorMessageAfterDelay();
     } finally {
       isLoading = false;
@@ -200,18 +205,21 @@ abstract class AuthStoreBase with Store {
     errorMessage = null;
 
     try {
-      await _auth.sendPasswordResetEmail(email: email, actionCodeSettings: ActionCodeSettings(
-        url: 'https://flutterfinalproject.page.link/reset-password',
-        handleCodeInApp: true,
-        androidPackageName: 'com.example.flutter_final_project',
-        androidMinimumVersion: '21',
-      ),);
+      await _auth.sendPasswordResetEmail(
+        email: email,
+        actionCodeSettings: ActionCodeSettings(
+          url: 'https://flutterfinalproject.page.link/reset-password',
+          handleCodeInApp: true,
+          androidPackageName: 'com.example.flutter_final_project',
+          androidMinimumVersion: '21',
+        ),
+      );
       errorMessage = 'Password reset email sent. Check your inbox.';
     } catch (e) {
       errorMessage = 'Failed to send reset email: ${e.toString()}';
       showErrorMessage?.call(errorMessage!);
       clearErrorMessageAfterDelay();
-    }finally {
+    } finally {
       isLoading = false;
     }
   }
@@ -294,7 +302,9 @@ abstract class AuthStoreBase with Store {
 
   @action
   Future<void> updateUserData(
-      String userId, Map<String, dynamic> updates,) async {
+    String userId,
+    Map<String, dynamic> updates,
+  ) async {
     try {
       final usersCollection = _firestore.collection('users');
       await usersCollection.doc(userId).update(updates);

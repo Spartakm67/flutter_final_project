@@ -446,7 +446,6 @@ class _OrderContainerState extends State<OrderContainer> {
     } catch (e) {
       if (!mounted) return;
       String errorMessage = e.toString().replaceFirst('Exception: ', '');
-      print("Order error: $errorMessage");
       CustomSnackBar.show(
         context: context,
         message: 'Замовлення не відправлене: $errorMessage',
