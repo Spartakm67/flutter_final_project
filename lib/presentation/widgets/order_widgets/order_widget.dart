@@ -6,7 +6,6 @@ import 'package:flutter_final_project/domain/store/order_store/order_store.dart'
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_container.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/delivery_option_container.dart';
-import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/alert_not_work.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/time_picker_field.dart';
 import 'package:flutter_final_project/presentation/widgets/order_widgets/point_picker_field.dart';
@@ -29,6 +28,8 @@ class _OrderWidgetState extends State<OrderWidget> {
   late OrderStore orderStore;
   CartStore? cartStore;
   bool _isInitialized = false;
+
+  String? phoneErrorMessage;
 
   @override
   void didChangeDependencies() {
@@ -64,15 +65,14 @@ class _OrderWidgetState extends State<OrderWidget> {
     phoneFocusNode.addListener(() {
       if (!phoneFocusNode.hasFocus) {
         orderStore.validatePhoneNumber(phoneController.text);
-
         if (!orderStore.isPhoneNumberValid) {
-          CustomSnackBar.show(
-            context: context,
-            message: 'Невірний формат номера телефону',
-            backgroundColor: Colors.redAccent,
-            position: SnackBarPosition.top,
-            duration: const Duration(seconds: 3),
-          );
+          setState(() {
+            phoneErrorMessage = 'Невірний формат номера телефону';
+          });
+        } else {
+          setState(() {
+            phoneErrorMessage = null;
+          });
         }
       }
     });
@@ -131,7 +131,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                             // autofocus: true,
                             decoration: InputDecoration(
                               labelText:
-                                  nameController.text.isEmpty ? 'Ім’я' : null,
+                                  nameController.text.isEmpty ? 'Введіть ім’я' : null,
                               prefixIcon: const Icon(Icons.person),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 12.0, horizontal: 16.0,),
@@ -170,6 +170,19 @@ class _OrderWidgetState extends State<OrderWidget> {
                             },
                             keyboardType: TextInputType.phone,
                           ),
+
+                          if (phoneErrorMessage != null)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                              child: Text(
+                                phoneErrorMessage!,
+                                style: const TextStyle(
+                                  color: Colors.redAccent,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ),
+
                         ],
                       ),
                       const SizedBox(height: 8),

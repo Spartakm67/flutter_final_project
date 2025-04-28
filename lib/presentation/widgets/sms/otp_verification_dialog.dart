@@ -82,7 +82,7 @@ class _OTPVerificationDialogState extends State<OTPVerificationDialog>
                   child: Text(
                     verificationMessage ??
                         (isConfirmEnabled
-                            ? ' '
+                            ? 'Натисніть кнопку "Підтвердити"'
                             : 'Код має містити 4 або 6 цифр!'),
                     style: TextStyle(
                       color: verificationMessage != null
@@ -133,7 +133,7 @@ class _OTPVerificationDialogState extends State<OTPVerificationDialog>
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           decoration: BoxDecoration(
-            color: (isConfirmEnabled && !isVerifying)
+            color: (isConfirmEnabled && !isVerifying && !widget.authStore.isLoggedIn)
                 ? Colors.indigo
                 : Colors.grey.shade400,
             borderRadius: BorderRadius.circular(18),
