@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
-import 'package:flutter_final_project/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
 
 class OTPVerificationDialog extends StatefulWidget {
@@ -17,6 +16,8 @@ class _OTPVerificationDialogState extends State<OTPVerificationDialog>
   late AnimationController _controller;
   String otpCode = '';
   bool isVerifying = false;
+  String? verificationMessage;
+  Color verificationMessageColor = Colors.redAccent;
   bool get isConfirmEnabled => otpCode.length == 4 || otpCode.length == 6;
   static const int timerSeconds = 60;
 
@@ -52,6 +53,7 @@ class _OTPVerificationDialogState extends State<OTPVerificationDialog>
             onChanged: (value) {
               setState(() {
                 otpCode = value;
+                verificationMessage = null;
               });
             },
             keyboardType: TextInputType.number,
@@ -63,6 +65,37 @@ class _OTPVerificationDialogState extends State<OTPVerificationDialog>
               ),
             ),
           ),
+          const SizedBox(height: 4),
+          if (otpCode.isNotEmpty || verificationMessage != null)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  isConfirmEnabled ? Icons.check_circle : Icons.error,
+                  color: verificationMessage != null
+                      ? verificationMessageColor
+                      : (isConfirmEnabled ? Colors.green : Colors.redAccent),
+                  size: 18,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    verificationMessage ??
+                        (isConfirmEnabled
+                            ? ' '
+                            : 'Код має містити 4 або 6 цифр!'),
+                    style: TextStyle(
+                      color: verificationMessage != null
+                          ? verificationMessageColor
+                          : (isConfirmEnabled
+                              ? Colors.green
+                              : Colors.redAccent),
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           const SizedBox(height: 16),
           AnimatedBuilder(
             animation: _controller,
@@ -113,43 +146,51 @@ class _OTPVerificationDialogState extends State<OTPVerificationDialog>
                 borderRadius: BorderRadius.circular(24),
               ),
             ),
-            onPressed: (!isConfirmEnabled || isVerifying)
+            onPressed: isVerifying
                 ? null
                 : () async {
-                    setState(() {
-                      isVerifying = true;
-                    });
-                    try {
-                      await widget.authStore.verifyOTP(otpCode);
-                      if (context.mounted && widget.authStore.isLoggedIn) {
-                        CustomSnackBar.show(
-                          context: context,
-                          message: 'Авторизація успішна!',
-                          backgroundColor: Colors.lightGreen,
-                          position: SnackBarPosition.top,
-                        );
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CategoriesScreen(),
-                          ),
-                        );
+                    if (isConfirmEnabled) {
+                      setState(() {
+                        isVerifying = true;
+                      });
+                      try {
+                        await widget.authStore.verifyOTP(otpCode);
+                        if (context.mounted && widget.authStore.isLoggedIn) {
+                          setState(() {
+                            verificationMessage = 'Авторизація успішна!';
+                            verificationMessageColor = Colors.lightGreen;
+                          });
+                          Future.delayed(const Duration(seconds: 1), () {
+                            if (context.mounted) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CategoriesScreen(),
+                                ),
+                              );
+                            }
+                          });
+                        }
+                      } catch (_) {
+                        if (context.mounted) {
+                          setState(() {
+                            verificationMessage = 'Невірний код підтвердження!';
+                            verificationMessageColor = Colors.redAccent;
+                          });
+                        }
+                      } finally {
+                        if (mounted) {
+                          setState(() {
+                            isVerifying = false;
+                          });
+                        }
                       }
-                    } catch (_) {
-                      if (context.mounted) {
-                        CustomSnackBar.show(
-                          context: context,
-                          message: 'Невірний код підтвердження!',
-                          backgroundColor: Colors.redAccent,
-                          position: SnackBarPosition.top,
-                        );
-                      }
-                    } finally {
-                      if (mounted) {
-                        setState(() {
-                          isVerifying = false;
-                        });
-                      }
+                    } else {
+                      setState(() {
+                        verificationMessage = 'Код має містити 4 або 6 цифр!';
+                        verificationMessageColor = Colors.redAccent;
+                      });
                     }
                   },
             child: isVerifying
