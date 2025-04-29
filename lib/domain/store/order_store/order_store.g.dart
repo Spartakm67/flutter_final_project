@@ -14,14 +14,14 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   TimeOfDay get selectedTime =>
       (_$selectedTimeComputed ??= Computed<TimeOfDay>(() => super.selectedTime,
-              name: 'OrderStoreBase.selectedTime'))
+              name: 'OrderStoreBase.selectedTime',))
           .value;
   Computed<String>? _$selectedPointComputed;
 
   @override
   String get selectedPoint =>
       (_$selectedPointComputed ??= Computed<String>(() => super.selectedPoint,
-              name: 'OrderStoreBase.selectedPoint'))
+              name: 'OrderStoreBase.selectedPoint',))
           .value;
 
   late final _$isDeliveryAtom =
@@ -171,7 +171,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
       String? status,
       String? point,
       TimeOfDay? time,
-      String? paymentMethod}) {
+      String? paymentMethod,}) {
     return _$updateOrderAsyncAction.run(() => super.updateOrder(
         name: name,
         phone: phone,
@@ -179,7 +179,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
         status: status,
         point: point,
         time: time,
-        paymentMethod: paymentMethod));
+        paymentMethod: paymentMethod,),);
   }
 
   late final _$saveOrderAsyncAction =
@@ -204,7 +204,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   void updateDelivery(bool value) {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
-        name: 'OrderStoreBase.updateDelivery');
+        name: 'OrderStoreBase.updateDelivery',);
     try {
       return super.updateDelivery(value);
     } finally {
@@ -215,7 +215,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   void updatePaymentMethod(bool value) {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
-        name: 'OrderStoreBase.updatePaymentMethod');
+        name: 'OrderStoreBase.updatePaymentMethod',);
     try {
       return super.updatePaymentMethod(value);
     } finally {
@@ -226,7 +226,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   void selectTime(TimeOfDay time) {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
-        name: 'OrderStoreBase.selectTime');
+        name: 'OrderStoreBase.selectTime',);
     try {
       return super.selectTime(time);
     } finally {
@@ -237,7 +237,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   void _initializeDefaultPoint() {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
-        name: 'OrderStoreBase._initializeDefaultPoint');
+        name: 'OrderStoreBase._initializeDefaultPoint',);
     try {
       return super._initializeDefaultPoint();
     } finally {
@@ -248,7 +248,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   void selectPoint(String point) {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
-        name: 'OrderStoreBase.selectPoint');
+        name: 'OrderStoreBase.selectPoint',);
     try {
       return super.selectPoint(point);
     } finally {
@@ -259,7 +259,7 @@ mixin _$OrderStore on OrderStoreBase, Store {
   @override
   void validatePhoneNumber(String phone) {
     final _$actionInfo = _$OrderStoreBaseActionController.startAction(
-        name: 'OrderStoreBase.validatePhoneNumber');
+        name: 'OrderStoreBase.validatePhoneNumber',);
     try {
       return super.validatePhoneNumber(phone);
     } finally {

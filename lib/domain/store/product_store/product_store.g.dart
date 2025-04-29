@@ -14,14 +14,14 @@ mixin _$ProductStore on ProductStoreBase, Store {
   @override
   int get totalItems =>
       (_$totalItemsComputed ??= Computed<int>(() => super.totalItems,
-              name: 'ProductStoreBase.totalItems'))
+              name: 'ProductStoreBase.totalItems',))
           .value;
   Computed<double>? _$totalPriceComputed;
 
   @override
   double get totalPrice =>
       (_$totalPriceComputed ??= Computed<double>(() => super.totalPrice,
-              name: 'ProductStoreBase.totalPrice'))
+              name: 'ProductStoreBase.totalPrice',))
           .value;
 
   late final _$productsAtom =
@@ -144,7 +144,7 @@ mixin _$ProductStore on ProductStoreBase, Store {
   @override
   void loadFromCache(String categoryId) {
     final _$actionInfo = _$ProductStoreBaseActionController.startAction(
-        name: 'ProductStoreBase.loadFromCache');
+        name: 'ProductStoreBase.loadFromCache',);
     try {
       return super.loadFromCache(categoryId);
     } finally {
@@ -155,7 +155,7 @@ mixin _$ProductStore on ProductStoreBase, Store {
   @override
   void clearCache() {
     final _$actionInfo = _$ProductStoreBaseActionController.startAction(
-        name: 'ProductStoreBase.clearCache');
+        name: 'ProductStoreBase.clearCache',);
     try {
       return super.clearCache();
     } finally {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
-import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 
@@ -59,8 +57,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
-    return Center(
+      return Center(
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
@@ -95,7 +92,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                           onPressed: _closeWidget,
                         ),
                         Text(
-                          'Статус замовлення',
+                          'Стан замовлення',
                           style: TextStyles.oderAppBarText,
                         ),
                         IconButton(
@@ -148,7 +145,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                     Text(
                                       widget.statusId != null
                                           ? (widget.statusId == 0
-                                              ? 'Замовлення в обробці'
+                                              ? 'в обробці'
                                               : widget.statusId == 1
                                                   ? 'Замовлення прийняте'
                                                   : widget.statusId == 7
@@ -211,7 +208,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                       onPressed: () async {
                         CustomDialog.show(
                           context: context,
-                          builder: (_) => HomeScreen(store: homeStore),
+                          builder: (_) => HomeScreen(),
                         );
                         if (widget.onCartClear != null) {
                           await widget.onCartClear!();
@@ -225,7 +222,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        backgroundColor: Colors.black.withAlpha(200),
+                        backgroundColor: Colors.blueAccent.withAlpha(200),
                       ),
                       child: Observer(
                         builder: (_) => Text(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
@@ -17,9 +16,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_final_project/main.dart';
 
 class HomeScreen extends StatefulWidget {
-  final HomeScreenStore store;
-
-  const HomeScreen({super.key, required this.store});
+  const HomeScreen({
+    super.key,
+  });
 
   @override
   HomeScreenState createState() => HomeScreenState();
@@ -160,43 +159,50 @@ class HomeScreenState extends State<HomeScreen>
                                       ),
                                     ),
                                   ),
-                                  // const SizedBox(width: 8),
                                 ],
                               ),
                             ),
                             const SizedBox(height: 20),
                             HomeButton(
                               onPressed: () async {
-                                if (authStore.phoneNumber == null || authStore.phoneNumber!.trim().isEmpty) {
+                                if (authStore.phoneNumber == null ||
+                                    authStore.phoneNumber!.trim().isEmpty) {
                                   CustomSnackBar.show(
                                     context: context,
-                                    message: 'Будь ласка, введіть номер телефону!',
+                                    message:
+                                        'Будь ласка, введіть номер телефону!',
                                     backgroundColor: Colors.redAccent,
                                     position: SnackBarPosition.top,
                                   );
                                   return;
                                 }
 
-                                if (!authStore.isPhoneNumberValid(authStore.phoneNumber!)) {
+                                if (!authStore.isPhoneNumberValid(
+                                    authStore.phoneNumber!,)) {
                                   CustomSnackBar.show(
                                     context: context,
-                                    message: 'Номер телефону має містити 9 цифр!',
+                                    message:
+                                        'Номер телефону має містити 9 цифр!',
                                     backgroundColor: Colors.redAccent,
                                     position: SnackBarPosition.top,
                                   );
                                   return;
                                 }
 
-                                final formattedPhoneNumber = '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
-                                orderStore.updateOrder(phone: formattedPhoneNumber);
+                                final formattedPhoneNumber =
+                                    '+380${authStore.phoneNumber!.replaceFirst(RegExp(r'^\+?380?'), '')}';
+                                orderStore.updateOrder(
+                                    phone: formattedPhoneNumber,);
 
-                                await _handleSendOTP(context, authStore: authStore);
+                                await _handleSendOTP(context,
+                                    authStore: authStore,);
 
                                 if (context.mounted) {
                                   Navigator.pop(context);
                                   showDialog(
                                     context: context,
-                                    builder: (_) => OTPVerificationDialog(authStore: authStore),
+                                    builder: (_) => OTPVerificationDialog(
+                                        authStore: authStore,),
                                   );
                                 }
                               },
@@ -204,7 +210,6 @@ class HomeScreenState extends State<HomeScreen>
                               backgroundColor: Colors.deepOrangeAccent,
                               textColor: Colors.white,
                             ),
-
                             const SizedBox(height: 16),
                             Text(
                               'Робочі години: 9:00 - 20:00\n Без вихідних',
@@ -307,7 +312,8 @@ class HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Future<void> _handleSendOTP(BuildContext context, { required AuthStore authStore}) async {
+  Future<void> _handleSendOTP(BuildContext context,
+      {required AuthStore authStore,}) async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -316,7 +322,6 @@ class HomeScreenState extends State<HomeScreen>
 
     try {
       await authStore.sendOTP();
-
     } catch (e) {
       if (context.mounted) {
         Navigator.pop(context);

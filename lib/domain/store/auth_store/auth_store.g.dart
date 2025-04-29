@@ -255,7 +255,7 @@ mixin _$AuthStore on AuthStoreBase, Store {
   @override
   void setPhoneNumber(String value) {
     final _$actionInfo = _$AuthStoreBaseActionController.startAction(
-        name: 'AuthStoreBase.setPhoneNumber');
+        name: 'AuthStoreBase.setPhoneNumber',);
     try {
       return super.setPhoneNumber(value);
     } finally {
@@ -266,7 +266,7 @@ mixin _$AuthStore on AuthStoreBase, Store {
   @override
   bool isPhoneNumberValid(String number) {
     final _$actionInfo = _$AuthStoreBaseActionController.startAction(
-        name: 'AuthStoreBase.isPhoneNumberValid');
+        name: 'AuthStoreBase.isPhoneNumberValid',);
     try {
       return super.isPhoneNumberValid(number);
     } finally {
@@ -277,7 +277,7 @@ mixin _$AuthStore on AuthStoreBase, Store {
   @override
   void clearErrorMessageAfterDelay() {
     final _$actionInfo = _$AuthStoreBaseActionController.startAction(
-        name: 'AuthStoreBase.clearErrorMessageAfterDelay');
+        name: 'AuthStoreBase.clearErrorMessageAfterDelay',);
     try {
       return super.clearErrorMessageAfterDelay();
     } finally {

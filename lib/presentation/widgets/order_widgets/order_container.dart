@@ -8,7 +8,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
-import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
@@ -32,7 +31,6 @@ class _OrderContainerState extends State<OrderContainer> {
   late CartStore cartStore;
   late OrderStore orderStore;
   late AuthStore authStore;
-  late HomeScreenStore homeStore;
 
   @override
   void initState() {
@@ -40,7 +38,6 @@ class _OrderContainerState extends State<OrderContainer> {
     cartStore = Provider.of<CartStore>(context, listen: false);
     orderStore = Provider.of<OrderStore>(context, listen: false);
     authStore = Provider.of<AuthStore>(context, listen: false);
-    homeStore = Provider.of<HomeScreenStore>(context, listen: false);
 
     Future.delayed(Duration.zero, () {
       setState(() {
@@ -63,7 +60,9 @@ class _OrderContainerState extends State<OrderContainer> {
   void _authRedirection() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => HomeScreen(store: homeStore)),
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ),
     );
   }
 
@@ -166,7 +165,6 @@ class _OrderContainerState extends State<OrderContainer> {
                       builder: (_) => Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          // const Spacer(),
                           Text(
                             'Сума замовлення: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
                             style: TextStyles.cartBottomText,
@@ -289,7 +287,7 @@ class _OrderContainerState extends State<OrderContainer> {
       throw Exception('Час замовлення повинен бути більшим за поточний.');
     }
 
-   final products =
+    final products =
         counters.entries.where((entry) => entry.value > 0).map((entry) {
       return Product(
         productId: entry.key,

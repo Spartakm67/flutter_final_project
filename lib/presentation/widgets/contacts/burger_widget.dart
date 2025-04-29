@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
-import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/contacts/user_agreement_widget.dart';
@@ -45,7 +44,6 @@ class _BurgerWidgetState extends State<BurgerWidget> {
   @override
   Widget build(BuildContext context) {
     final authStore = Provider.of<AuthStore>(context, listen: false);
-    final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Center(
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0.0,
@@ -155,7 +153,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                                         CustomDialog.show(
                                           context: context,
                                           builder: (_) =>
-                                              HomeScreen(store: homeStore),
+                                              HomeScreen(),
                                         );
                                       }
                                     },

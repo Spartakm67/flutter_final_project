@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_project/domain/store/categories_store/categories_store.dart';
-import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
@@ -23,7 +22,8 @@ double screenHeight = 0;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final mediaQuery = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first);
+  final mediaQuery = MediaQueryData.fromView(
+      WidgetsBinding.instance.platformDispatcher.views.first,);
   screenWidth = mediaQuery.size.width;
   screenHeight = mediaQuery.size.height;
 
@@ -61,7 +61,6 @@ void main() async {
           Provider<AuthStore>.value(value: authStore),
           Provider<OrderStore>.value(value: orderStore),
           Provider<CategoriesStore>.value(value: categoriesStore),
-          Provider<HomeScreenStore>(create: (_) => HomeScreenStore()),
         ],
         child: const MyApp(),
       ),
@@ -77,17 +76,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Final Project',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(
-        store: Provider.of<HomeScreenStore>(context, listen: false),
-      ),
+      home: HomeScreen(),
     );
   }
 }
-

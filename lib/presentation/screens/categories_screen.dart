@@ -5,7 +5,6 @@ import 'package:flutter_final_project/domain/store/scroll_store/scroll_store.dar
 import 'package:flutter_final_project/domain/store/cart_store/cart_store.dart';
 import 'package:flutter_final_project/domain/store/product_store/product_store.dart';
 import 'package:flutter_final_project/domain/store/auth_store/auth_store.dart';
-import 'package:flutter_final_project/domain/store/home_store/home_screen_store.dart';
 import 'package:flutter_final_project/presentation/screens/product_list_screen.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_burger_button.dart';
@@ -53,7 +52,6 @@ class CategoriesScreenState extends State<CategoriesScreen> {
   Widget build(BuildContext context) {
     final cartStore = Provider.of<CartStore>(context);
     final authStore = Provider.of<AuthStore>(context);
-    final homeStore = Provider.of<HomeScreenStore>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: !authStore.isLoggedIn,
@@ -104,7 +102,7 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HomeScreen(store: homeStore),
+                      builder: (context) => HomeScreen(),
                     ),
                   );
                 }
