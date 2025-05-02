@@ -208,7 +208,7 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
                           ),
                           onPressed: () => _repeatOrder(context, cartStore),
                           child: const Text(
-                            'Оформити',
+                            'Замовити ще раз',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,

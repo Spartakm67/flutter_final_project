@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/services/working_hours_helper.dart';
 import 'package:flutter_final_project/presentation/widgets/custom_dialog.dart';
 import 'package:flutter_final_project/presentation/styles/text_styles.dart';
-import 'package:flutter_final_project/presentation/screens/home_screen.dart';
+import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
 
 class OrderStatusWidget extends StatefulWidget {
   final String? orderId;
@@ -168,7 +168,8 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                     const SizedBox(height: 10),
                                     Text(
                                       widget.orderId != null
-                                          ? 'OrderId: ${widget.orderId}'
+                                          ? 'у неробочий час\n'
+                                          'потребує уточнення'
                                           : 'Замовлення не прийняте, будь-ласка змініть час'
                                               ' доставки/самовивозу, або спробуйте завтра після 00:00',
                                       style: TextStyles.cartBottomText,
@@ -180,7 +181,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                     Text(
                                       widget.statusId != null
                                           ? (widget.statusId == 0
-                                              ? 'Замовлення в обробці'
+                                              ? ' '
                                               : widget.statusId == 1
                                                   ? 'Замовлення прийняте'
                                                   : widget.statusId == 7
@@ -208,7 +209,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                       onPressed: () async {
                         CustomDialog.show(
                           context: context,
-                          builder: (_) => HomeScreen(),
+                          builder: (_) => CategoriesScreen(),
                         );
                         if (widget.onCartClear != null) {
                           await widget.onCartClear!();
