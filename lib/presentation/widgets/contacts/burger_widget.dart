@@ -110,7 +110,7 @@ class _BurgerWidgetState extends State<BurgerWidget> {
                             height: 12,
                           ),
                           CustomContactItem(
-                            title: 'Попереднє замовлення',
+                            title: 'Замовляли раніше',
                             textStyle: TextStyles.cartBottomText,
                             destination: LastOrderWidget(),
                           ),

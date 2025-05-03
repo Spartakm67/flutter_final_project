@@ -126,7 +126,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            'ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!',
+                            'ДЯКУЄМО!',
                             style: TextStyles.cartBottomText,
                           ),
                           const SizedBox(
@@ -168,7 +168,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                     const SizedBox(height: 10),
                                     Text(
                                       widget.orderId != null
-                                          ? 'на завтра'
+                                          ? 'здійснено у\n неробочий час'
                                           : 'Замовлення не прийняте, будь-ласка змініть час'
                                               ' доставки/самовивозу, або спробуйте завтра після 00:00',
                                       style: TextStyles.cartBottomText,

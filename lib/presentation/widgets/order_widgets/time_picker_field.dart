@@ -40,15 +40,17 @@ class TimePickerField extends StatelessWidget {
     final selected = await showDialog<TimeOfDay>(
       context: context,
       builder: (context) {
-        final hasTomorrowSlots = orderStore.availableTimes.any(
-              (t) => t.hour >= 20 && t.hour < 24,
-        );
+        final now = DateTime.now();
+        final isOutOfWorkingHours = now.hour >= 20 && now.hour < 24;
+        // final hasTomorrowSlots = orderStore.availableTimes.any(
+        //       (t) => t.hour >= 20 && t.hour < 24,
+        // );
 
         return Dialog(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (hasTomorrowSlots)
+              if (isOutOfWorkingHours)
                 const Padding(
                   padding: EdgeInsets.only(top: 16.0),
                   child: Text(

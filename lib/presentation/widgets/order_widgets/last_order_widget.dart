@@ -91,14 +91,14 @@ class LastOrderWidgetState extends State<LastOrderWidget> {
     final cartStore = Provider.of<CartStore>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Попереднє замовлення', style: TextStyles.cartBottomText),
+        title: Text('Замовляли раніше', style: TextStyles.cartBottomText),
       ),
       body: lastOrderItems == null
           ? Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Немає попереднього замовлення',
+                  'Немає замовлення',
                   style: TextStyles.greetingsText,
                   textAlign: TextAlign.center,
                 ),
