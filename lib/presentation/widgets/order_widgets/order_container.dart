@@ -281,9 +281,19 @@ class _OrderContainerState extends State<OrderContainer> {
       );
     }
 
-    if (orderStore.selectedTime.hour < DateTime.now().hour ||
-        (orderStore.selectedTime.hour == DateTime.now().hour &&
-            orderStore.selectedTime.minute <= DateTime.now().minute)) {
+    final now = DateTime.now();
+    final isOutOfWorkingHours = now.hour >= 20 && now.hour < 24;
+    final deliveryDate = isOutOfWorkingHours ? now.add(Duration(days: 1)) : now;
+
+    final deliveryDateTime = DateTime(
+      deliveryDate.year,
+      deliveryDate.month,
+      deliveryDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+
+    if (deliveryDateTime.isBefore(now)) {
       throw Exception('Час замовлення повинен бути більшим за поточний.');
     }
 
@@ -302,17 +312,6 @@ class _OrderContainerState extends State<OrderContainer> {
     final deliveryPrice =
         isDelivery ? cartStore.deliveryPrice.toInt() * 100 : 0;
 
-    final now = DateTime.now();
-    final isOutOfWorkingHours = now.hour >= 20 && now.hour < 24;
-    final deliveryDate = isOutOfWorkingHours ? now.add(Duration(days: 1)) : now;
-
-    final deliveryDateTime = DateTime(
-      deliveryDate.year,
-      deliveryDate.month,
-      deliveryDate.day,
-      selectedTime.hour,
-      selectedTime.minute,
-    );
     final deliveryTime =
         DateFormat('yyyy-MM-dd HH:mm:ss').format(deliveryDateTime);
 

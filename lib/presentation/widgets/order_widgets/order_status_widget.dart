@@ -181,7 +181,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                     Text(
                                       widget.statusId != null
                                           ? (widget.statusId == 0
-                                              ? ' '
+                                              ? 'Замовлення в обробці'
                                               : widget.statusId == 1
                                                   ? 'Замовлення прийняте'
                                                   : widget.statusId == 7
