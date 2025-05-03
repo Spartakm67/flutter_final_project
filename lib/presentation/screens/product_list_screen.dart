@@ -250,7 +250,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image.network(
-                                      UrlHelper.getFullImageUrl(product.photo),
+                                      UrlHelper.getFullImageUrl(product.photoOrigin),
                                       width: 100,
                                       height: 100,
                                       fit: BoxFit.cover,

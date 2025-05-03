@@ -51,16 +51,35 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: LoadingPainter(progress: _animation.value),
-          size: const Size(100, 100),
-        );
-      },
+    return SizedBox(
+      width: 100,
+      height: 100,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return CustomPaint(
+                painter: LoadingPainter(progress: _animation.value),
+                size: const Size(100, 100),
+              );
+            },
+          ),
+          ClipOval(
+            child: Image.asset(
+              'assets/images/loading.png',
+              width: 70,
+              height: 70,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
     );
   }
+
+
 }
 
 class LoadingPainter extends CustomPainter {

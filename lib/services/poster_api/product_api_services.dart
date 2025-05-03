@@ -36,11 +36,13 @@ class ProductApiServices {
         final filteredProducts = productsJson
             .map((json) => Product.fromJson(json as Map<String, dynamic>))
             .where(
-              (product) => !excludedWords.any(
-                (word) => product.productName
-                    .toLowerCase()
-                    .contains(word.toLowerCase()),
-              ),
+              (product) =>
+                  product.visible == 1 &&
+                  !excludedWords.any(
+                    (word) => product.productName
+                        .toLowerCase()
+                        .contains(word.toLowerCase()),
+                  ),
             )
             .toList();
 

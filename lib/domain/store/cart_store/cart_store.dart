@@ -145,6 +145,8 @@ abstract class CartStoreBase with Store {
         photoOrigin: '',
         description: '',
         ingredients: [],
+        hidden: 0,
+        visible: 1,
       ),
     );
   }

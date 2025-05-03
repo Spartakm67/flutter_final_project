@@ -9,6 +9,8 @@ class Product {
   final String photoOrigin;
   final String description;
   final List<Ingredient> ingredients;
+  final int hidden;
+  final int visible;
 
   Product({
     required this.categoryProductId,
@@ -21,6 +23,8 @@ class Product {
     required this.photoOrigin,
     required this.description,
     required this.ingredients,
+    required this.hidden,
+    required this.visible,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -56,6 +60,10 @@ class Product {
       photoOrigin: json['photo_origin'] ?? '',
       description: json['product_production_description'] ?? '',
       ingredients: ingredientsList,
+      hidden: int.tryParse(json['hidden'] ?? '0') ?? 0,
+      visible: json['spots'] != null && json['spots'].isNotEmpty
+          ? int.tryParse(json['spots'][0]['visible'] ?? '0') ?? 0
+          : 0,
     );
   }
 }
