@@ -168,8 +168,7 @@ class _OrderStatusWidgetState extends State<OrderStatusWidget> {
                                     const SizedBox(height: 10),
                                     Text(
                                       widget.orderId != null
-                                          ? 'у неробочий час\n'
-                                          'потребує уточнення'
+                                          ? 'на завтра'
                                           : 'Замовлення не прийняте, будь-ласка змініть час'
                                               ' доставки/самовивозу, або спробуйте завтра після 00:00',
                                       style: TextStyles.cartBottomText,
