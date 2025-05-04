@@ -212,7 +212,10 @@ class HomeScreenState extends State<HomeScreen>
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'Робочі години: 9:00 - 20:00\n Без вихідних',
+                              'Робочі години: 9:00 - 20:00\n Без вихідних\n'
+                                  'Працюємо в м.Київ\n'
+                                  'Доставка замовлень\n'
+                                  'на лівому березі',
                               textAlign: TextAlign.center,
                               style: TextStyles.authWelcomeText,
                               softWrap: true,

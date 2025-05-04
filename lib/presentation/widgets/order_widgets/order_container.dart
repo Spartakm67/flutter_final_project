@@ -72,136 +72,139 @@ class _OrderContainerState extends State<OrderContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: AnimatedOpacity(
-        opacity: _isVisible ? 1.0 : 0.0,
-        duration: const Duration(milliseconds: 300),
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.9,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(50),
-                blurRadius: 10,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.grey,
-                          ),
-                          iconSize: 32,
-                          onPressed: _closeWidget,
-                        ),
-                        Text(
-                          'Замовлення',
-                          style: TextStyles.oderAppBarText,
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.grey,
-                          ),
-                          iconSize: 32,
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
+    return SafeArea(
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          // Наприклад, закриття клавіатури
+          FocusScope.of(context).unfocus();
+        },
+        child: Center(
+          child: AnimatedOpacity(
+            opacity: _isVisible ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: ColoredBox(
+              color: Colors.transparent,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.9,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(50),
+                      blurRadius: 10,
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    if (!authStore.isLoggedIn)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            iconSize: 30.0,
-                            icon: const Icon(
-                              Icons.login,
-                              color: Colors.redAccent,
-                            ),
-                            onPressed: _authRedirection,
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Авторизуйтеся для оформлення замовлення',
-                              style: TextStyles.alertKeyText,
-                              softWrap: true,
-                              overflow: TextOverflow.visible,
-                            ),
-                          ),
-                        ],
-                      ),
                   ],
                 ),
-              ),
-              const Expanded(
-                child: OrderWidget(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(22.0),
                 child: Column(
                   children: [
-                    Observer(
-                      builder: (_) => Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
                         children: [
-                          Text(
-                            'Сума замовлення: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
-                            style: TextStyles.cartBottomText,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.grey,
+                                ),
+                                iconSize: 32,
+                                onPressed: _closeWidget,
+                              ),
+                              Text(
+                                'Замовлення',
+                                style: TextStyles.oderAppBarText,
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.grey,
+                                ),
+                                iconSize: 32,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          if (orderStore.isDelivery)
-                            Text(
-                              'Доставлення: ${cartStore.deliveryPrice.toStringAsFixed(0)} грн.',
-                              style: TextStyles.cartBottomText,
+                          const SizedBox(height: 4),
+                          if (!authStore.isLoggedIn)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  iconSize: 30.0,
+                                  icon: const Icon(
+                                    Icons.login,
+                                    color: Colors.redAccent,
+                                  ),
+                                  onPressed: _authRedirection,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Авторизуйтеся для оформлення замовлення',
+                                    style: TextStyles.alertKeyText,
+                                    softWrap: true,
+                                    overflow: TextOverflow.visible,
+                                  ),
+                                ),
+                              ],
                             ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Visibility(
-                      visible: cartStore.cartItems.isNotEmpty,
-                      child: ElevatedButton(
-                        onPressed: _isLoading
-                            ? null
-                            : () async {
+                    const Expanded(
+                      child: OrderWidget(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(22.0),
+                      child: Column(
+                        children: [
+                          Observer(
+                            builder: (_) => Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Сума замовлення: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
+                                  style: TextStyles.cartBottomText,
+                                ),
+                                const SizedBox(height: 12),
+                                if (orderStore.isDelivery)
+                                  Text(
+                                    'Доставлення: ${cartStore.deliveryPrice.toStringAsFixed(0)} грн.',
+                                    style: TextStyles.cartBottomText,
+                                  ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Visibility(
+                            visible: cartStore.cartItems.isNotEmpty,
+                            child: ElevatedButton(
+                              onPressed: _isLoading
+                                  ? null
+                                  : () async {
                                 if (!mounted) return;
                                 await _handleOrder();
                               },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 40,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          backgroundColor: Colors.black.withAlpha(200),
-                        ),
-                        child: _isLoading
-                            ? Row(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 40,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                backgroundColor: Colors.black.withAlpha(200),
+                              ),
+                              child: _isLoading
+                                  ? Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   const SizedBox(
@@ -219,25 +222,31 @@ class _OrderContainerState extends State<OrderContainer> {
                                   ),
                                 ],
                               )
-                            : Observer(
+                                  : Observer(
                                 builder: (_) => Text(
                                   'Оформити за ${cartStore.finalOrderPrice.toStringAsFixed(0)} грн.',
                                   style: TextStyles.cartBarThinText,
                                 ),
                               ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Future<IncomingOrder> createIncomingOrderFromHive({
+
+
+
+Future<IncomingOrder> createIncomingOrderFromHive({
     required OrderModelHive orderModel,
     required ObservableMap<String, int> counters,
     required String comment,

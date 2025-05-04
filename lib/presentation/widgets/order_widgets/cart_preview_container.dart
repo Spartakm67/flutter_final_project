@@ -48,107 +48,122 @@ class _CartPreviewContainerState extends State<CartPreviewContainer> {
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.9,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(50),
-                blurRadius: 10,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.grey,
-                          ),
-                          iconSize: 32,
-                          onPressed: _closeWidget,
+        child: SafeArea( // 🛡️ Запобігає перекриттю статусбаром
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.9,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(50),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                    left: 16,
+                    right: 16,
+                    bottom: 4,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.grey,
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    CustomContainer(
-                      backgroundColor: Colors.black.withAlpha(30),
-                      children: [
-                        Text(
+                        iconSize: 32,
+                        onPressed: _closeWidget,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: CustomContainer(
+                    backgroundColor: Colors.black.withAlpha(30),
+                    children: [
+                      Text(
                         'Вартість доставлення 50 грн.\nДоставимо безкоштовно при замовленні від 350 грн.',
                         style: TextStyles.cartText,
                         textAlign: TextAlign.center,
-                      ),],
-                    ),
-                  ],
-                ),
-              ),
-              const Expanded(
-                child: CartPreviewOrderList(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(22.0),
-                child: Column(
-                  children: [
-                    Observer(
-                      builder: (_) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            '${cartStore.totalItems}',
-                            style: TextStyles.cartBottomText,
-                          ),
-                          const SizedBox(width: 12,),
-                          Text(
-                            GetItemText.getItemText(cartStore.totalItems),
-                            style: TextStyles.cartBottomText,
-                          ),
-                          const Spacer(),
-                          Text(
-                            'Сума: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
-                            style: TextStyles.cartBottomText,
-                          ),
-                        ],
                       ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    child: const ColoredBox(
+                      color: Colors.transparent, // для впевненості, що клік проходить
+                      child: CartPreviewOrderList(),
                     ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(22.0),
+                  child: Column(
+                    children: [
+                      Observer(
+                        builder: (_) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              '${cartStore.totalItems}',
+                              style: TextStyles.cartBottomText,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              GetItemText.getItemText(cartStore.totalItems),
+                              style: TextStyles.cartBottomText,
+                            ),
+                            const Spacer(),
+                            Text(
+                              'Сума: ${cartStore.totalCombinedOrderPrice.toStringAsFixed(0)} грн',
+                              style: TextStyles.cartBottomText,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
                           CustomDialog.show(
-                          context: context,
-                          builder: (_) => const OrderContainer(),
-                        );
-                        // await cartStore.saveLastOrder();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 20,
+                            context: context,
+                            builder: (_) => const OrderContainer(),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 20,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          backgroundColor: Colors.black.withAlpha(100),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        child: const Text(
+                          'Перейти до оформлення',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
                         ),
-                        backgroundColor: Colors.black.withAlpha(100),
                       ),
-                      child: const Text('Перейти до оформлення',
-                        style: TextStyle(fontSize: 18, color: Colors.white,),),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

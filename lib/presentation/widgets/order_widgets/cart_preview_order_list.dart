@@ -42,6 +42,7 @@ class _CartPreviewOrderListState extends State<CartPreviewOrderList> {
     return Scaffold(
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
+        // behavior: HitTestBehavior.opaque,
         onTap: () {
           FocusScope.of(context).unfocus();
         },
@@ -74,6 +75,8 @@ class _CartPreviewOrderListState extends State<CartPreviewOrderList> {
                               return Column(
                                 children: [
                                   ListTile(
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                    minLeadingWidth: 50,
                                     leading: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
                                       child: Image.network(

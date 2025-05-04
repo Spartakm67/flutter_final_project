@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1600"
+   LastUpgradeVersion = "1510"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -52,9 +52,9 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
-      selectedDebuggerIdentifier = ""
-      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       customLLDBInitFile = "$(SRCROOT)/Flutter/ephemeral/flutter_lldbinit"
       language = "uk"
       region = "UA"
