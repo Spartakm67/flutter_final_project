@@ -14,35 +14,35 @@ mixin _$CartStore on CartStoreBase, Store {
   @override
   ObservableList<Product> get products => (_$productsComputed ??=
           Computed<ObservableList<Product>>(() => super.products,
-              name: 'CartStoreBase.products',))
+              name: 'CartStoreBase.products'))
       .value;
   Computed<int>? _$totalItemsComputed;
 
   @override
   int get totalItems =>
       (_$totalItemsComputed ??= Computed<int>(() => super.totalItems,
-              name: 'CartStoreBase.totalItems',))
+              name: 'CartStoreBase.totalItems'))
           .value;
   Computed<double>? _$totalCombinedOrderPriceComputed;
 
   @override
   double get totalCombinedOrderPrice => (_$totalCombinedOrderPriceComputed ??=
           Computed<double>(() => super.totalCombinedOrderPrice,
-              name: 'CartStoreBase.totalCombinedOrderPrice',))
+              name: 'CartStoreBase.totalCombinedOrderPrice'))
       .value;
   Computed<double>? _$deliveryPriceComputed;
 
   @override
   double get deliveryPrice =>
       (_$deliveryPriceComputed ??= Computed<double>(() => super.deliveryPrice,
-              name: 'CartStoreBase.deliveryPrice',))
+              name: 'CartStoreBase.deliveryPrice'))
           .value;
   Computed<double>? _$finalOrderPriceComputed;
 
   @override
   double get finalOrderPrice => (_$finalOrderPriceComputed ??= Computed<double>(
           () => super.finalOrderPrice,
-          name: 'CartStoreBase.finalOrderPrice',))
+          name: 'CartStoreBase.finalOrderPrice'))
       .value;
 
   late final _$countersAtom =
@@ -269,7 +269,7 @@ mixin _$CartStore on CartStoreBase, Store {
   @override
   void incrementCounter(String productId) {
     final _$actionInfo = _$CartStoreBaseActionController.startAction(
-        name: 'CartStoreBase.incrementCounter',);
+        name: 'CartStoreBase.incrementCounter');
     try {
       return super.incrementCounter(productId);
     } finally {
@@ -280,7 +280,7 @@ mixin _$CartStore on CartStoreBase, Store {
   @override
   void decrementCounter(String productId) {
     final _$actionInfo = _$CartStoreBaseActionController.startAction(
-        name: 'CartStoreBase.decrementCounter',);
+        name: 'CartStoreBase.decrementCounter');
     try {
       return super.decrementCounter(productId);
     } finally {

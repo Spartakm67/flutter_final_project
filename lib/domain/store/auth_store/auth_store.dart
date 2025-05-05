@@ -3,14 +3,16 @@ import 'package:mobx/mobx.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_final_project/data/models/firebase/firebase_user_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 
 part 'auth_store.g.dart';
 
 class AuthStore = AuthStoreBase with _$AuthStore;
 
 abstract class AuthStoreBase with Store {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  // final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @observable
@@ -62,12 +64,12 @@ abstract class AuthStoreBase with Store {
     isLoading = true;
     errorMessage = null;
     try {
-      await _auth.verifyPhoneNumber(
+      await auth.verifyPhoneNumber(
         phoneNumber: '+380$phoneNumber',
         timeout: const Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await _auth.signInWithCredential(credential);
-          currentUser = _auth.currentUser;
+          await auth.signInWithCredential(credential);
+          currentUser = auth.currentUser;
           if (currentUser != null) {
             await saveUserPhoneNumber(phoneNumber!);
           }
@@ -105,7 +107,7 @@ abstract class AuthStoreBase with Store {
         verificationId: verificationId!,
         smsCode: smsCode,
       );
-      final userCredential = await _auth.signInWithCredential(credential);
+      final userCredential = await auth.signInWithCredential(credential);
       currentUser = userCredential.user;
       isLoggedIn = true;
       if (currentUser != null) {
@@ -115,6 +117,11 @@ abstract class AuthStoreBase with Store {
           createdAt: Timestamp.now(),
         );
         await saveInitialUserData(userModel);
+
+        // 🔺Збереження UID у вже відкритий Hive box
+        final authBox = Hive.box('authBox');
+        await authBox.put('uid', currentUser!.uid);
+
       }
       isWaitingForSms = false;
     } catch (e) {
@@ -132,7 +139,7 @@ abstract class AuthStoreBase with Store {
     isLoading = true;
     errorMessage = null;
     try {
-      final userCredential = await _auth.createUserWithEmailAndPassword(
+      final userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -162,7 +169,7 @@ abstract class AuthStoreBase with Store {
     isLoading = true;
     errorMessage = null;
     try {
-      final userCredential = await _auth.signInWithEmailAndPassword(
+      final userCredential = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -188,7 +195,7 @@ abstract class AuthStoreBase with Store {
     errorMessage = null;
 
     try {
-      await _auth.sendPasswordResetEmail(email: email);
+      await auth.sendPasswordResetEmail(email: email);
       errorMessage = 'Password reset email sent. Check your inbox.';
     } catch (e) {
       errorMessage = 'Failed to send reset email: ${e.toString()}';
@@ -205,7 +212,7 @@ abstract class AuthStoreBase with Store {
     errorMessage = null;
 
     try {
-      await _auth.sendPasswordResetEmail(
+      await auth.sendPasswordResetEmail(
         email: email,
         actionCodeSettings: ActionCodeSettings(
           url: 'https://flutterfinalproject.page.link/reset-password',
@@ -229,10 +236,14 @@ abstract class AuthStoreBase with Store {
     isLoading = true;
     errorMessage = null;
     try {
-      await _auth.signOut();
-      await _googleSignIn.signOut();
+      await auth.signOut();
+      // await _googleSignIn.signOut();
       currentUser = null;
       isLoggedIn = false;
+
+      // ✅ ДОДАНО: Видалення UID з Hive (authBox вже відкритий у main)
+      await Hive.box('authBox').delete('uid');
+
     } catch (e) {
       errorMessage = 'Failed to sign out: ${e.toString()}';
       showErrorMessage?.call(errorMessage!);
@@ -260,7 +271,7 @@ abstract class AuthStoreBase with Store {
         idToken: googleAuth.idToken,
       );
 
-      final userCredential = await _auth.signInWithCredential(credential);
+      final userCredential = await auth.signInWithCredential(credential);
       currentUser = userCredential.user;
 
       final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
@@ -349,6 +360,25 @@ abstract class AuthStoreBase with Store {
     Future.delayed(const Duration(seconds: 3), () {
       errorMessage = null;
     });
+  }
+
+  @action
+  Future<void> restoreSessionFromHive() async {
+    final savedUid = Hive.box('authBox').get('uid');
+    final user = auth.currentUser;
+
+    print('🔥 UID in Hive: $savedUid');
+    print('🔥 Firebase currentUser: ${user?.uid}');
+
+    if (savedUid != null && user != null && user.uid == savedUid) {
+      currentUser = user;
+      isLoggedIn = true;
+      print('✅ Сесія відновлена автоматично');
+    } else {
+      currentUser = null;
+      isLoggedIn = false;
+      print('❌ Сесію не вдалося відновити');
+    }
   }
 
   String getCustomErrorMessage(String firebaseErrorCode) {

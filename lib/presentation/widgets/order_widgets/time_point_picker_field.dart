@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_final_project/domain/store/order_store/order_store.dart';
 import 'package:flutter_final_project/main.dart';
+import 'package:flutter_final_project/presentation/styles/text_styles.dart';
 
 class TimePointPickerField extends StatelessWidget {
   final OrderStore orderStore;
@@ -37,29 +38,24 @@ class TimePointPickerField extends StatelessWidget {
   }
 
   Future<void> _showTimePicker(BuildContext context) async {
+    orderStore.regenerateAvailablePointTimes();
+
     final selected = await showDialog<TimeOfDay>(
       context: context,
       builder: (context) {
         final now = DateTime.now();
         final isOutOfWorkingHours = now.hour >= 20 && now.hour < 24;
-        // final hasTomorrowSlots = orderStore.availableTimes.any(
-        //       (t) => t.hour >= 20 && t.hour < 24,
-        // );
 
         return Dialog(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (isOutOfWorkingHours)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 16.0),
                   child: Text(
                     'Час замовлення на завтра',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                      fontSize: 16,
-                    ),
+                    style: TextStyles.alertKeyText,
                   ),
                 ),
               SizedBox(
@@ -68,7 +64,11 @@ class TimePointPickerField extends StatelessWidget {
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: orderStore.availablePointTimes.length,
-                  separatorBuilder: (_, __) => const Divider(),
+                  separatorBuilder: (_, __) => const Divider(
+                    color: Color(0xFFBDBDBD),
+                    thickness: 1,
+                    height: 1,
+                  ),
                   itemBuilder: (context, index) {
                     final time = orderStore.availablePointTimes[index];
                     final isSelected = time == orderStore.selectedTime;
@@ -97,3 +97,8 @@ class TimePointPickerField extends StatelessWidget {
     }
   }
 }
+
+
+// final hasTomorrowSlots = orderStore.availableTimes.any(
+//       (t) => t.hour >= 20 && t.hour < 24,
+// );

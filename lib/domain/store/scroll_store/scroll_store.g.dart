@@ -14,7 +14,7 @@ mixin _$ScrollStore on ScrollStoreBase, Store {
   @override
   bool get isButtonVisible =>
       (_$isButtonVisibleComputed ??= Computed<bool>(() => super.isButtonVisible,
-              name: 'ScrollStoreBase.isButtonVisible',))
+              name: 'ScrollStoreBase.isButtonVisible'))
           .value;
 
   late final _$scrollPositionAtom =
@@ -39,7 +39,7 @@ mixin _$ScrollStore on ScrollStoreBase, Store {
   @override
   void updateScrollPosition(double position) {
     final _$actionInfo = _$ScrollStoreBaseActionController.startAction(
-        name: 'ScrollStoreBase.updateScrollPosition',);
+        name: 'ScrollStoreBase.updateScrollPosition');
     try {
       return super.updateScrollPosition(position);
     } finally {
@@ -50,7 +50,7 @@ mixin _$ScrollStore on ScrollStoreBase, Store {
   @override
   void resetScroll() {
     final _$actionInfo = _$ScrollStoreBaseActionController.startAction(
-        name: 'ScrollStoreBase.resetScroll',);
+        name: 'ScrollStoreBase.resetScroll');
     try {
       return super.resetScroll();
     } finally {

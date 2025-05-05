@@ -121,71 +121,140 @@ abstract class OrderStoreBase with Store {
   @observable
   bool isPhoneNumberValid = false;
 
+
   @action
   void validatePhoneNumber(String phone) {
     isPhoneNumberValid = RegExp(r'^\+380[3-9]\d{8}$').hasMatch(phone);
   }
 
-  List<TimeOfDay> availableTimes = List.generate(
-    22 * 2,
-        (index) {
-      final now = DateTime.now();
-      const int startHour = 9;
-      const int endHour = 20;
-      const int extendedEndHour = 21;
+  @observable
+  List<TimeOfDay> availableTimes = [];
 
-      final int hours = startHour + ((index + 1) ~/ 2);
-      final int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
+  @observable
+  List<TimeOfDay> availablePointTimes = [];
 
-      DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
-      if (now.hour >= endHour || now.hour < startHour) {
-        generatedTime = generatedTime.add(const Duration(days: 1));
-      }
 
-      if (now.hour >= startHour && now.hour < endHour) {
+  @action
+  void regenerateAvailableTimes() {
+    final now = DateTime.now();
+    const int startHour = 9;
+    const int endHour = 20;
+    const int extendedEndHour = 21;
 
-        if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
+    availableTimes = List.generate(
+      22 * 2,
+          (index) {
+        final int hours = startHour + ((index + 1) ~/ 2);
+        final int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
+
+        DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
+        if (now.hour >= endHour || now.hour < startHour) {
+          generatedTime = generatedTime.add(const Duration(days: 1));
+        }
+
+        if (now.hour >= startHour && now.hour < endHour) {
+          if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
+            return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+          }
+        } else if (hours >= startHour && hours <= endHour) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
         }
-      }
 
-      else if (now.hour >= endHour || now.hour < startHour) {
+        return null;
+      },
+    ).whereType<TimeOfDay>().toList();
+  }
 
-        if (hours >= startHour && hours <= endHour) {
+  @action
+  void regenerateAvailablePointTimes() {
+    final now = DateTime.now();
+
+    availablePointTimes = List.generate(
+      44,
+          (index) {
+        int totalMinutes = 9 * 60 + 15 + index * 15;
+        int hours = totalMinutes ~/ 60;
+        int minutes = totalMinutes % 60;
+
+        DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
+
+        if (now.hour >= 20 || now.hour < 9) {
+          generatedTime = generatedTime.add(const Duration(days: 1));
+        }
+
+        if ((now.hour >= 20 || now.hour < 9) && hours < 20) {
+          return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+        } else if (generatedTime.isAfter(now)) {
           return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
         }
-      }
-      return null;
-    },
-  ).whereType<TimeOfDay>().toList();
 
-  List<TimeOfDay> availablePointTimes = List.generate(
-    44,
-        (index) {
-      final now = DateTime.now();
+        return null;
+      },
+    ).whereType<TimeOfDay>().toList();
+  }
 
-      int totalMinutes = 9 * 60 + 15 + index * 15;
-      int hours = totalMinutes ~/ 60;
-      int minutes = totalMinutes % 60;
-
-      DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
-
-      if (now.hour >= 20 || now.hour < 9) {
-        generatedTime = generatedTime.add(const Duration(days: 1));
-      }
-
-      if (now.hour >= 20 || now.hour < 9) {
-        if (hours < 20) {
-          return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
-        }
-      }
-
-      else if (generatedTime.isAfter(now)) {
-        return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
-      }
-
-      return null;
-    },
-  ).whereType<TimeOfDay>().toList();
 }
 
+// @observable
+// List<TimeOfDay> availableTimes = List.generate(
+//   22 * 2,
+//       (index) {
+//     final now = DateTime.now();
+//     const int startHour = 9;
+//     const int endHour = 20;
+//     const int extendedEndHour = 21;
+//
+//     final int hours = startHour + ((index + 1) ~/ 2);
+//     final int minutes = ((index + 1) % 2 == 0) ? 0 : 30;
+//
+//     DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
+//     if (now.hour >= endHour || now.hour < startHour) {
+//       generatedTime = generatedTime.add(const Duration(days: 1));
+//     }
+//
+//     if (now.hour >= startHour && now.hour < endHour) {
+//
+//       if (generatedTime.isAfter(now) && hours <= extendedEndHour) {
+//         return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+//       }
+//     }
+//
+//     else if (now.hour >= endHour || now.hour < startHour) {
+//
+//       if (hours >= startHour && hours <= endHour) {
+//         return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+//       }
+//     }
+//     return null;
+//   },
+// ).whereType<TimeOfDay>().toList();
+//
+// @observable
+// List<TimeOfDay> availablePointTimes = List.generate(
+//   44,
+//       (index) {
+//     final now = DateTime.now();
+//
+//     int totalMinutes = 9 * 60 + 15 + index * 15;
+//     int hours = totalMinutes ~/ 60;
+//     int minutes = totalMinutes % 60;
+//
+//     DateTime generatedTime = DateTime(now.year, now.month, now.day, hours, minutes);
+//
+//     if (now.hour >= 20 || now.hour < 9) {
+//       generatedTime = generatedTime.add(const Duration(days: 1));
+//     }
+//
+//     if (now.hour >= 20 || now.hour < 9) {
+//       if (hours < 20) {
+//         return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+//       }
+//     }
+//
+//     else if (generatedTime.isAfter(now)) {
+//       return TimeOfDay(hour: generatedTime.hour, minute: generatedTime.minute);
+//     }
+//
+//     return null;
+//   },
+// ).whereType<TimeOfDay>().toList();

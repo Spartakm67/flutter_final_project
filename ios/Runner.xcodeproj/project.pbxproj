@@ -9,25 +9,16 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
-		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		3EF3EB4380E2319379D012AD /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B534A19A6AC1C749983B84E /* Pods_RunnerTests.framework */; };
 		4B29499B4DED0202229452CC /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48416269CB8E679B5C0C97DF /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		EC4E806A2DC3649100E3E5C3 /* flutter_export_environment.sh in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80662DC3649100E3E5C3 /* flutter_export_environment.sh */; };
-		EC4E806B2DC3649100E3E5C3 /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80642DC3649100E3E5C3 /* Debug.xcconfig */; };
-		EC4E806C2DC3649100E3E5C3 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80682DC3649100E3E5C3 /* Release.xcconfig */; };
-		EC4E806D2DC3649100E3E5C3 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80632DC3649100E3E5C3 /* AppFrameworkInfo.plist */; };
-		EC4E806E2DC3649100E3E5C3 /* Generated.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80672DC3649100E3E5C3 /* Generated.xcconfig */; };
 		EC4E806F2DC3649100E3E5C3 /* Flutter.podspec in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80652DC3649100E3E5C3 /* Flutter.podspec */; };
 		EC4E80772DC364C300E3E5C3 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80702DC364C300E3E5C3 /* AppFrameworkInfo.plist */; };
-		EC4E80782DC364C300E3E5C3 /* Generated.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80742DC364C300E3E5C3 /* Generated.xcconfig */; };
-		EC4E80792DC364C300E3E5C3 /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80712DC364C300E3E5C3 /* Debug.xcconfig */; };
 		EC4E807A2DC364C300E3E5C3 /* Flutter.podspec in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80722DC364C300E3E5C3 /* Flutter.podspec */; };
 		EC4E807B2DC364C300E3E5C3 /* flutter_export_environment.sh in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80732DC364C300E3E5C3 /* flutter_export_environment.sh */; };
-		EC4E807C2DC364C300E3E5C3 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC4E80752DC364C300E3E5C3 /* Release.xcconfig */; };
 		ECFE27172D6FAF15009790C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECFE27162D6FAF15009790C7 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -318,20 +309,11 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				EC4E80772DC364C300E3E5C3 /* AppFrameworkInfo.plist in Resources */,
-				EC4E80782DC364C300E3E5C3 /* Generated.xcconfig in Resources */,
-				EC4E80792DC364C300E3E5C3 /* Debug.xcconfig in Resources */,
 				EC4E807A2DC364C300E3E5C3 /* Flutter.podspec in Resources */,
 				EC4E807B2DC364C300E3E5C3 /* flutter_export_environment.sh in Resources */,
-				EC4E807C2DC364C300E3E5C3 /* Release.xcconfig in Resources */,
-				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				ECFE27172D6FAF15009790C7 /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				EC4E806A2DC3649100E3E5C3 /* flutter_export_environment.sh in Resources */,
-				EC4E806B2DC3649100E3E5C3 /* Debug.xcconfig in Resources */,
-				EC4E806C2DC3649100E3E5C3 /* Release.xcconfig in Resources */,
-				EC4E806D2DC3649100E3E5C3 /* AppFrameworkInfo.plist in Resources */,
-				EC4E806E2DC3649100E3E5C3 /* Generated.xcconfig in Resources */,
 				EC4E806F2DC3649100E3E5C3 /* Flutter.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

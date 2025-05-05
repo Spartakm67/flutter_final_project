@@ -92,23 +92,28 @@ class CategoriesScreenState extends State<CategoriesScreen> {
             },
           ),
           if (authStore.isLoggedIn)
+            const Icon(
+              Icons.account_circle_rounded,
+              color: Colors.blueGrey,
+              size: 30,
+            )
+          else
             IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: authStore.isLoading
-                  ? null
-                  : () async {
-                await authStore.signOut();
-                if (context.mounted) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  );
-                }
+              iconSize: 30.0,
+              icon: const Icon(
+                Icons.login,
+                color: Colors.green,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ),
+                );
               },
             ),
-          // const SizedBox(width: 5),
+          const SizedBox(width: 8,),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: CustomBurgerButton(

@@ -9,10 +9,13 @@ import 'package:flutter_final_project/data/models/hive/product_counter_hive.dart
 import 'package:flutter_final_project/data/models/hive/order_model_hive.dart';
 import 'package:flutter_final_project/data/models/hive/time_of_day_adapter.dart';
 import 'package:flutter_final_project/presentation/screens/home_screen.dart';
+import 'package:flutter_final_project/presentation/screens/categories_screen.dart';
 import 'package:flutter_final_project/presentation/screens/auth/loading_app.dart';
 import 'package:flutter_final_project/presentation/screens/auth/error_app.dart';
+import 'package:flutter_final_project/presentation/styles/theme/app_theme.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +26,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final mediaQuery = MediaQueryData.fromView(
-      WidgetsBinding.instance.platformDispatcher.views.first,);
+    WidgetsBinding.instance.platformDispatcher.views.first,
+  );
   screenWidth = mediaQuery.size.width;
   screenHeight = mediaQuery.size.height;
 
@@ -44,6 +48,8 @@ void main() async {
     Hive.registerAdapter(OrderModelHiveAdapter());
     Hive.registerAdapter(TimeOfDayAdapter());
 
+    await Hive.openBox('authBox'); // Відкриваємо Hive box для зберігання токена
+
     final productStore = ProductStore();
     final orderStore = OrderStore();
     final cartStore = CartStore(productStore, orderStore);
@@ -52,6 +58,11 @@ void main() async {
 
     await cartStore.initHive();
     await orderStore.initHive();
+
+    // ✅ Використовуємо новий метод у AuthStore
+    await authStore.restoreSessionFromHive();
+    print('Saved UID: ${Hive.box('authBox').get('uid')}');
+
 
     runApp(
       MultiProvider(
@@ -76,14 +87,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Final Project',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: HomeScreen(),
+    final authStore = Provider.of<AuthStore>(context);
+
+    return Observer(
+      builder: (_) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Final Project',
+          theme: appTheme,
+          home: authStore.isLoggedIn
+              ? const CategoriesScreen()
+              : const HomeScreen(),
+        );
+      },
     );
   }
 }
+
+
+
+
